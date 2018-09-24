@@ -71,4 +71,4 @@
                 | <op_unario> <real>
                 | <op_unario> <entero>
                 | <op_unario> <booleano>
-                | (Resto de expresiones del lenguaje de referencia)
+                | (Resto de expresiones del lenguaje de referencia)  
