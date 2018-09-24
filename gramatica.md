@@ -1,13 +1,18 @@
-<entero> ::= <entero> <digito> | <entero>
 <digito> ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0
-<real> ::= <entero>.<entero>
+<digitohex> ::= digito | a | b | c | d | e | f
+<natural> ::= <digito> <natural> | <digito>
+<hex> ::= <digitohex> <hex> | <digitohex>
+<entero> ::= <signo> <natural> | 0x<hex>
+<signo> ::= + | - |
+<real> ::= <signo><natural>.<natural><exponente> | <signo><natural><exponente>
+<exponente> ::= E+<natural> | E-<natural> |
 
 ¿Aquí tenemos que meter todos los caracteres o solo las letras?
 <caracter> ::= a | ... | z | A | ... | Z
 <booleano> ::= True | False
 
 <op_unario> ::= ++ | -- | !
-<op_binario> ::= + | / | - | * | < | <= | > | >= | == | !=
+<op_binario> ::= + | / | - | * | < | <= | > | >= | == | != | & | | | ^
 
 <Programa> ::= <Cabecera_programa> <bloque>
 <bloque> ::= <Inicio_de_bloque>
