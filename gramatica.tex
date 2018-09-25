@@ -28,9 +28,13 @@
 
 <booleano> ::= True | False
 
-<op_unario> ::= ++ | -- | !
+<agregado> ::= []
 
-<op_binario> ::= \verb|+| | \verb|/| | \verb|-| | \verb|*| | \verb|<| | \verb|<=| | \verb|>| | \verb|>=| | \verb|==| | \verb|!=| | \verb|&| | \verb||| | \verb|^|
+<op_unario> ::= \verb|++| | \verb|--| | \verb|!| | \verb|#| | \verb|?| | \verb|$| | \verb|<<| | \verb|>>|
+
+<op_binario> ::= \verb|+| | \verb|/| | \verb|-| | \verb|*| | \verb|<| | \verb|<=| | \verb|>| | \verb|>=| | \verb|==| | \verb|!=| | \verb|&| | \verb||| | \verb|^| | \verb|@| | \verb|--| \verb|%| | \verb|**|
+
+<op_ternario> ::= <expresion>++<expresion>@<expresion>
 
 <Programa> ::= <Cabecera_programa> <bloque>
 
@@ -78,12 +82,12 @@
 
 <sentencia_asignacion> ::=  <identificador> = <expresion>
 
-<sentencia_if> ::= if <expresion>
+<sentencia_if> ::= if (<expresion>)
  <Sentencia> <sentencia_else>
 
  <sentencia_else> ::= $\varepsilon$ | else <Sentencia>
 
-<sentencia_while> ::= while <expresion> <Inicio_de_bloque>
+<sentencia_while> ::= while (<expresion>) <Inicio_de_bloque>
 <Sentencia>
 <Fin_de_bloque>
 
