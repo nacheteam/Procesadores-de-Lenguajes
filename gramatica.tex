@@ -48,7 +48,7 @@
 <Variables_locales> \\
 <Marca_fin_declar_variables>
 
-<Cabecera_programa> ::= $\varepsilon$
+<Cabecera_programa> ::= (Dependerá del lenguaje de referencia)
 
 <Inicio_de_bloque> ::= \{
 
@@ -83,9 +83,10 @@
 \alt bool <identificador> = <booleano>
 \alt double <identificador> = <real>
 
-<sentencia_if> ::= if <expresion> <Inicio_de_bloque>
- <Sentencia>
- <Fin_de_bloque>
+<sentencia_if> ::= if <expresion>
+ <Sentencia> <sentencia_else>
+ 
+ <sentencia_else> ::= $\varepsilon$ | else <Sentencia>
 
 <sentencia_while> ::= while <expresion> <Inicio_de_bloque>
 <Sentencia>
