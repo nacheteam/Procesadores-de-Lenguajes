@@ -69,7 +69,7 @@
 
 <tipo> ::= <tipo_base> | list of <tipo>
 
-<lista_identificadores> ::= <idetificador> | <identificador>, <lista_identificadores>
+<lista_identificadores> ::= <identificador> | <identificador>, <lista_identificadores>
 
 <Cuerpo_declar_variables> ::= <tipo> <lista_identificadores>
 
@@ -100,6 +100,8 @@
 <sentencia_entrada> ::= <nomb_entrada> <lista_variables>
 
 <sentencia_salida> ::= <nomb_salida> <lista_expresiones_o_cadena>
+
+<llamada_proced> ::= <identificador>(<elementos>)
 
 <expresion> ::= ( <expresion> )
 \alt <op_unario> <expresion>
