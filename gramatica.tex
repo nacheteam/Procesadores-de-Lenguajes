@@ -28,13 +28,13 @@
 
 <booleano> ::= True | False
 
-<agregado> ::= []
+<lista> ::= [] | [<elementos>]
+
+<elementos> ::= <expresion> | <expresion>, <elementos>
 
 <op_unario> ::= \verb|++| | \verb|--| | \verb|!| | \verb|#| | \verb|?| | \verb|$| | \verb|<<| | \verb|>>|
 
-<op_binario> ::= \verb|+| | \verb|/| | \verb|-| | \verb|*| | \verb|<| | \verb|<=| | \verb|>| | \verb|>=| | \verb|==| | \verb|!=| | \verb|&| | \verb||| | \verb|^| | \verb|@| | \verb|--| \verb|%| | \verb|**|
-
-<op_ternario> ::= <expresion>++<expresion>@<expresion>
+<op_binario> ::= \verb|+| | \verb|/| | \verb|-| | \verb|*| | \verb|<| | \verb|<=| | \verb|>| | \verb|>=| | \verb|==| | \verb|!=| | \verb|&| | \verb||| | \verb|^| | \verb|@| | \verb|--| | \verb|%| | \verb|**|
 
 <Programa> ::= <Cabecera_programa> <bloque>
 
@@ -98,9 +98,10 @@
 <expresion> ::= ( <expresion> )
 \alt <op_unario> <expresion>
 \alt <expresion> <op_binario> <expresion>
+\alt <expresion>++<expresion>@<expresion>
 \alt <identificador>
 \alt <literal>
-
+\alt <lista>
 
 \end{grammar}
 \end{document}
