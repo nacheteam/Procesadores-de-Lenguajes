@@ -14,13 +14,15 @@
 
 <hex> ::= <digitohex> <hex> | <digitohex>
 
+<signo> ::= + | - |
+
 <entero> ::= <signo> <natural> | 0x<hex>
 
-<signo> ::= + | -
+<decimales> := . <natural> |
 
-<real> ::= <signo><natural>.<natural><exponente> | <signo><natural><exponente>
+<exponente> ::= E+ <natural> | E- <natural> |
 
-<exponente> ::= E+<natural> | E-<natural> |
+<real> ::= <signo> <natural> <decimales> <exponente>
 
 <caracter> ::= a | ... | z | A | ... | Z
 
