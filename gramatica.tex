@@ -74,15 +74,14 @@
 \alt <llamada_proced> (si el lenguaje soporta proced.)
 \alt (Resto de sentencias del lenguaje asignado)
 
-<sentencia_asignacion> ::= (Dependerá del lenguaje de referencia)
-\alt <entero> = <entero>
-\alt <caracter> = <caracter>
-\alt <booleano> = <booleano>
-\alt <real> = <real>
-\alt <booleano> = <entero>
-\alt <entero> = <booleano>
-\alt <real> = <entero>
-\alt <real> = <booleano>
+<identificador> ::= <caracter> <alfanum>
+
+<alfanum> ::= $\varepsilon$ | <caracter> <alfanum> | <digito> <alfanum>
+
+<sentencia_asignacion> ::=  int <identificador> = <entero>
+\alt char <identificador> = <caracter>
+\alt bool <identificador> = <booleano>
+\alt double <identificador> = <real>
 
 <sentencia_if> ::= if <expresion> <Inicio_de_bloque>
  <Sentencia>
