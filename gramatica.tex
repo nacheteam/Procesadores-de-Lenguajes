@@ -14,13 +14,13 @@
 
 <hex> ::= <digitohex> <hex> | <digitohex>
 
-<signo> ::= + | - |
+<signo> ::= + | - | $\varepsilon$
 
 <entero> ::= <signo> <natural> | 0x<hex>
 
-<decimales> := . <natural> |
+<decimales> := . <natural> | $\varepsilon$
 
-<exponente> ::= E+ <natural> | E- <natural> |
+<exponente> ::= E+ <natural> | E- <natural> | $\varepsilon$
 
 <real> ::= <signo> <natural> <decimales> <exponente>
 
@@ -30,7 +30,7 @@
 
 <op_unario> ::= ++ | -- | !
 
-<op_binario> ::= + | / | - | * | \verb|<| | \verb|<=| | \verb|>| | \verb|>=| | \verb|==| | \verb|!=| | \verb|&| | \verb||| | \verb|^|
+<op_binario> ::= \verb|+| | \verb|/| | \verb|-| | \verb|*| | \verb|<| | \verb|<=| | \verb|>| | \verb|>=| | \verb|==| | \verb|!=| | \verb|&| | \verb||| | \verb|^|
 
 <Programa> ::= <Cabecera_programa> <bloque>
 
@@ -43,6 +43,12 @@
 <Declar_de_subprogs> ::= <Declar_de_subprogs> <Declar_subprog>
 
 <Declar_subprog> ::= <Cabecera_subprograma> <bloque>
+
+<identificador> ::= <caracter> <alfanum>
+
+<alfanum> ::= $\varepsilon$ | <caracter> <alfanum> | <digito> <alfanum>
+
+<literal> ::= <entero> | '<caracter>' | <booleano> | <real>
 
 <Declar_de_variables_locales> ::= <Marca_ini_declar_variables> \\
 <Variables_locales> \\
@@ -57,7 +63,7 @@
 <Variables_locales> ::= <Variables_locales> <Cuerpo_declar_variables>
 \alt <Cuerpo_declar_variables>
 
-<Cuerpo_declar_variables> ::= (Dependerá del lenguaje de referencia)
+<Cuerpo_declar_variables> ::= <tipo> <identificador> %TODO
 
 <Cabecera_subprog> ::= (Dependerá del lenguaje de referencia)
 
@@ -74,14 +80,7 @@
 \alt <llamada_proced> (si el lenguaje soporta proced.)
 \alt (Resto de sentencias del lenguaje asignado)
 
-<identificador> ::= <caracter> <alfanum>
-
-<alfanum> ::= $\varepsilon$ | <caracter> <alfanum> | <digito> <alfanum>
-
-<sentencia_asignacion> ::=  int <identificador> = <entero>
-\alt char <identificador> = <caracter>
-\alt bool <identificador> = <booleano>
-\alt double <identificador> = <real>
+<sentencia_asignacion> ::=  <identificador> = <literal>
 
 <sentencia_if> ::= if <expresion> <Inicio_de_bloque>
  <Sentencia>
