@@ -34,7 +34,7 @@
 
 <op_unario> ::= \verb|++| | \verb|--| | \verb|!| | \verb|#| | \verb|?| | \verb|$| | \verb|<<| | \verb|>>|
 
-<op_binario> ::= \verb|+| | \verb|/| | \verb|-| | \verb|*| | \verb|<| | \verb|<=| | \verb|>| | \verb|>=| | \verb|==| | \verb|!=| | \verb|&| | \verb||| | \verb|^| | \verb|@| | \verb|--| | \verb|%| | \verb|**|
+<op_binario> ::= \verb|+| | \verb|/| | \verb|-| | \verb|*| | \verb|<| | \verb|<=| | \verb|>| | \verb|>=| | \verb|==| | \verb|!=| | \verb|&&| | \verb|||| | \verb|^| | \verb|@| | \verb|--| | \verb|%| | \verb|**|
 
 <Programa> ::= <Cabecera_programa> <bloque>
 
@@ -70,7 +70,8 @@
 <tipo> ::= <tipo_base> | list of <tipo>
 
 <lista_identificadores> ::= <idetificador> | <identificador>, <lista_identificadores>
-<Cuerpo_declar_variables> ::= <tipo> <lista_identificadores> %TODO
+
+<Cuerpo_declar_variables> ::= <tipo> <lista_identificadores>
 
 <Cabecera_subprog> ::= $\varepsilon$
 
