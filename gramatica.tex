@@ -65,7 +65,12 @@
 <Variables_locales> ::= <Variables_locales> <Cuerpo_declar_variables>
 \alt <Cuerpo_declar_variables>
 
-<Cuerpo_declar_variables> ::= <tipo> <identificador> %TODO
+<tipo_base> ::= int | bool | char | double
+
+<tipo> ::= <tipo_base> | list of <tipo>
+
+<lista_identificadores> ::= <idetificador> | <identificador>, <lista_identificadores>
+<Cuerpo_declar_variables> ::= <tipo> <lista_identificadores> %TODO
 
 <Cabecera_subprog> ::= $\varepsilon$
 
