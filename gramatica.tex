@@ -48,8 +48,6 @@
 
 <alfanum> ::= $\varepsilon$ | <caracter> <alfanum> | <digito> <alfanum>
 
-<literal> ::= <entero> | '<caracter>' | <booleano> | <real>
-
 <Declar_de_variables_locales> ::= <Marca_ini_declar_variables> \\
 <Variables_locales> \\
 <Marca_fin_declar_variables>
@@ -65,7 +63,7 @@
 
 <Cuerpo_declar_variables> ::= <tipo> <identificador> %TODO
 
-<Cabecera_subprog> ::= (Dependerá del lenguaje de referencia)
+<Cabecera_subprog> ::= $\varepsilon$
 
 <Sentencias> ::= <Sentencias> <Sentencia>
 \alt <Sentencia>
@@ -76,15 +74,13 @@
 \alt <sentencia_while>
 \alt <sentencia_entrada>
 \alt <sentencia_salida>
-\alt <sentencia_return> (si el lenguaje soporta funciones)
-\alt <llamada_proced> (si el lenguaje soporta proced.)
-\alt (Resto de sentencias del lenguaje asignado)
+\alt <llamada_proced>
 
-<sentencia_asignacion> ::=  <identificador> = <literal>
+<sentencia_asignacion> ::=  <identificador> = <expresion>
 
 <sentencia_if> ::= if <expresion>
  <Sentencia> <sentencia_else>
- 
+
  <sentencia_else> ::= $\varepsilon$ | else <Sentencia>
 
 <sentencia_while> ::= while <expresion> <Inicio_de_bloque>
@@ -99,8 +95,7 @@
 \alt <op_unario> <expresion>
 \alt <expresion> <op_binario> <expresion>
 \alt <identificador>
-\alt <entero>Aquí ponía constante pero en nuestro caso es lo mismo.
-\alt <funcion> (si el lenguaje soporta funciones)
+\alt <entero> % Aquí ponía constante pero en nuestro caso es lo mismo.
 \alt <entero> <op_binario> <entero>
 \alt <entero> <op_binario> <real>
 \alt <real> <op_binario> <entero>
