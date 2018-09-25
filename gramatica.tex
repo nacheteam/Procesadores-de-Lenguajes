@@ -82,9 +82,10 @@
 
 <sentencia_asignacion> ::=  <identificador> = <literal>
 
-<sentencia_if> ::= if <expresion> <Inicio_de_bloque>
- <Sentencia>
- <Fin_de_bloque>
+<sentencia_if> ::= if <expresion>
+ <Sentencia> <sentencia_else>
+ 
+ <sentencia_else> ::= $\varepsilon$ | else <Sentencia>
 
 <sentencia_while> ::= while <expresion> <Inicio_de_bloque>
 <Sentencia>
