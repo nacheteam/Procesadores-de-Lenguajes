@@ -72,6 +72,7 @@
 \alt <sentencia_asignacion>
 \alt <sentencia_if>
 \alt <sentencia_while>
+\alt <sentencia_repeat_until>
 \alt <sentencia_entrada>
 \alt <sentencia_salida>
 \alt <llamada_proced>
@@ -86,6 +87,8 @@
 <sentencia_while> ::= while <expresion> <Inicio_de_bloque>
 <Sentencia>
 <Fin_de_bloque>
+
+<sentencia_repeat_until> ::= repeat <Sentencia> until <expresion>
 
 <sentencia_entrada> ::= <nomb_entrada> <lista_variables>
 
