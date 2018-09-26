@@ -14,15 +14,15 @@
 
 <hex> ::= <digitohex> <hex> | <digitohex>
 
-<signo> ::= + | - | $\varepsilon$
+<signo> ::= + | -
 
-<entero> ::= <signo> <natural> | 0x<hex>
+<entero> ::= <natural> | 0x<hex>
 
 <decimales> := . <natural> | $\varepsilon$
 
 <exponente> ::= E+ <natural> | E- <natural> | $\varepsilon$
 
-<real> ::= <signo> <natural> <decimales> <exponente>
+<real> ::= <natural> <decimales> <exponente>
 
 <caracter> ::= a | ... | z | A | ... | Z
 
@@ -48,15 +48,21 @@
 
 <Declar_subprog> ::= <Cabecera_subprograma> <bloque>
 
+<Cabecera_subprograma> ::= <identificador>(<parametros>)
+
 <identificador> ::= <caracter> <alfanum>
 
 <alfanum> ::= $\varepsilon$ | <caracter> <alfanum> | <digito> <alfanum>
+
+<parametros> ::= $\varepsilon$ | <lista_parametros>
+
+<lista_parametros> ::= <tipo> <identificador> | <tipo> <identificador>, <lista_parametros>
 
 <Declar_de_variables_locales> ::= <Marca_ini_declar_variables> \\
 <Variables_locales> \\
 <Marca_fin_declar_variables>
 
-<Cabecera_programa> ::= $\varepsilon$
+<Cabecera_programa> ::= main()
 
 <Inicio_de_bloque> ::= \{
 
@@ -67,7 +73,7 @@
 
 <tipo_base> ::= int | bool | char | double
 
-<tipo> ::= <tipo_base> | list of <tipo>
+<tipo> ::= <tipo_base> | list of <tipo_base>
 
 <lista_identificadores> ::= <identificador> | <identificador>, <lista_identificadores>
 
@@ -87,19 +93,34 @@
 \alt <sentencia_salida>
 \alt <llamada_proced>
 
-<sentencia_asignacion> ::=  <identificador> = <expresion>
+<sentencia_asignacion> ::=  <identificador> = <expresion> ";"
 
-<sentencia_if> ::= if (<expresion>) <bloque> <sentencia_else>
+<sentencia_if> ::= if (<expresion>) <Sentencia> <sentencia_else>
 
-<sentencia_else> ::= $\varepsilon$ | else <bloque>
+<sentencia_else> ::= $\varepsilon$ | else <Sentencia>
 
-<sentencia_while> ::= while (<expresion>) <bloque>
+<sentencia_while> ::= while (<expresion>) <Sentencia>
 
-<sentencia_repeat_until> ::= repeat <bloque> until <expresion>
+<sentencia_repeat_until> ::= repeat <Sentencia> until <expresion> ";"
 
-<sentencia_entrada> ::= <nomb_entrada> <lista_variables>
+<sentencia_entrada> ::= <nomb_entrada> <lista_variables> ";"
 
-<sentencia_salida> ::= <nomb_salida> <lista_expresiones_o_cadena>
+<nomb_entrada> ::= read
+
+<sentencia_salida> ::= <nomb_salida> <lista_expresiones_o_cadenas> ";"
+
+<nomb_salida> ::= write
+
+<lista_expresiones_o_cadena> ::= <lista_expresiones_o_cadenas>, <expresion_o_cadena>
+\alt <expresion_o_cadena>
+
+<expresion_o_cadena> ::= <elementos> | '' <cadena> ''
+
+<cadena> ::= $\varepsilon$ | <imprimible> <cadena>
+
+<imprimible> ::= (cualquier carácter ASCII)
+
+<lista_variables> ::= <lista_identificadores>
 
 <llamada_proced> ::= <identificador>(<elementos>)
 
@@ -110,6 +131,7 @@
 \alt <identificador>
 \alt <literal>
 \alt <lista>
+\alt <signo> <expresion>
 
 \end{grammar}
 \end{document}
