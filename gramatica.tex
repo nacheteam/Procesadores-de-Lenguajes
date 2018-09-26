@@ -93,7 +93,7 @@
 \alt <sentencia_salida>
 \alt <llamada_proced>
 
-<sentencia_asignacion> ::=  <identificador> = <expresion> ";"
+<sentencia_asignacion> ::=  <identificador> = <expresion> ;
 
 <sentencia_if> ::= if (<expresion>) <Sentencia> <sentencia_else>
 
@@ -101,20 +101,20 @@
 
 <sentencia_while> ::= while (<expresion>) <Sentencia>
 
-<sentencia_repeat_until> ::= repeat <Sentencia> until <expresion> ";"
+<sentencia_repeat_until> ::= repeat <Sentencia> until <expresion> ;
 
-<sentencia_entrada> ::= <nomb_entrada> <lista_variables> ";"
+<sentencia_entrada> ::= <nomb_entrada> <lista_variables> ;
 
 <nomb_entrada> ::= read
 
-<sentencia_salida> ::= <nomb_salida> <lista_expresiones_o_cadenas> ";"
+<sentencia_salida> ::= <nomb_salida> <lista_expresiones_o_cadenas> ;
 
 <nomb_salida> ::= write
 
 <lista_expresiones_o_cadena> ::= <lista_expresiones_o_cadenas>, <expresion_o_cadena>
 \alt <expresion_o_cadena>
 
-<expresion_o_cadena> ::= <elementos> | '' <cadena> ''
+<expresion_o_cadena> ::= <elementos> | " <cadena> "
 
 <cadena> ::= $\varepsilon$ | <imprimible> <cadena>
 
