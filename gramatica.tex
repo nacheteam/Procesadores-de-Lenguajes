@@ -32,7 +32,9 @@
 
 <elementos> ::= <expresion> | <expresion>, <elementos>
 
-<op_unario> ::= \verb|++| | \verb|--| | \verb|!| | \verb|#| | \verb|?| | \verb|$| | \verb|<<| | \verb|>>|
+<op_unario_iz> ::= \verb|++| | \verb|--| | \verb|!| | \verb|#| | \verb|?| | \verb|$|
+
+<op_unario_der> ::= \verb|++| | \verb|--| | \verb|<<| | \verb|>>|
 
 <op_binario> ::= \verb|+| | \verb|/| | \verb|-| | \verb|*| | \verb|<| | \verb|<=| | \verb|>| | \verb|>=| | \verb|==| | \verb|!=| | \verb|&&| | \verb|||| | \verb|^| | \verb|@| | \verb|--| | \verb|%| | \verb|**|
 
@@ -123,7 +125,8 @@
 <llamada_proced> ::= <identificador>(<elementos>)
 
 <expresion> ::= ( <expresion> )
-\alt <op_unario> <expresion>
+\alt <op_unario_iz> <expresion>
+\alt <expresion> <op_unario_der>
 \alt <expresion> <op_binario> <expresion>
 \alt <expresion>++<expresion>@<expresion>
 \alt <identificador>
