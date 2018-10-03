@@ -1,0 +1,36 @@
+## Tipos
+
+En este lenguaje tenemos tipos base y tipos compuestos. Los tipos base son enteros, booleanos, caracteres y reales. Para cada tipo base, existe un tipo compuesto que son las listas dinámicas con elementos de ese tipo.
+
+Una lista es una secuencia ordenada de elemento de tipo base acompañada de un cursos que es un entero no negativo menor que el número de elementos de la lista. El valor por defecto de un cursor es 0. El tamaño de una lista no está especificado y puede cambiar durante la ejecución.
+
+La declaración de una variable de tipo lista de elementos de tipo `tipo_base` se realiza con la instrucción `list of tipo_base unalista, otralista;`.
+
+## Expresiones
+
+### Listas
+
+#### Agregados
+
+Un agregado es una expresión que construye una lista. Consiste en una secuencia entre corchetes posiblemente vacía de expresiones del mismo tipo base separadas por comas. Por ejemplo, agregado que construye una lista de enteros sería `[0, 1+2, 3*4]`. El valor inicial del cursor es 0. El orden de los elementos de la expresión indica el orden de los elementos de la lista.
+
+#### Operadores
+
+Los operadores sobre listas son:
+
+- Operador longitud: la longitud de la lista es un valor entero que expresa el número de elementos de la lista. La longitud de la lista `lista` se obtiene con `#lista`.
+- Operador elemento actual: el elemento actual es el valor del elemento de una lista en la posición indicada por el cursor. El elemento actual de la lista `lista` sería `?lista`.
+- Operador elemento posición: el operador elemento posición expresa el valor del elemento de una lista en una posición expresada por un entero que está comprendido entre cero inclusive y la longitud de la lista exclusive. Consideramos que el primer elemento está en la posición 0. El elemento en la posición `n` de la lista `lista` es `lista@n`.
+- Operador añadir elemento en una posición: el operador añadir elemento en una posición devuelve una lista a partir de una lista `l`, un elemento `x` y una posición `n`. La lista que devuelve tiene un elemento más que la lista original, tiene valores idénticos para elementos en posiciones menores que `n`, tiene como valor en la posición `n` el de `x` y para cada elemento en la posición `i+1` con `i` mayor o igual que `n` tiene el valor del elemento en la posición `i` de la lista `l`. La posición `n` debe estar comprendida entre 0 y el tamaño de la lista, ambos inclusive. El operador añadir el elemento `x` en la posición `n` de la lista `l` se expresaría como `l++x@n`.
+- Operador borrar elemento en una posición: el operador borrar elemento en una posición devuelve una lista a partir de una lista `l` y una posición `n`. La lista que devuelve tiene un elemento menos que la lista original, tiene valores idénticos a la lista `l` para posiciones menores que `n` y para cada posición `i` con `i` mayor o igual que `n` tiene el valor el elemento en la posición `i+1` de la lista `l`. La posición `n` debe estar comprendida entre 0 inclusive y el tamaño de la lista exclusive. El operador borrar el elemento en la posición `n` de la lista `l` se expresa como `l--n`.
+- Operador borrar lista a partir de una posición: el operador borrar lista a partir de una posición devuelve una lista a partir de una lista `l` y una posición `n`. La lista que devuelve tiene tamaño `n` y cada elemento vale lo mismo que el elemento en la misma posición en la lista `l`. La posición `n` debe ser mayor o igual que 0. El operador borrar lista `l` a partir de la posición `n` se expresa como `l%n`.
+
+## Sentencias
+
+### Listas
+
+Las sentencias sobre listas son las siguientes:
+
+- Sentencia avanzar: la sentencia avanzar incrementa en una unidad el valor del cursor de una lista si este es menor que el tamaño de la lista y no lo modifica en otro caso. Avanzar una lista `l` se expresa como `l>>`.
+- Sentencia retroceder: la sentencia avanzar decrementa en una unidad el valor del cursor de una lista si este es mayor que 0 y no lo modifica en otro caso. Retroceder una lista `l` se expresa como `l<<`.
+- Sentencia cursor al comienzo de la lista: la sentencia cursor al comienzo de la lista modifica el valor del cursor de una lista y lo pone a 0. Aplicar esta sentencia a la lista `l` se expresa como `$l`.
