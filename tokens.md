@@ -1,29 +1,60 @@
-|  Palabras       |  Tokens          |
-| --------------- | ---------------- |
-|  lista          | {++}             |
-|  op_unario_der  | {expresion}      |
-|  op_unario_iz   | { { }            |
-|  op_binario     | {=}              |
-|  main()         | {if}             |
-|  identificador  | {else}           |
-|  tipo           | {while}          |
-|  {              | {repeat}         |
-|  }              | {until}          |
-|  =              | {read}           |
-|  if             | {write}          |
-|  else           | {cadena}         |
-|  while          | {literal}        |
-|  repeat         | {'}              |
-|  until          | {list of}        |
-|  read           | {identificador}  |
-|  write          | {tipo}           |
-|  cadena         | {main()}         |
-|  expresion      | { ( }            |
-|  ++             | {lista}          |
-|  @              | {op_unario_der}  |
-|  list of        | {op_unario_iz}   |
-|  '              | {op_binario}     |
-|  literal        | {"}              |
-|  (              | {@}              |
-|  )              | { } }            |
-|  "              | { ) }            |
+|  Palabras          |
+| ------------------ |
+|  \<lista\>         |
+|  \<op_unario_der\> |
+|  \<op_unario_iz\>  |
+|  \<op_binario\>    |
+|  main()            |
+|  \<identificador\> |
+|  \<tipo\>          |
+|  {                 |
+|  }                 |
+|  =                 |
+|  if                |
+|  else              |
+|  while             |
+|  repeat            |
+|  until             |
+|  read              |
+|  write             |
+|  \<cadena\>        |
+|  \<expresion\>     |
+|  ++                |
+|  @                 |
+|  list of           |
+|  '                 |
+|  \<literal\>       |
+|  (                 |
+|  )                 |
+|  "                 |
+
+
+| Tokens              |
+| ------------------- |
+| {++}                |
+| {\<expresion\>}     |
+| { { }               |
+| {=}                 |
+| {if}                |
+| {else}              |
+| {while}             |
+| {repeat}            |
+| {until}             |
+| {read}              |
+| {write}             |
+| {\<cadena\>}        |
+| {\<literal\>}       |
+| {'}                 |
+| {list of}           |
+| {\<identificador\>} |
+| {\<tipo\>}          |
+| {main()}            |
+| { ( }               |
+| {\<lista\>}         |
+| {\<op_unario_der\>} |
+| {\<op_unario_iz\>}  |
+| {\<op_binario\>}    |
+| {"}                 |
+| {@}                 |
+| { } }               |
+| { ) }               |
