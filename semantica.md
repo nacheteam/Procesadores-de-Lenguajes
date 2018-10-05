@@ -1,3 +1,4 @@
+# Semántica
 ## Tipos
 
 En este lenguaje tenemos tipos base y tipos compuestos. Los tipos base son enteros, booleanos, caracteres y reales. Para cada tipo base, existe un tipo compuesto que son las listas dinámicas con elementos de ese tipo.
