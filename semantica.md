@@ -20,6 +20,27 @@ La declaración de una variable de tipo lista de elementos de tipo `tipo_base` s
 - El operador ** permite elevar un número a otro teniéndo que ser el exponente un entero. El resultado es la potencia de base el elemento a la izquierda de ** y de exponente el elemento a la derecha del mismo.
 - El operador % realiza la operación módulo sobre dos enteros devolviendo el resto de su división.
 
+### Booleanos
+
+#### Operadores
+
+- Los operadores usuales entre booleanos como !, ||, \&\& tienen el comportamiento esperado devolviendo la negación del booleano, la operación OR y la operación AND respectivamente devolviendo un booleano como resultado.
+- El operador ^ realiza la operación XOR entre booleanos devolviendo como resultado un elemento de tipo booleano.
+
+### Real
+
+#### Operadores
+
+- Los operadores de suma, división, resta, multiplicación, -- y ++ son las operaciones usuales que devuelven como resultado un elemento de tipo real.
+- El operador ** es el operador de potencia que tiene un elemento real a la izquierda que será la base y un elemento entero a la derecha que será entero y respresentará al exponente. Devuelve por tanto un elemento de tipo real.
+- Los operadores <,>,>=,<=,!=,== devuelven un elemento de tipo booleano y representan las operaciones usuales de comparación.
+
+### Caracter
+
+#### Operadores
+
+- Los operadores asociados a los elementos de tipo caracter son == y != que nos devuelven un elemento de tipo booleano y representan la operaciones usuales de comparación.
+
 ### Listas
 
 #### Agregados
