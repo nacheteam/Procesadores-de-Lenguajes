@@ -1,9 +1,5 @@
-\documentclass{scrartcl}
-\usepackage{syntax}
-\usepackage[utf8]{inputenc}
-
-\begin{document}
 \setlength{\grammarparsep}{4pt plus 1pt minus 1pt}
+
 \begin{grammar}
 
 <alfanum> ::= $\varepsilon$ | <caracter> <alfanum> | <digito> <alfanum>
@@ -79,10 +75,10 @@
 
 <lista_variables> ::= <lista_identificadores>
 
-<literal> ::= <entero> 
-\alt <real> 
-\alt '<caracter>' 
-\alt <booleano> 
+<literal> ::= <entero>
+\alt <real>
+\alt '<caracter>'
+\alt <booleano>
 
 <llamada_proced> ::= <identificador>(<elementos>)
 
@@ -140,4 +136,3 @@
 \alt <Cuerpo_declar_variables>
 
 \end{grammar}
-\end{document}

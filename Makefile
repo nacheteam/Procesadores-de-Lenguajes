@@ -1,7 +1,4 @@
-all: gramatica.pdf memoria.pdf
+all: memoria.pdf
 
-memoria.pdf: header.md semantica.md tokens.md
+memoria.pdf: header.md gramatica.md semantica.md tokens.md
 	cat $^ | pandoc -o memoria.pdf
-
-%.pdf: %.tex
-	pdflatex $^
