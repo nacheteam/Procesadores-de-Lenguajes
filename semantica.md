@@ -35,6 +35,12 @@ La declaración de una variable de tipo lista de elementos de tipo `tipo_base` s
 - El operador ** es el operador de potencia que tiene un elemento real a la izquierda que será la base y un elemento entero a la derecha que será entero y respresentará al exponente. Devuelve por tanto un elemento de tipo real.
 - Los operadores <,>,>=,<=,!=,== devuelven un elemento de tipo booleano y representan las operaciones usuales de comparación.
 
+### Caracter
+
+#### Operadores
+
+- Los operadores asociados a los elementos de tipo caracter son == y != que nos devuelven un elemento de tipo booleano y representan la operaciones usuales de comparación.
+
 ### Listas
 
 #### Agregados
