@@ -20,7 +20,7 @@
 
 <caracter> ::= a | ... | z | A | ... | Z
 
-<Cuerpo_declar_variables> ::= <tipo> <lista_identificadores>
+<Cuerpo_declar_variables> ::= <tipo> <lista_identificadores> ;
 
 <Declar_de_subprogs> ::= <Declar_de_subprogs> <Declar_subprog>
 
@@ -81,6 +81,10 @@
 \alt <booleano>
 
 <llamada_proced> ::= <identificador>(<elementos>)
+
+<Marca_ini_declar_variables> ::= begin
+
+<Marca_fin_declar_variables> ::= end
 
 <natural> ::= <digito> <natural> | <digito>
 
