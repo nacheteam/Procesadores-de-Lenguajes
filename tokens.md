@@ -20,7 +20,6 @@
 |  read              |
 |  write             |
 |  \<cadena\>        |
-|  \<expresion\>     |
 |  ++                |
 |  @                 |
 |  list of           |
@@ -34,7 +33,6 @@
 | Tokens              |
 | ------------------- |
 | {++}                |
-| {\<expresion\>}     |
 | { { }               |
 | {=}                 |
 | {if}                |
