@@ -1,5 +1,5 @@
 ---
-title: Práctica 1 y 2
+title: "Práctica 1 y 2: Pimf"
 subtitle: Procesadores de Lenguajes
 toc: true
 documentclass: scrartcl
