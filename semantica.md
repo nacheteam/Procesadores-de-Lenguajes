@@ -1,9 +1,9 @@
 # Semántica
 ## Tipos
 
-En este lenguaje tenemos tipos base y tipos compuestos. Los tipos base son enteros, booleanos, caracteres y reales. Para cada tipo base, existe un tipo compuesto que son las listas dinámicas con elementos de ese tipo.
+En este lenguaje tenemos tipos base y tipos compuestos. Los tipos base son enteros, booleanos, caracteres y reales. Para cada tipo base existe un tipo compuesto, que son las listas dinámicas con elementos de ese tipo.
 
-Una lista es una secuencia ordenada de elemento de tipo base acompañada de un cursos que es un entero no negativo menor que el número de elementos de la lista. El valor por defecto de un cursor es 0. El tamaño de una lista no está especificado y puede cambiar durante la ejecución.
+Una lista es una secuencia ordenada de elementos de tipo base acompañada de un cursor, que es un entero no negativo menor que el número de elementos de la lista. El valor por defecto de un cursor es 0. El tamaño de una lista no está especificado y puede cambiar durante la ejecución.
 
 La declaración de una variable de tipo lista de elementos de tipo `tipo_base` se realiza con la instrucción `list of tipo_base unalista, otralista;`.
 
@@ -15,24 +15,24 @@ La declaración de una variable de tipo lista de elementos de tipo `tipo_base` s
 #### Operadores
 
 - Operador de división: devuelve la división entera bien definida para positivos y negativos.
-- Los operadores de suma, resta, multiplicación, ++ y -- tienen el comportamiento esperado al igual que en C devolviendo todos como resultado un elemento de tipo entero.
-- Los operadores lógicos asociados <,>,<=,>=,!=,== tienen el comportamiento esperado devolviendo como resultado un elemento de tipo booleano.
-- El operador ** permite elevar un número a otro teniéndo que ser el exponente un entero. El resultado es la potencia de base el elemento a la izquierda de ** y de exponente el elemento a la derecha del mismo.
-- El operador % realiza la operación módulo sobre dos enteros devolviendo el resto de su división.
+- Los operadores de suma, resta, multiplicación, ++ y -- tienen el comportamiento esperado al igual que en C, devolviendo todos como resultado un elemento de tipo entero.
+- Los operadores lógicos asociados <,>,<=,>=,!=,== tienen el comportamiento esperado, devolviendo como resultado un elemento de tipo booleano.
+- El operador ** permite elevar un número a otro teniendo que ser el exponente un entero. El resultado es la potencia de base el elemento a la izquierda de ** y de exponente el elemento a la derecha del mismo.
+- El operador % realiza la operación módulo sobre dos enteros, devolviendo el resto de su división.
 
 ### Booleanos
 
 #### Operadores
 
-- Los operadores usuales entre booleanos como !, ||, \&\& tienen el comportamiento esperado devolviendo la negación del booleano, la operación OR y la operación AND respectivamente devolviendo un booleano como resultado.
-- El operador ^ realiza la operación XOR entre booleanos devolviendo como resultado un elemento de tipo booleano.
+- Los operadores usuales entre booleanos como !, ||, \&\& tienen el comportamiento esperado, devolviendo la negación del booleano, la operación OR y la operación AND respectivamente devolviendo un booleano como resultado.
+- El operador ^ realiza la operación XOR entre booleanos, devolviendo como resultado un elemento de tipo booleano.
 
 ### Real
 
 #### Operadores
 
 - Los operadores de suma, división, resta, multiplicación, -- y ++ son las operaciones usuales que devuelven como resultado un elemento de tipo real.
-- El operador ** es el operador de potencia que tiene un elemento real a la izquierda que será la base y un elemento entero a la derecha que será entero y respresentará al exponente. Devuelve por tanto un elemento de tipo real.
+- El operador ** es el operador de potencia, que tiene un elemento real a la izquierda, que será la base, y un elemento entero a la derecha, que será entero y representará al exponente. Devuelve, por tanto, un elemento de tipo real.
 - Los operadores <,>,>=,<=,!=,== devuelven un elemento de tipo booleano y representan las operaciones usuales de comparación.
 
 ### Caracter
@@ -45,7 +45,7 @@ La declaración de una variable de tipo lista de elementos de tipo `tipo_base` s
 
 #### Agregados
 
-Un agregado es una expresión que construye una lista. Consiste en una secuencia entre corchetes posiblemente vacía de expresiones del mismo tipo base separadas por comas. Por ejemplo, agregado que construye una lista de enteros sería `[0, 1+2, 3*4]`. El valor inicial del cursor es 0. El orden de los elementos de la expresión indica el orden de los elementos de la lista.
+Un agregado es una expresión que construye una lista. Consiste en una secuencia entre corchetes posiblemente vacía de expresiones del mismo tipo base separadas por comas. Por ejemplo, un agregado que construye una lista de enteros sería `[0, 1+2, 3*4]`. El valor inicial del cursor es 0. El orden de los elementos de la expresión indica el orden de los elementos de la lista.
 
 #### Operadores
 
