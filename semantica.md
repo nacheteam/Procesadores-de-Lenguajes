@@ -1,19 +1,19 @@
 # Semántica
 ## Tipos
 
-En este lenguaje tenemos tipos base y tipos compuestos. Los tipos base son enteros, booleanos, caracteres y reales. Para cada tipo base existe un tipo compuesto, que son las listas dinámicas con elementos de ese tipo.
-
-Los enteros tienen signo y se representan con 32 bits y los reales se representan con 64 bits siguen la aritmética de punto flotante.
+\nombre tiene tipos base y tipos compuestos. Los tipos base son enteros, booleanos, caracteres y reales. Para cada tipo base existe un tipo compuesto, que son las listas dinámicas con elementos de ese tipo.
 
 Una lista es una secuencia ordenada de elementos de tipo base acompañada de un cursor, que es un entero no negativo menor que el número de elementos de la lista. El valor por defecto de un cursor es 0. El tamaño de una lista no está especificado y puede cambiar durante la ejecución.
 
 La declaración de una variable de tipo lista de elementos de tipo `tipo_base` se realiza con la instrucción `list of tipo_base unalista, otralista;`.
 
+Los enteros tienen signo y se representan con 32 bits y los reales se representan con 64 bits siguen la aritmética de punto flotante.
+
 ## Operadores
 
 ### Varios tipos
 
-- `==` y `!=` pueden utilizarse entre dos elementos de un mismo tipo y comparan por igualdad (esto es, si las expresiones se evalúan a lo mismo).-
+- `==` y `!=` pueden utilizarse entre dos elementos de un mismo tipo y comparan por igualdad (esto es, si las expresiones se evalúan a lo mismo).
 - `<`,`>`,`<=`,`>=` comparan por desigualdad dos elementos de un mismo tipo. Devuelven un booleano. `False < True` y las listas se comparan por orden lexicográfico.
 
 ### Enteros
@@ -26,19 +26,18 @@ La declaración de una variable de tipo lista de elementos de tipo `tipo_base` s
 
 ### Booleanos
 
-- Los operadores usuales entre booleanos como !, ||, \&\& tienen el comportamiento esperado, devolviendo la negación del booleano, la operación OR y la operación AND respectivamente devolviendo un booleano como resultado.
-- El operador ^ realiza la operación XOR entre booleanos, devolviendo como resultado un elemento de tipo booleano.
+- `!`, `||`, `&&` y `^`  devuelven la negación y las operacines OR, AND y XOR respectivamente.
 
 ### Real
 
 - Los operadores de suma, división, resta, multiplicación son las operaciones usuales que devuelven como resultado un elemento de tipo real.
-- El operador ** es el operador de potencia, que tiene un elemento real a la izquierda, que será la base, y un elemento entero a la derecha, será el exponente. Devuelve, por tanto, un elemento de tipo real.
+- `**` es el operador de potencia, que tiene un elemento real a la izquierda, que será la base, y un elemento entero a la derecha, será el exponente. Devuelve, un real.
 
 ### Listas
 
-- Operador longitud: la longitud de la lista es un valor entero que expresa el número de elementos de la lista. La longitud de la lista `lista` se obtiene con `#lista`.
-- Operador elemento actual: el elemento actual es el valor del elemento de una lista en la posición indicada por el cursor. El elemento actual de la lista `lista` sería `?lista`.
-- Operador elemento posición: el operador elemento posición expresa el valor del elemento de una lista en una posición expresada por un entero que está comprendido entre cero inclusive y la longitud de la lista exclusive. Consideramos que el primer elemento está en la posición 0. El elemento en la posición `n` de la lista `lista` es `lista@n`.
+- `#` calcula la longitud de una lista, un valor entero que expresa el número de elementos de la lista. La longitud de `lista` se obtiene con `#lista`.
+- `?` calcula el elemento actual: el valor del elemento de una lista en la posición indicada por el cursor. El elemento actual `lista` sería `?lista`.
+- `@` expresa el valor del elemento de una lista en una posición, expresada por un entero comprendido entre 0 inclusive y la longitud de la lista exclusive. El primer elemento está en la posición 0. El elemento en la posición `n` de la lista `lista` es `lista@n`.
 - Operador añadir elemento en una posición: el operador añadir elemento en una posición devuelve una lista a partir de una lista `l`, un elemento `x` y una posición `n`. La lista que devuelve tiene un elemento más que la lista original, tiene valores idénticos para elementos en posiciones menores que `n`, tiene como valor en la posición `n` el de `x` y para cada elemento en la posición `i+1` con `i` mayor o igual que `n` tiene el valor del elemento en la posición `i` de la lista `l`. La posición `n` debe estar comprendida entre 0 y el tamaño de la lista, ambos inclusive. El operador añadir el elemento `x` en la posición `n` de la lista `l` se expresaría como `l++x@n`.
 - Operador borrar elemento en una posición: el operador borrar elemento en una posición devuelve una lista a partir de una lista `l` y una posición `n`. La lista que devuelve tiene un elemento menos que la lista original, tiene valores idénticos a la lista `l` para posiciones menores que `n` y para cada posición `i` con `i` mayor o igual que `n` tiene el valor el elemento en la posición `i+1` de la lista `l`. La posición `n` debe estar comprendida entre 0 inclusive y el tamaño de la lista exclusive. El operador borrar el elemento en la posición `n` de la lista `l` se expresa como `l--n`.
 - Operador borrar lista a partir de una posición: el operador borrar lista a partir de una posición devuelve una lista a partir de una lista `l` y una posición `n`. La lista que devuelve tiene tamaño `n` y cada elemento vale lo mismo que el elemento en la misma posición en la lista `l`. La posición `n` debe ser mayor o igual que 0. El operador borrar lista `l` a partir de la posición `n` se expresa como `l%n`.
