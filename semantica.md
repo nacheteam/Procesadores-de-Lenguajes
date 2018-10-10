@@ -21,8 +21,8 @@ La declaración de una variable de tipo lista de elementos de tipo `tipo_base` s
 - `/` devuelve la división entera: el mayor entero menor o igual al cociente como números reales.
 - La suma, resta, multiplicación, ++ y -- se comportan igual que en C. Devuelven un entero.
 - `++` y `--` modifican el valor antes de devolverlo
-- ** permite elevar un número a otro teniendo que ser el exponente un entero. El resultado es la potencia de base el elemento a la izquierda de ** y de exponente el elemento a la derecha del mismo.
-- \% realiza la operación módulo sobre dos enteros, devolviendo el resto de su división. Es decir, para $a,b$ se define $a \% b = a - (a/b) \cdot b$.
+- `**` permite elevar un número a otro teniendo que ser el exponente un entero. El resultado es la potencia de base el elemento a la izquierda de ** y de exponente el elemento a la derecha del mismo.
+- \% realiza la operación módulo sobre dos enteros, devolviendo el resto de su división. Es decir, para $a,b$ se define $a \% b = a - (a/b) \cdot b$ donde `/` es la división entera.
 
 ### Booleanos
 
@@ -32,7 +32,7 @@ La declaración de una variable de tipo lista de elementos de tipo `tipo_base` s
 ### Real
 
 - Los operadores de suma, división, resta, multiplicación son las operaciones usuales que devuelven como resultado un elemento de tipo real.
-- El operador ** es el operador de potencia, que tiene un elemento real a la izquierda, que será la base, y un elemento entero a la derecha, que será entero y representará al exponente. Devuelve, por tanto, un elemento de tipo real.
+- El operador ** es el operador de potencia, que tiene un elemento real a la izquierda, que será la base, y un elemento entero a la derecha, será el exponente. Devuelve, por tanto, un elemento de tipo real.
 
 ### Listas
 
