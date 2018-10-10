@@ -26,12 +26,12 @@ Los enteros tienen signo y se representan con 32 bits y los reales se representa
 
 ### Booleanos
 
-- `!`, `||`, `&&` y `^`  devuelven la negación y las operacines OR, AND y XOR respectivamente.
+- `!`, `||`, `&&` y `^`  calculan las operaciones NOT, OR, AND y XOR respectivamente.
 
 ### Real
 
 - Los operadores de suma, división, resta, multiplicación son las operaciones usuales que devuelven como resultado un elemento de tipo real.
-- `**` es el operador de potencia, que tiene un elemento real a la izquierda, que será la base, y un elemento entero a la derecha, será el exponente. Devuelve, un real.
+- `**` es el operador de potencia, que tiene un elemento real a la izquierda, que será la base, y un elemento entero a la derecha, será el exponente. Devuelve un real.
 
 ### Listas
 
