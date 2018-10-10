@@ -253,3 +253,10 @@ TSWLatexianTemp*
 
 # standalone packages
 *.sta
+
+
+# Código generado por Lex
+*.yy.c
+
+# Ejecutables Windows
+*.exe
