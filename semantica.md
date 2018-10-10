@@ -9,48 +9,31 @@ Una lista es una secuencia ordenada de elementos de tipo base acompañada de un 
 
 La declaración de una variable de tipo lista de elementos de tipo `tipo_base` se realiza con la instrucción `list of tipo_base unalista, otralista;`.
 
-## Expresiones
+## Operadores
+
+### Varios tipos
+
+- `==` y `!=` pueden utilizarse entre dos elementos de un mismo tipo y comparan por igualdad (esto es, si las expresiones se evalúan a lo mismo).-
+- `<`,`>`,`<=`,`>=` comparan por desigualdad dos elementos de un mismo tipo. Devuelven un booleano. `False < True` y las listas se comparan por orden lexicográfico.
 
 ### Enteros
 
-#### Operadores
-
-- Operador de división: devuelve la división entera: el mayor entero menor o igual al cociente como números reales.
-- Los operadores de suma, resta, multiplicación, ++ y -- tienen el comportamiento esperado al igual que en C, devolviendo todos como resultado un elemento de tipo entero.
-- Los operadores lógicos asociados <,>,<=,>=,!=,== tienen el comportamiento esperado, devolviendo como resultado un elemento de tipo booleano.
-- El operador ** permite elevar un número a otro teniendo que ser el exponente un entero. El resultado es la potencia de base el elemento a la izquierda de ** y de exponente el elemento a la derecha del mismo.
-- El operador \% realiza la operación módulo sobre dos enteros, devolviendo el resto de su división. Es decir, para $a,b$ se define $a \% b = a - (a/b) \cdot b$.
+- `/` devuelve la división entera: el mayor entero menor o igual al cociente como números reales.
+- La suma, resta, multiplicación, ++ y -- se comportan igual que en C. Devuelven un entero.
+- ** permite elevar un número a otro teniendo que ser el exponente un entero. El resultado es la potencia de base el elemento a la izquierda de ** y de exponente el elemento a la derecha del mismo.
+- \% realiza la operación módulo sobre dos enteros, devolviendo el resto de su división. Es decir, para $a,b$ se define $a \% b = a - (a/b) \cdot b$.
 
 ### Booleanos
-
-#### Operadores
 
 - Los operadores usuales entre booleanos como !, ||, \&\& tienen el comportamiento esperado, devolviendo la negación del booleano, la operación OR y la operación AND respectivamente devolviendo un booleano como resultado.
 - El operador ^ realiza la operación XOR entre booleanos, devolviendo como resultado un elemento de tipo booleano.
 
 ### Real
 
-#### Operadores
-
 - Los operadores de suma, división, resta, multiplicación, -- y ++ son las operaciones usuales que devuelven como resultado un elemento de tipo real.
 - El operador ** es el operador de potencia, que tiene un elemento real a la izquierda, que será la base, y un elemento entero a la derecha, que será entero y representará al exponente. Devuelve, por tanto, un elemento de tipo real.
-- Los operadores <,>,>=,<=,!=,== devuelven un elemento de tipo booleano y representan las operaciones usuales de comparación.
-
-### Caracter
-
-#### Operadores
-
-- Los operadores asociados a los elementos de tipo caracter son == y != que nos devuelven un elemento de tipo booleano y representan la operaciones usuales de comparación.
 
 ### Listas
-
-#### Agregados
-
-Un agregado es una expresión que construye una lista. Consiste en una secuencia entre corchetes posiblemente vacía de expresiones del mismo tipo base separadas por comas. Por ejemplo, un agregado que construye una lista de enteros sería `[0, 1+2, 3*4]`. El valor inicial del cursor es 0. El orden de los elementos de la expresión indica el orden de los elementos de la lista.
-
-#### Operadores
-
-Los operadores sobre listas son:
 
 - Operador longitud: la longitud de la lista es un valor entero que expresa el número de elementos de la lista. La longitud de la lista `lista` se obtiene con `#lista`.
 - Operador elemento actual: el elemento actual es el valor del elemento de una lista en la posición indicada por el cursor. El elemento actual de la lista `lista` sería `?lista`.
@@ -64,6 +47,9 @@ en el caso del operador suma $\texttt{l2@i} = \texttt{l1@i} + \texttt{x}$ y en e
 - Operador resta: El operador resta toma una lista `l` con longitud $n$ y un valor `x` del tipo base de la lista, que debe ser entero o real. Se expresa como `l-x`. Devuelven una nueva lista `l2` de longitud $n$. Si `i` es una posición válida, $\texttt{l2@i} = \texttt{l1@i} - \texttt{x}$.
 - Operador división: El operador división toma una lista `l` con longitud $n$ y un valor `x` del tipo base de la lista, que debe ser real. Se expresa como `l-x`. Devuelven una nueva lista `l2` de longitud $n$. Si `i` es una posición válida, $\texttt{l2@i} = \texttt{l1@i}/\texttt{x}$.
 
+## Literales
+
+Un agregado es una expresión que construye una lista. Consiste en una secuencia entre corchetes posiblemente vacía de expresiones del mismo tipo base separadas por comas. Por ejemplo, un agregado que construye una lista de enteros sería `[0, 1+2, 3*4]`. El valor inicial del cursor es 0. El orden de los elementos de la expresión indica el orden de los elementos de la lista.
 
 ## Sentencias
 
