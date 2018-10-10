@@ -16,7 +16,7 @@ La declaración de una variable de tipo lista de elementos de tipo `tipo_base` s
 #### Operadores
 
 - Operador de división: devuelve la división entera bien definida para positivos y negativos.
-- Los operadores de suma, resta, multiplicación, ++ y -- tienen el comportamiento esperado al igual que en C, devolviendo todos como resultado un elemento de tipo entero.
+- Los operadores de suma, resta, multiplicación, ++ y -- tienen el comportamiento esperado al igual que en C, devolviendo todos como resultado un elemento de tipo entero y modificando el valor antes de devolverlo.
 - Los operadores lógicos asociados <,>,<=,>=,!=,== tienen el comportamiento esperado, devolviendo como resultado un elemento de tipo booleano.
 - El operador ** permite elevar un número a otro teniendo que ser el exponente un entero. El resultado es la potencia de base el elemento a la izquierda de ** y de exponente el elemento a la derecha del mismo.
 - El operador % realiza la operación módulo sobre dos enteros, devolviendo el resto de su división.
@@ -32,7 +32,6 @@ La declaración de una variable de tipo lista de elementos de tipo `tipo_base` s
 
 #### Operadores
 
-- Los operadores de suma, división, resta, multiplicación, -- y ++ son las operaciones usuales que devuelven como resultado un elemento de tipo real.
 - El operador ** es el operador de potencia, que tiene un elemento real a la izquierda, que será la base, y un elemento entero a la derecha, que será entero y representará al exponente. Devuelve, por tanto, un elemento de tipo real.
 - Los operadores <,>,>=,<=,!=,== devuelven un elemento de tipo booleano y representan las operaciones usuales de comparación.
 
