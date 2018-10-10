@@ -36,11 +36,11 @@
 
 <digitohex> ::= <digito> | a | b | c | d | e | f
 
-<elementos> ::= <expresion> | <expresion>, <elementos>
+<elementos> ::= <expresion> | <elementos>, <expresion>
 
 <entero> ::= <natural> | 0x<hex>
 
-<exponente> ::= E+ <natural> | E- <natural> | $\varepsilon$
+<exponente> ::= E+ <natural> | E <natural> | E- <natural> | $\varepsilon$
 
 <expresion> ::= ( <expresion> )
 \alt <op_unario_iz> <expresion>
@@ -56,7 +56,7 @@
 
 <Fin_de_bloque> ::= \}
 
-<hex> ::= <digitohex> <hex> | <digitohex>
+<hex> ::= <hex> <digitohex> | <digitohex>
 
 <identificador> ::= <caracter> <alfanum>
 
@@ -66,14 +66,14 @@
 
 <lista> ::= [] | [<elementos>]
 
-<lista_expresiones_o_cadena> ::= <lista_expresiones_o_cadenas>, <expresion_o_cadena>
+<lista_expresiones_o_cadenas> ::= <lista_expresiones_o_cadenas>, <expresion_o_cadena>
 \alt <expresion_o_cadena>
 
-<lista_identificadores> ::= <identificador> | <identificador>, <lista_identificadores>
+<lista_identificadores> ::= <identificador> | <lista_identificadores>, <identificador>
 
-<lista_imprimibles> ::= $\varepsilon$ | <imprimible> <lista_imprimibles>
+<lista_imprimibles> ::= $\varepsilon$ | <lista_imprimibles> <imprimible>
 
-<lista_parametros> ::= <tipo> <identificador> | <tipo> <identificador>, <lista_parametros>
+<lista_parametros> ::= <tipo> <identificador> | <lista_parametros>, <tipo> <identificador>
 
 <lista_variables> ::= <lista_identificadores>
 
@@ -88,7 +88,7 @@
 
 <Marca_fin_declar_variables> ::= end
 
-<natural> ::= <digito> <natural> | <digito>
+<natural> ::= <natural> <digito> | <digito>
 
 <nomb_entrada> ::= read
 
