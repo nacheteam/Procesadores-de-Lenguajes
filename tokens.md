@@ -1,4 +1,4 @@
-# Tabla de tokens
+# Lista de tokens
 
 |  Palabras          |
 | ------------------ |
@@ -8,7 +8,7 @@
 |  \<op_binario\>    |
 |  main()            |
 |  \<identificador\> |
-|  \<tipo\>          |
+|  \<tipo_base\>     |
 |  {                 |
 |  }                 |
 |  =                 |
@@ -21,18 +21,22 @@
 |  write             |
 |  \<cadena\>        |
 |  ++                |
+|  --                |
 |  @                 |
 |  list of           |
-|  '                 |
 |  \<literal\>       |
 |  (                 |
 |  )                 |
-|  "                 |
+|  ;                 |
+|  \[                |
+|  \]                |
+|  ,                 |
 
 
 | Tokens              |
 | ------------------- |
 | {++}                |
+| {--}                |
 | { { }               |
 | {=}                 |
 | {if}                |
@@ -44,17 +48,19 @@
 | {write}             |
 | {\<cadena\>}        |
 | {\<literal\>}       |
-| {'}                 |
 | {list of}           |
 | {\<identificador\>} |
-| {\<tipo\>}          |
+| {\<tipo_base\>}     |
 | {main()}            |
 | { ( }               |
 | {\<lista\>}         |
 | {\<op_unario_der\>} |
 | {\<op_unario_iz\>}  |
 | {\<op_binario\>}    |
-| {"}                 |
 | {@}                 |
 | { } }               |
 | { ) }               |
+| { ; }               |
+| { \[ }              |
+| { \] }              |
+| { , }               |

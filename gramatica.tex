@@ -16,7 +16,7 @@
 
 <Cabecera_subprograma> ::= <identificador>(<parametros>)
 
-<cadena> ::= $\varepsilon$ | <imprimible> <cadena>
+<cadena> ::= '' <lista_imprimibles> ''
 
 <caracter> ::= a | ... | z | A | ... | Z
 
@@ -52,7 +52,7 @@
 \alt <lista>
 \alt <signo> <expresion>
 
-<expresion_o_cadena> ::= <elementos> | '' <cadena> ''
+<expresion_o_cadena> ::= <elementos> | <cadena>
 
 <Fin_de_bloque> ::= \}
 
@@ -71,13 +71,15 @@
 
 <lista_identificadores> ::= <identificador> | <identificador>, <lista_identificadores>
 
+<lista_imprimibles> ::= $\varepsilon$ | <imprimible> <lista_imprimibles>
+
 <lista_parametros> ::= <tipo> <identificador> | <tipo> <identificador>, <lista_parametros>
 
 <lista_variables> ::= <lista_identificadores>
 
 <literal> ::= <entero>
 \alt <real>
-\alt '<caracter>'
+\alt '<imprimible>'
 \alt <booleano>
 
 <llamada_proced> ::= <identificador>(<elementos>)
