@@ -14,11 +14,11 @@ La declaración de una variable de tipo lista de elementos de tipo `tipo_base` s
 
 #### Operadores
 
-- Operador de división: devuelve la división entera bien definida para positivos y negativos.
+- Operador de división: devuelve la división entera: el mayor entero menor o igual al cociente como números reales.
 - Los operadores de suma, resta, multiplicación, ++ y -- tienen el comportamiento esperado al igual que en C, devolviendo todos como resultado un elemento de tipo entero.
 - Los operadores lógicos asociados <,>,<=,>=,!=,== tienen el comportamiento esperado, devolviendo como resultado un elemento de tipo booleano.
 - El operador ** permite elevar un número a otro teniendo que ser el exponente un entero. El resultado es la potencia de base el elemento a la izquierda de ** y de exponente el elemento a la derecha del mismo.
-- El operador % realiza la operación módulo sobre dos enteros, devolviendo el resto de su división.
+- El operador \% realiza la operación módulo sobre dos enteros, devolviendo el resto de su división. Es decir, para $a,b$ se define $a \% b = a - (a/b) \cdot b$.
 
 ### Booleanos
 
