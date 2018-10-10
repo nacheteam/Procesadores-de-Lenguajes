@@ -3,12 +3,13 @@
 
 En este lenguaje tenemos tipos base y tipos compuestos. Los tipos base son enteros, booleanos, caracteres y reales. Para cada tipo base existe un tipo compuesto, que son las listas dinámicas con elementos de ese tipo.
 
+Los enteros tienen signo y se representan con 32 bits y los reales se representan con 64 bits siguen la aritmética de punto flotante.
+
 Una lista es una secuencia ordenada de elementos de tipo base acompañada de un cursor, que es un entero no negativo menor que el número de elementos de la lista. El valor por defecto de un cursor es 0. El tamaño de una lista no está especificado y puede cambiar durante la ejecución.
 
 La declaración de una variable de tipo lista de elementos de tipo `tipo_base` se realiza con la instrucción `list of tipo_base unalista, otralista;`.
 
 ## Expresiones
-
 
 ### Enteros
 
