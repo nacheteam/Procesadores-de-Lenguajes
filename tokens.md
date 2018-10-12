@@ -1,66 +1,76 @@
 # Lista de tokens
 
-|  Palabras          |
-| ------------------ |
-|  \<lista\>         |
-|  \<op_unario_der\> |
-|  \<op_unario_iz\>  |
-|  \<op_binario\>    |
-|  main()            |
-|  \<identificador\> |
-|  \<tipo_base\>     |
-|  {                 |
-|  }                 |
-|  =                 |
-|  if                |
-|  else              |
-|  while             |
-|  repeat            |
-|  until             |
-|  read              |
-|  write             |
-|  \<cadena\>        |
-|  ++                |
-|  --                |
-|  @                 |
-|  list of           |
-|  \<literal\>       |
-|  (                 |
-|  )                 |
-|  ;                 |
-|  \[                |
-|  \]                |
-|  ,                 |
-
-
-| Tokens              |
-| ------------------- |
-| {++}                |
-| {--}                |
-| { { }               |
-| {=}                 |
-| {if}                |
-| {else}              |
-| {while}             |
-| {repeat}            |
-| {until}             |
-| {read}              |
-| {write}             |
-| {\<cadena\>}        |
-| {\<literal\>}       |
-| {list of}           |
-| {\<identificador\>} |
-| {\<tipo_base\>}     |
-| {main()}            |
-| { ( }               |
-| {\<lista\>}         |
-| {\<op_unario_der\>} |
-| {\<op_unario_iz\>}  |
-| {\<op_binario\>}    |
-| {@}                 |
-| { } }               |
-| { ) }               |
-| { ; }               |
-| { \[ }              |
-| { \] }              |
-| { , }               |
+\begin{center}
+\begin{table}[!h]
+  \centering
+  \begin{tabular}{| l |}
+    \hline
+    \textbf{\underline{Palabras}} \\ \hline
+    <lista> \\ \hline
+    <op_unario_der> \\ \hline
+    <op_unario_iz> \\ \hline
+    <op_binario> \\ \hline
+    main() \\ \hline
+    <identificador> \\ \hline
+    <tipo_base> \\ \hline
+    \{ \\ \hline
+    \} \\ \hline
+    = \\ \hline
+    if \\ \hline
+    else \\ \hline
+    while \\ \hline
+    repeat \\ \hline
+    until \\ \hline
+    read \\ \hline
+    write \\ \hline
+    <cadena> \\ \hline
+    ++ \\ \hline
+    -- \\ \hline
+    @ \\ \hline
+    list of \\ \hline
+    <literal> \\ \hline
+    ( \\ \hline
+    ) \\ \hline
+    ; \\ \hline
+    [ \\ \hline
+    ] \\ \hline
+    , \\ \hline
+    <signo> \\ \hline
+  \end{tabular}
+  \quad
+  \begin{tabular}{| l |}
+    \hline
+    \textbf{\underline{Tokens}} \\ \hline
+    \{ ++ \} \\ \hline
+    \{ -- \} \\ \hline
+    \{ \{ \} \\ \hline
+    \{ = \} \\ \hline
+    \{ if \} \\ \hline
+    \{ else \} \\ \hline
+    \{ while \} \\ \hline
+    \{ repeat \} \\ \hline
+    \{ until \} \\ \hline
+    \{ read \} \\ \hline
+    \{ write \} \\ \hline
+    \{ <cadena> \} \\ \hline
+    \{ <literal> \} \\ \hline
+    \{ list of \} \\ \hline
+    \{ <identificador> \} \\ \hline
+    \{ <tipo_base> \} \\ \hline
+    \{ main() \} \\ \hline
+    \{ ( \} \\ \hline
+    \{ <lista> \} \\ \hline
+    \{ <op_unario_der> \} \\ \hline
+    \{ <op_unario_iz> \} \\ \hline
+    \{ <op_binario> \} \\ \hline
+    \{ @ \} \\ \hline
+    \{ \} \} \\ \hline
+    \{ ) \} \\ \hline
+    \{ ; \} \\ \hline
+    \{ [ \} \\ \hline
+    \{ ] \} \\ \hline
+    \{ , \} \\ \hline
+    \{ <signo> \} \\ \hline
+  \end{tabular}
+\end{table}
+\end{center}
