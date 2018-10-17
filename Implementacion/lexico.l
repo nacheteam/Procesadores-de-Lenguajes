@@ -45,7 +45,8 @@ id          [a-zA-Z][a-zA-Z0-9]*
 "/"         return BINARIO;
 "%"         return BINARIO;
 "**"        return BINARIO;
-"&&"|"||"   return BINARIO;
+"&&"        return BINARIO;
+"||"        return BINARIO;
 "^"         return BINARIO;
 [=!]=       return BINARIO;
 [<>]=?      return BINARIO;
