@@ -8,13 +8,13 @@
 
 <booleano> : True | False
 
-<Cabecera_subprograma> : <identificador>(<parametros>)
+<Cabecera_subprograma> : <identificador>PARIZQ<parametros>PARDER
 
 <cadena> : '' <lista_imprimibles> ''
 
 <caracter> : a | ... | z | A | ... | Z
 
-<Cuerpo_declar_variables> : <tipo> <lista_identificadores> ;
+<Cuerpo_declar_variables> : <tipo> <lista_identificadores> PYC
 
 <Declar_de_subprogs> : <Declar_de_subprogs> <Declar_subprog>
 
@@ -36,11 +36,11 @@
 
 <exponente> : E+ <natural> | E <natural> | E- <natural> | $\varepsilon$
 
-<expresion> : ( <expresion> )
+<expresion> : PARIZQ <expresion> PARDER
 | OP_UNARIO_IZ <expresion>
 | <expresion> <op_unario_der>
 | <expresion> <op_binario> <expresion>
-| <expresion>++<expresion>@<expresion>
+| <expresion>INCR<expresion>@<expresion>
 | <identificador>
 | <literal>
 | <lista>
@@ -54,7 +54,7 @@
 
 <identificador> : <caracter> <alfanum>
 
-<imprimible> : (cualquier carácter ASCII)
+<imprimible> : PARIZQcualquier carácter ASCIIPARDER
 
 <Inicio_de_bloque> : \{
 
@@ -76,7 +76,7 @@
 | '<imprimible>'
 | <booleano>
 
-<llamada_proced> : <identificador>(<elementos>)
+<llamada_proced> : <identificador>PARIZQ<elementos>PARDER
 
 <Marca_ini_declar_variables> : begin
 
@@ -84,7 +84,7 @@
 
 <natural> : <natural> <digito> | <digito>
 
-<op_binario> : \verb|+| | \verb|/| | \verb|-| | \verb|*| | \verb|<| | \verb|<=| | \verb|>| | \verb|>=| | \verb|==| | \verb|!=| | \verb|&&| | \verb|||| | \verb|^| | \verb|@| | \verb|--| | \verb|%| | \verb|**|
+<op_binario> : + | / | - | * | < | <= | > | >= | BINARIO | BINARIO | && | || | ^ | @ | DECR | % | **
 
 OP_UNARIO_DER : INCR
    | DECR
@@ -109,19 +109,19 @@ SENTENCIA : <bloque>
 | <sentencia_salida>
 | <llamada_proced>
 
-<sentencia_asignacion> :  <identificador> = <expresion> ;
+<sentencia_asignacion> :  <identificador> = <expresion> PYC
 
 <sentencia_else> :| else SENTENCIA
 
-<sentencia_entrada> : READ <lista_variables> ;
+<sentencia_entrada> : READ <lista_variables> PYC
 
-<sentencia_if> : if (<expresion>) SENTENCIA <sentencia_else>
+<sentencia_if> : if PARIZQ<expresion>PARDER SENTENCIA <sentencia_else>
 
-<sentencia_REPEAT_UNTIL> : REPEAT SENTENCIA UNTIL <expresion> ;
+<sentencia_REPEAT_UNTIL> : REPEAT SENTENCIA UNTIL <expresion> PYC
 
-<sentencia_salida> : WRITE <lista_expresiones_o_cadenas> ;
+<sentencia_salida> : WRITE <lista_expresiones_o_cadenas> PYC
 
-<sentencia_while> : while (<expresion>) SENTENCIA
+<sentencia_while> : while PARIZQ<expresion>PARDER SENTENCIA
 
 SENTENCIAS : SENTENCIAS SENTENCIA
 | SENTENCIA
