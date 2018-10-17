@@ -16,7 +16,6 @@ cadena      \"{ascii}*\"
 literal     {numero}|\'{ascii}\'|"True"|"False"
 tbase       "int"|"bool"|"char"|"double"
 id          [a-zA-Z][a-zA-Z0-9]*
-binario     [*/^%]|[=!]=|[<>]=?|&&|"||"|"**"
 
 %%
 
@@ -42,7 +41,14 @@ binario     [*/^%]|[=!]=|[<>]=?|&&|"||"|"**"
 [+-]        return SIGNO;
 "<<"|">>"   return UNARIODER;
 [!#?$]      return UNARIOIZQ;
-{binario}   return BINARIO;
+"*"         return BINARIO;
+"/"         return BINARIO;
+"%"         return BINARIO;
+"**"        return BINARIO;
+"&&"|"||"   return BINARIO;
+"^"         return BINARIO;
+[=!]=       return BINARIO;
+[<>]=?      return BINARIO;
 "@"         return ARROBA;
 "{"         return LLAIZQ;
 "}"         return LLADER;
