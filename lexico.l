@@ -53,7 +53,7 @@ binario     [*/^%]|[=!]=|[<>]=?|&&|"||"|"**"
 ","         return COMA;
 [ \t]       ;  // Se ignoran los espacios en blanco
 \n          ++linea;
-.           error = 1; printf("Error léxico en la línea (%d): token %s\n", linea, yytext);
+.           error = 1; printf("Error léxico en la línea %d: token %s\n", linea, yytext);
 
 %%
 
