@@ -1,5 +1,6 @@
 SECTIONS = header.md introduccion.md gramatica.md semantica.md tokens.md tabla-tokens.md
-ANALIZADOR_LEXICO = lexico
+FOLDER = Implementacion/
+ANALIZADOR_LEXICO = $(FOLDER)lexico
 
 ifdef SystemRoot
 	# En Windows las cadenas se mostrarán en una codificación

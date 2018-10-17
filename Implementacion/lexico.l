@@ -11,7 +11,7 @@ natural     [0-9]+
 exponente   E[+-]?{natural}
 hex         0x[0-9a-f]+
 numero      {natural}(\.{natural})?{exponente}?|{hex}
-ascii       [^\"\\]|\\[\"nt]
+ascii       [^\"'\\]|\\[\"'nt]
 cadena      \"{ascii}*\"
 literal     {numero}|\'{ascii}\'|"True"|"False"
 tbase       "int"|"bool"|"char"|"double"
