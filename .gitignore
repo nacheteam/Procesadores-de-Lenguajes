@@ -255,8 +255,12 @@ TSWLatexianTemp*
 *.sta
 
 
-# Código generado por Lex
+# Código generado por Lex y Yacc
 *.yy.c
+*.tab.c
 
 # Ejecutables Windows
 *.exe
+
+# Código objeto
+*.o
