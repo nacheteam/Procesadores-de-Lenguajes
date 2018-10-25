@@ -2,7 +2,7 @@ ANALIZADOR_LEXICO = lexico
 ANALIZADOR_SINTACTICO = sintactico
 OBJ = obj/
 
-ifdef SystemRoot
+ifdef OS
 	# En Windows las cadenas se mostrarán en una codificación
 	# compatible con cmd aunque en los archivos sean UTF-8
 	CHARSET = -fexec-charset=CP850
@@ -14,16 +14,19 @@ $(ANALIZADOR_LEXICO).yy.c: $(ANALIZADOR_LEXICO).l
 	flex -o $@ $^
 
 $(ANALIZADOR_LEXICO): $(OBJ)$(ANALIZADOR_LEXICO).yy.o
-	gcc -o $@ $^ -lfl
+	gcc -o $@ $^
 
-$(ANALIZADOR_SINTACTICO).tab.c: $(ANALIZADOR_SINTACTICO).y $(ANALIZADOR_LEXICO).yy.c
-	bison -o $@ $<
+y.tab.c: $(ANALIZADOR_SINTACTICO).y $(ANALIZADOR_LEXICO).yy.c
+	bison -dy -o $@ $<
+
+$(OBJ)$(ANALIZADOR_LEXICO).yy.o: $(ANALIZADOR_LEXICO).yy.c y.tab.c
+	gcc -c $< -o $@ $(CHARSET) -DMAIN_LEXICO
 
 $(OBJ)%.o: %.c
-	gcc -c $^ -o $@ $(CHARSET)
+	gcc -c $< -o $@ $(CHARSET)
 
-$(ANALIZADOR_SINTACTICO): $(OBJ)$(ANALIZADOR_SINTACTICO).o $(OBJ)$(ANALIZADOR_SINTACTICO).tab.o
+$(ANALIZADOR_SINTACTICO): $(OBJ)main_$(ANALIZADOR_SINTACTICO).o $(OBJ)y.tab.o
 	gcc -o $@ $^
 
 clean:
-	rm -rf $(OBJ)/*.o *.yy.c *.tab.c
+	rm -rf $(OBJ)*.o *.yy.c *.tab.c *.tab.h

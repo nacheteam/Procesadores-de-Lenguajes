@@ -258,6 +258,7 @@ TSWLatexianTemp*
 # Código generado por Lex y Yacc
 *.yy.c
 *.tab.c
+*.tab.h
 
 # Ejecutables Windows
 *.exe

@@ -1,3 +1,56 @@
+%{
+  /***************************************
+  ** sintactico.y                       **
+  ** Analizador sintáctico del lenguaje **
+  ***************************************/
+
+  #include <stdio.h>
+  void yyerror(char * msg);
+  int yylex();
+%}
+
+%error-verbose   // Permite mensajes de error detallados
+
+
+// Lista de nombres de los tokens
+
+%token INCR
+%token DECR
+%token ASIGN
+%token IF
+%token ELSE
+%token WHILE
+%token REPEAT
+%token UNTIL
+%token READ
+%token WRITE
+%token CADENA
+%token LITERAL
+%token LISTOF
+%token TIPOBASE
+%token MAIN
+%token ID
+%token PARIZQ
+%token SIGNO
+%token UNARIODER
+%token UNARIOIZQ
+%token BINARIO
+%token ARROBA
+%token LLAIZQ
+%token LLADER
+%token PARDER
+%token CORIZQ
+%token CORDER
+%token PYC
+%token COMA
+
+%%
+
+// Producciones
+
+programa : MAIN LLAIZQ LLADER // TODO: esta línea sobra; es para comprobar que compila y funciona
+/* TODO: pasar al formato de YACC
+
 <alfanum> : | <caracter> <alfanum> | <digito> <alfanum>
 
 <bloque> : <Inicio_de_bloque>
@@ -10,7 +63,7 @@
 
 <Cabecera_subprograma> : <identificador>PARIZQ<parametros>PARDER
 
-<cadena> : '' <lista_imprimibles> ''
+<cadena> : " <lista_imprimibles> "
 
 <caracter> : a | ... | z | A | ... | Z
 
@@ -130,3 +183,10 @@ SENTENCIAS : SENTENCIAS SENTENCIA
 
 <Variables_locales> : <Variables_locales> <Cuerpo_declar_variables>
 | <Cuerpo_declar_variables>
+
+TODO */
+
+%%
+
+#include "lexico.yy.c"    // Generador por Lex, implementa la función yylex
+#include "yyerror.h"      // Función yyerror

@@ -1,9 +1,19 @@
 %{
+  /***********************************
+  ** lexico.l                       **
+  ** Analizador léxico del lenguaje **
+  ***********************************/
+
   #include <stdio.h>
-  #include "tabla.h"
+  #include "y.tab.h"    // Contiene los códigos asociados a los tokens
+  #include "yyerror.h"  // Implementación de yyerror
+  #define LONGITUD_ERROR 256
+  char buffer_error[LONGITUD_ERROR];
   int linea = 1;    // En caso de error se imprimirá la línea donde se dio, empezando en 1
   int error = 0;    // El programa devuelve 1 si ha habido errores de léxico
 %}
+
+%option noyywrap
 
  // Definiciones
 
@@ -58,14 +68,16 @@ id          [a-zA-Z][a-zA-Z0-9]*
 "]"         return CORDER;
 ";"         return PYC;
 ","         return COMA;
-[ \t]       ;  // Se ignoran los espacios en blanco
+[ \t]+      ;  // Se ignoran los espacios en blanco
 \n          ++linea;
-.           error = 1; printf("Error léxico en la línea %d: token %s\n", linea, yytext);
+.           error = 1; snprintf(buffer_error, LONGITUD_ERROR, "Error léxico: '%s' no se identifica con ningún token conocido\n", yytext); yyerror(buffer_error);
 
 %%
 
- // Procedimientos
+ // Procedimientos. No se implementa ni declara la función main si no se define
+ // MAIN_LEXICO; así solo se usa en el ejecutable del analizador léxico
 
+#ifdef MAIN_LEXICO
 int main() {
   int val = yylex();
   while (val != 0) {
@@ -75,3 +87,4 @@ int main() {
 
   return error;
 }
+#endif
