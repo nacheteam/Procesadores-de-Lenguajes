@@ -44,6 +44,14 @@
 %token PYC
 %token COMA
 
+// Atributos
+
+%left "^" "**"
+%left "*" "/"
+%left "[=!]=?" "[<>]=?"
+%left "&&"
+%left "||"
+
 %%
 
 // Producciones
