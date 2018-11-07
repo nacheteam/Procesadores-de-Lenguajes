@@ -41,6 +41,8 @@ id          [a-zA-Z][a-zA-Z0-9]*
 "until"     return UNTIL;
 "read"      return READ;
 "write"     return WRITE;
+"begin"     return BEGIN;
+"end"       return END;
 {cadena}    return CADENA;
 {literal}   return LITERAL;
 "list of"   return LISTOF;
