@@ -5,7 +5,7 @@
   ***************************************/
 
   #include <stdio.h>
-  void yyerror(char * msg);
+  void yyerror(const char * msg);
   int yylex();
 %}
 
@@ -14,6 +14,8 @@
 
 // Lista de nombres de los tokens
 
+%token VARBEGIN
+%token VAREND
 %token INCR
 %token DECR
 %token ASIGN
@@ -56,143 +58,134 @@
 
 // Producciones
 
-programa : MAIN LLAIZQ LLADER // TODO: esta línea sobra; es para comprobar que compila y funciona
-/* TODO: pasar al formato de YACC
+programa : MAIN bloque
+;
 
-<alfanum> : | <caracter> <alfanum> | <digito> <alfanum>
+bloque : inicio_de_bloque declar_de_variables_locales declar_de_subprogs sentencias fin_de_bloque
+;
 
-<bloque> : <Inicio_de_bloque>
- <Declar_de_variables_locales>
- <Declar_de_subprogs>
- SENTENCIAS
- <Fin_de_bloque>
+cabecera_subprograma : ID PARIZQ parametros PARDER
+;
 
-<booleano> : True | False
+cuerpo_declar_variables : tipo lista_identificadores PYC
+;
 
-<Cabecera_subprograma> : <identificador>PARIZQ<parametros>PARDER
+declar_de_subprogs : declar_de_subprogs declar_subprog
+| declar_subprog
+;
 
-<cadena> : " <lista_imprimibles> "
+declar_de_variables_locales : marca_ini_declar_variables variables_locales marca_fin_declar_variables
+;
 
-<caracter> : a | ... | z | A | ... | Z
+declar_subprog : |cabecera_subprograma bloque
+;
 
-<Cuerpo_declar_variables> : <tipo> <lista_identificadores> PYC
+elementos : expresion | elementos COMA expresion
+;
 
-<Declar_de_subprogs> : <Declar_de_subprogs> <Declar_subprog>
+expresion : PARIZQ expresion PARDER
+| op_unario_iz expresion
+| expresion op_unario_der
+| expresion op_binario expresion
+| expresion INCR expresion ARROBA expresion
+| ID
+| LITERAL
+| lista
+| SIGNO expresion
+;
 
-<Declar_de_variables_locales> : <Marca_ini_declar_variables>
-<Variables_locales>
-<Marca_fin_declar_variables>
+expresion_o_cadena : elementos | CADENA
+;
 
-<Declar_subprog> : <Cabecera_subprograma> <bloque>
+fin_de_bloque : LLADER
+;
 
-<decimales> := . <natural> | $\varepsilon$
+inicio_de_bloque : LLAIZQ
+;
 
-<digito> : 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0
+lista : CORIZQ CORDER | CORIZQ elementos CORDER
+;
 
-<digitohex> : <digito> | a | b | c | d | e | f
+lista_expresiones_o_cadenas : lista_expresiones_o_cadenas COMA expresion_o_cadena
+| expresion_o_cadena
+;
 
-<elementos> : <expresion> | <elementos>, <expresion>
+lista_identificadores : ID | lista_identificadores COMA ID
+;
 
-<entero> : <natural> | 0x<hex>
+lista_parametros : tipo ID | lista_parametros COMA tipo ID
+;
 
-<exponente> : E+ <natural> | E <natural> | E- <natural> | $\varepsilon$
+lista_variables : lista_identificadores
+;
 
-<expresion> : PARIZQ <expresion> PARDER
-| OP_UNARIO_IZ <expresion>
-| <expresion> <op_unario_der>
-| <expresion> <op_binario> <expresion>
-| <expresion>INCR<expresion>@<expresion>
-| <identificador>
-| <literal>
-| <lista>
-| SIGNO <expresion>
+llamada_proced : ID PARIZQ elementos PARDER
+;
 
-<expresion_o_cadena> : <elementos> | <cadena>
+marca_ini_declar_variables : VARBEGIN
+;
 
-<Fin_de_bloque> : \}
+marca_fin_declar_variables : VAREND
+;
 
-<hex> : <hex> <digitohex> | <digitohex>
+op_binario : SIGNO | BINARIO | ARROBA | DECR
+;
 
-<identificador> : <caracter> <alfanum>
-
-<imprimible> : PARIZQcualquier carácter ASCIIPARDER
-
-<Inicio_de_bloque> : \{
-
-<lista> : [] | [<elementos>]
-
-<lista_expresiones_o_cadenas> : <lista_expresiones_o_cadenas>, <expresion_o_cadena>
-| <expresion_o_cadena>
-
-<lista_identificadores> : <identificador> | <lista_identificadores>, <identificador>
-
-<lista_imprimibles> :| <lista_imprimibles> <imprimible>
-
-<lista_parametros> : <tipo> <identificador> | <lista_parametros>, <tipo> <identificador>
-
-<lista_variables> : <lista_identificadores>
-
-<literal> : <entero>
-| <real>
-| '<imprimible>'
-| <booleano>
-
-<llamada_proced> : <identificador>PARIZQ<elementos>PARDER
-
-<Marca_ini_declar_variables> : begin
-
-<Marca_fin_declar_variables> : end
-
-<natural> : <natural> <digito> | <digito>
-
-<op_binario> : + | / | - | * | < | <= | > | >= | BINARIO | BINARIO | && | || | ^ | @ | DECR | % | **
-
-OP_UNARIO_DER : INCR
+op_unario_der : INCR
    | DECR
    | UNARIODER
+   ;
 
-OP_UNARIO_IZ : INCR
+op_unario_iz : INCR
    | DECR
    | UNARIOIZQ
+   ;
 
-<parametros> :| <lista_parametros>
+parametros :| lista_parametros
+;
 
-<Programa> : MAIN <bloque>
+sentencia : bloque
+| sentencia_asignacion
+| sentencia_if
+| sentencia_while
+| sentencia_repeat_until
+| sentencia_entrada
+| sentencia_salida
+| llamada_proced
+;
 
-<real> : <natural> <decimales> <exponente>
+sentencia_asignacion :  ID ASIGN expresion PYC
+;
 
-SENTENCIA : <bloque>
-| <sentencia_asignacion>
-| <sentencia_if>
-| <sentencia_while>
-| <sentencia_REPEAT_UNTIL>
-| <sentencia_entrada>
-| <sentencia_salida>
-| <llamada_proced>
+sentencia_else :| ELSE sentencia
+;
 
-<sentencia_asignacion> :  <identificador> = <expresion> PYC
+sentencia_entrada : READ lista_variables PYC
+;
 
-<sentencia_else> :| else SENTENCIA
+sentencia_if : IF PARIZQ expresion PARDER sentencia sentencia_else
+;
 
-<sentencia_entrada> : READ <lista_variables> PYC
+sentencia_repeat_until : REPEAT sentencia UNTIL expresion PYC
+;
 
-<sentencia_if> : if PARIZQ<expresion>PARDER SENTENCIA <sentencia_else>
+sentencia_salida : WRITE lista_expresiones_o_cadenas PYC
+;
 
-<sentencia_REPEAT_UNTIL> : REPEAT SENTENCIA UNTIL <expresion> PYC
+sentencia_while : WHILE PARIZQ expresion PARDER sentencia
+;
 
-<sentencia_salida> : WRITE <lista_expresiones_o_cadenas> PYC
+sentencias : sentencias sentencia
+| sentencia
+;
 
-<sentencia_while> : while PARIZQ<expresion>PARDER SENTENCIA
+tipo : TIPOBASE | LISTOF TIPOBASE
+;
 
-SENTENCIAS : SENTENCIAS SENTENCIA
-| SENTENCIA
+variables_locales : variables_locales cuerpo_declar_variables
+| cuerpo_declar_variables
+;
 
-<tipo> : TIPOBASE | LISTOF TIPOBASE
-
-<Variables_locales> : <Variables_locales> <Cuerpo_declar_variables>
-| <Cuerpo_declar_variables>
-
-TODO */
 
 %%
 
