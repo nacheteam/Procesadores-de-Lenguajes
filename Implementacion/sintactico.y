@@ -61,7 +61,11 @@
 programa : MAIN bloque
 ;
 
-bloque : inicio_de_bloque declar_de_variables_locales declar_de_subprogs sentencias fin_de_bloque
+bloque : inicio_de_bloque
+         declar_de_variables_locales
+         declar_de_subprogs
+         sentencias
+         fin_de_bloque
 ;
 
 cabecera_subprograma : ID PARIZQ parametros PARDER
@@ -70,28 +74,29 @@ cabecera_subprograma : ID PARIZQ parametros PARDER
 cuerpo_declar_variables : tipo lista_identificadores PYC
 ;
 
-declar_de_subprogs : declar_de_subprogs declar_subprog
-| declar_subprog
+declar_de_subprogs : | declar_de_subprogs declar_subprog
 ;
 
-declar_de_variables_locales : marca_ini_declar_variables variables_locales marca_fin_declar_variables
+declar_de_variables_locales : marca_ini_declar_variables
+                              variables_locales
+                              marca_fin_declar_variables
 ;
 
-declar_subprog : |cabecera_subprograma bloque
+declar_subprog : cabecera_subprograma bloque
 ;
 
 elementos : expresion | elementos COMA expresion
 ;
 
 expresion : PARIZQ expresion PARDER
-| op_unario_iz expresion
-| expresion op_unario_der
-| expresion op_binario expresion
-| expresion INCR expresion ARROBA expresion
-| ID
-| LITERAL
-| lista
-| SIGNO expresion
+          | op_unario_iz expresion
+          | expresion op_unario_der
+          | expresion op_binario expresion
+          | expresion INCR expresion ARROBA expresion
+          | ID
+          | LITERAL
+          | lista
+          | SIGNO expresion
 ;
 
 expresion_o_cadena : elementos | CADENA
@@ -107,7 +112,7 @@ lista : CORIZQ CORDER | CORIZQ elementos CORDER
 ;
 
 lista_expresiones_o_cadenas : lista_expresiones_o_cadenas COMA expresion_o_cadena
-| expresion_o_cadena
+                            | expresion_o_cadena
 ;
 
 lista_identificadores : ID | lista_identificadores COMA ID
@@ -132,26 +137,26 @@ op_binario : SIGNO | BINARIO | ARROBA | DECR
 ;
 
 op_unario_der : INCR
-   | DECR
-   | UNARIODER
-   ;
+              | DECR
+              | UNARIODER
+;
 
 op_unario_iz : INCR
-   | DECR
-   | UNARIOIZQ
-   ;
+             | DECR
+             | UNARIOIZQ
+;
 
 parametros :| lista_parametros
 ;
 
 sentencia : bloque
-| sentencia_asignacion
-| sentencia_if
-| sentencia_while
-| sentencia_repeat_until
-| sentencia_entrada
-| sentencia_salida
-| llamada_proced
+          | sentencia_asignacion
+          | sentencia_if
+          | sentencia_while
+          | sentencia_repeat_until
+          | sentencia_entrada
+          | sentencia_salida
+          | llamada_proced
 ;
 
 sentencia_asignacion :  ID ASIGN expresion PYC
@@ -176,14 +181,14 @@ sentencia_while : WHILE PARIZQ expresion PARDER sentencia
 ;
 
 sentencias : sentencias sentencia
-| sentencia
+           | sentencia
 ;
 
 tipo : TIPOBASE | LISTOF TIPOBASE
 ;
 
 variables_locales : variables_locales cuerpo_declar_variables
-| cuerpo_declar_variables
+                  | cuerpo_declar_variables
 ;
 
 
