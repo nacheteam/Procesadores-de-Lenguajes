@@ -10,6 +10,8 @@ endif
 
 all: $(ANALIZADOR_LEXICO) $(ANALIZADOR_SINTACTICO)
 
+programas: all
+
 $(ANALIZADOR_LEXICO).yy.c: $(ANALIZADOR_LEXICO).l
 	flex -o $@ $^
 
