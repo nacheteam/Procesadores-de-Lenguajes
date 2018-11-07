@@ -8,17 +8,17 @@ begin
   list of bool pb;
 end
 
-int funcionA(int a1, double a2, char a3){
+funcionA(int a1, double a2, char a3){
   begin
     int x1, x2;
   end
 
-  char funcionB(char b1, bool b2){
+  funcionB(char b1, bool b2){
      begin
        double xf, x2;
      end
 
-     double funcionC(bool c1, int c2){
+     funcionC(bool c1, int c2){
        begin
         double x1;
        end
@@ -34,19 +34,19 @@ int funcionA(int a1, double a2, char a3){
      functionC(False, xf);
      repeat
        x2 = x2*xf;
-     until (x2 - xf < 10.0)
+     until (x2 - xf < 10.0);
 
      b2 = x1 == x2;
      b1 = !x1;
   }
 
-  double funcionD(double d1){
+  funcionD(double d1){
     begin
       char dato;
       int valor;
     end
 
-    char funcionE(char e1, char e2){
+    funcionE(char e1, char e2){
       read "introduzca dos caracteres: " e1, e2;
       if(e1 == 'a')
         e1 = 'A';

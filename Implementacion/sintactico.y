@@ -77,9 +77,9 @@ cuerpo_declar_variables : tipo lista_identificadores PYC
 declar_de_subprogs : | declar_de_subprogs declar_subprog
 ;
 
-declar_de_variables_locales : marca_ini_declar_variables
-                              variables_locales
-                              marca_fin_declar_variables
+declar_de_variables_locales : |  marca_ini_declar_variables
+                                 variables_locales
+                                 marca_fin_declar_variables
 ;
 
 declar_subprog : cabecera_subprograma bloque
@@ -124,7 +124,7 @@ lista_parametros : tipo ID | lista_parametros COMA tipo ID
 lista_variables : lista_identificadores
 ;
 
-llamada_proced : ID PARIZQ elementos PARDER
+llamada_proced : ID PARIZQ elementos PARDER PYC
 ;
 
 marca_ini_declar_variables : VARBEGIN

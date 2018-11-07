@@ -24,7 +24,7 @@
 
 <Declar_de_subprogs> ::= <Declar_de_subprogs> <Declar_subprog> | $\varepsilon$
 
-<Declar_de_variables_locales> ::= <Marca_ini_declar_variables> \\
+<Declar_de_variables_locales> ::= $\varepsilon$ | <Marca_ini_declar_variables> \\
 <Variables_locales> \\
 <Marca_fin_declar_variables>
 
@@ -82,7 +82,7 @@
 \alt '<imprimible>'
 \alt <booleano>
 
-<llamada_proced> ::= <identificador>(<elementos>)
+<llamada_proced> ::= <identificador>(<elementos>) ;
 
 <Marca_ini_declar_variables> ::= begin
 
