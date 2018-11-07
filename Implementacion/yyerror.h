@@ -4,7 +4,7 @@
 extern int linea;
 
 // Implementación de yyerror
-void yyerror(char * msg) {
+void yyerror(const char * msg) {
   fprintf(stderr, "[Línea %d] %s\n", linea, msg);
 }
 
