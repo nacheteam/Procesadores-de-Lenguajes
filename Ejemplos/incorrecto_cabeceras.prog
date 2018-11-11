@@ -1,0 +1,90 @@
+main(){
+
+begin
+  int n;
+  list of int pe, pe2;
+  list of double pf, pf2;
+  list of char pc, pc2;
+  list of bool pb;
+end
+
+funcionA(int a1, double a2, char a3){
+  begin
+    int x1, x2;
+  end
+
+  funcionB(char b1, boorrl b2){
+     begin
+       double xf, x2;
+     end
+
+     funcionC(bool c1, int c2,,){
+       begin
+        double x1;
+       end
+
+       x1 = 1.3;
+       if(c2 > 10)
+         c2 = c2 - 1;
+       else
+         x1 = 3.1;
+       c1 = x1 > 3 || c2 >= 4;
+     }
+
+     functionC(False, xf);
+     repeat
+       x2 = x2*xf;
+     until (x2 - xf < 10.0);
+
+     b2 = x1 == x2;
+     b1 = !x1;
+  }
+
+  funcionD(double){
+    begin
+      char dato;
+      int valor;
+    end
+
+    funcionE(char e1 char e2){
+      read "introduzca dos caracteres: " e1, e2;
+      if(e1 == 'a')
+        e1 = 'A';
+      else if (e1 == 'b')
+        e1 = 'B';
+      else
+        e2 = ' ';
+    }
+
+      read "introduzca un valor entero: ", valor;
+      if(d1 > 0.0){
+        begin
+          int dato;
+        end
+        dato = 2;
+        dato = valor*20/dato;
+      }
+      else{
+        valor = valor*100;
+        d1 = d1/1000.0;
+      }
+    }
+  }
+
+ pe = [1,2,3];
+ pe2 = pe**[];
+
+ if(?pe2 == 1)
+   write "El primer elemento de pe2 es 1";
+
+ pf = [1.1,-1.0,1.1,-3.4]
+ repeat{
+   n = #pf - 1;
+   if(?pf > 0)
+     pf--n;
+   else
+     pf * -1;
+ }
+ until(#pf == 0)
+
+}
