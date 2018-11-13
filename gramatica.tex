@@ -36,7 +36,7 @@
 
 <digitohex> ::= <digito> | a | b | c | d | e | f
 
-<elementos> ::= <expresion> | <elementos>, <expresion>
+<elementos> ::= <elementos>, <expresion> | $\varepsilon$
 
 <entero> ::= <natural> | 0x<hex>
 
@@ -52,7 +52,7 @@
 \alt <lista>
 \alt <signo> <expresion>
 
-<expresion_o_cadena> ::= <elementos> | <cadena>
+<expresion_o_cadena> ::= <expresion> | <cadena>
 
 <Fin_de_bloque> ::= \}
 
@@ -64,7 +64,7 @@
 
 <Inicio_de_bloque> ::= \{
 
-<lista> ::= [] | [<elementos>]
+<lista> ::= [<elementos>]
 
 <lista_expresiones_o_cadenas> ::= <lista_expresiones_o_cadenas>, <expresion_o_cadena>
 \alt <expresion_o_cadena>

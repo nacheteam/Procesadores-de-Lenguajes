@@ -50,6 +50,7 @@ id          [a-zA-Z][a-zA-Z0-9]*
 "main()"    return MAIN;
 {id}        return ID;
 "("         return PARIZQ;
+")"         return PARDER;
 [+-]        return SIGNO;
 "<<"|">>"   return UNARIODER;
 [!#?$]      return UNARIOIZQ;
@@ -65,7 +66,6 @@ id          [a-zA-Z][a-zA-Z0-9]*
 "@"         return ARROBA;
 "{"         return LLAIZQ;
 "}"         return LLADER;
-")"         return PARDER;
 "["         return CORIZQ;
 "]"         return CORDER;
 ";"         return PYC;

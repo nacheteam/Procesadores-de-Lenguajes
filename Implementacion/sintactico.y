@@ -14,45 +14,31 @@
 
 // Lista de nombres de los tokens
 
-%token VARBEGIN
-%token VAREND
-%token INCR
-%token DECR
+%token VARBEGIN VAREND
+%token INCR DECR
 %token ASIGN
-%token IF
-%token ELSE
-%token WHILE
-%token REPEAT
-%token UNTIL
-%token READ
-%token WRITE
+%token IF ELSE WHILE REPEAT UNTIL
+%token READ WRITE
 %token CADENA
 %token LITERAL
 %token LISTOF
 %token TIPOBASE
 %token MAIN
 %token ID
-%token PARIZQ
+%token PARIZQ PARDER
 %token SIGNO
 %token UNARIODER
 %token UNARIOIZQ
 %token BINARIO
 %token ARROBA
-%token LLAIZQ
-%token LLADER
-%token PARDER
-%token CORIZQ
-%token CORDER
-%token PYC
-%token COMA
+%token LLAIZQ LLADER
+%token CORIZQ CORDER
+%token PYC COMA
 
 // Atributos
+// TODO
 
-%left "^" "**"
-%left "*" "/"
-%left "[=!]=?" "[<>]=?"
-%left "&&"
-%left "||"
+%start programa
 
 %%
 
@@ -85,7 +71,7 @@ declar_de_variables_locales : |  marca_ini_declar_variables
 declar_subprog : cabecera_subprograma bloque
 ;
 
-elementos : expresion | elementos COMA expresion
+elementos : | elementos COMA expresion
 ;
 
 expresion : PARIZQ expresion PARDER
@@ -99,7 +85,7 @@ expresion : PARIZQ expresion PARDER
           | SIGNO expresion
 ;
 
-expresion_o_cadena : elementos | CADENA
+expresion_o_cadena : expresion | CADENA
 ;
 
 fin_de_bloque : LLADER
@@ -108,7 +94,7 @@ fin_de_bloque : LLADER
 inicio_de_bloque : LLAIZQ
 ;
 
-lista : CORIZQ CORDER | CORIZQ elementos CORDER
+lista : CORIZQ elementos CORDER
 ;
 
 lista_expresiones_o_cadenas : lista_expresiones_o_cadenas COMA expresion_o_cadena
