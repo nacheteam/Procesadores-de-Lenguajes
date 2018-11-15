@@ -14,7 +14,7 @@
 
 <Cabecera_programa> ::= main()
 
-<Cabecera_subprograma> ::= <identificador>(<parametros>)
+<Cabecera_subprograma> ::= <identificador>(<lista_parametros>) | <identificador>()
 
 <cadena> ::= '' <lista_imprimibles> ''
 
@@ -36,7 +36,7 @@
 
 <digitohex> ::= <digito> | a | b | c | d | e | f
 
-<elementos> ::= <elementos>, <expresion> | $\varepsilon$
+<elementos> ::= <expresion> | <elementos>, <expresion>
 
 <entero> ::= <natural> | 0x<hex>
 
@@ -64,7 +64,7 @@
 
 <Inicio_de_bloque> ::= \{
 
-<lista> ::= [<elementos>]
+<lista> ::= [] | [<elementos>]
 
 <lista_expresiones_o_cadenas> ::= <lista_expresiones_o_cadenas>, <expresion_o_cadena>
 \alt <expresion_o_cadena>
@@ -82,7 +82,7 @@
 \alt '<imprimible>'
 \alt <booleano>
 
-<llamada_proced> ::= <identificador>(<elementos>) ;
+<llamada_proced> ::= <identificador>(<elementos>) ; | <identificador>() ;
 
 <Marca_ini_declar_variables> ::= begin
 
@@ -96,11 +96,9 @@
 
 <op_binario> ::= \verb|+| | \verb|/| | \verb|-| | \verb|*| | \verb|<| | \verb|<=| | \verb|>| | \verb|>=| | \verb|==| | \verb|!=| | \verb|&&| | \verb|||| | \verb|^| | \verb|@| | \verb|--| | \verb|%| | \verb|**|
 
-<op_unario_der> ::= \verb|++| | \verb|--| | \verb|<<| | \verb|>>|
+<op_unario_der> ::= | \verb|<<| | \verb|>>|
 
 <op_unario_iz> ::= \verb|++| | \verb|--| | \verb|!| | \verb|#| | \verb|?| | \verb|$|
-
-<parametros> ::= $\varepsilon$ | <lista_parametros>
 
 <Programa> ::= <Cabecera_programa> <bloque>
 

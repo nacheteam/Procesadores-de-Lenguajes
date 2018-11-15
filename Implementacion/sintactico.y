@@ -29,23 +29,37 @@
 %token SIGNO
 %token UNARIODER
 %token UNARIOIZQ
-%token BINARIO
+%token OR AND XOR
+%token COMP_IG COMP_MM
+%token PROD_DIV_MOD
+%token EXP
 %token ARROBA
 %token LLAIZQ LLADER
 %token CORIZQ CORDER
 %token PYC COMA
 
-// Atributos
-// TODO
+// Precedencias
+
+%left OR
+%left AND
+%left XOR
+%left COMP_IG
+%left COMP_MM
+%left SIGNO
+%left PROD_DIV_MOD
+%left EXP
+%right ARROBA
+%right UNARIOIZQ
+%right DECR
+%right INCR
+%nonassoc UNARIODER
+
 
 %start programa
 
 %%
 
 // Producciones
-
-programa : MAIN bloque
-;
 
 bloque : inicio_de_bloque
          declar_de_variables_locales
@@ -54,7 +68,8 @@ bloque : inicio_de_bloque
          fin_de_bloque
 ;
 
-cabecera_subprograma : ID PARIZQ parametros PARDER
+cabecera_subprograma : ID PARIZQ lista_parametros PARDER
+                     | ID PARIZQ PARDER
 ;
 
 cuerpo_declar_variables : tipo lista_identificadores PYC
@@ -71,14 +86,25 @@ declar_de_variables_locales : |  marca_ini_declar_variables
 declar_subprog : cabecera_subprograma bloque
 ;
 
-elementos : | elementos COMA expresion
+elementos : expresion | elementos COMA expresion
 ;
 
 expresion : PARIZQ expresion PARDER
-          | op_unario_iz expresion
-          | expresion op_unario_der
-          | expresion op_binario expresion
           | expresion INCR expresion ARROBA expresion
+          | INCR expresion
+          | DECR expresion
+          | UNARIOIZQ expresion
+          | expresion UNARIODER
+          | expresion SIGNO expresion
+          | expresion OR expresion
+          | expresion AND expresion
+          | expresion XOR expresion
+          | expresion COMP_IG expresion
+          | expresion COMP_MM expresion
+          | expresion PROD_DIV_MOD expresion
+          | expresion EXP expresion
+          | expresion ARROBA expresion
+          | expresion DECR expresion
           | ID
           | LITERAL
           | lista
@@ -94,7 +120,7 @@ fin_de_bloque : LLADER
 inicio_de_bloque : LLAIZQ
 ;
 
-lista : CORIZQ elementos CORDER
+lista : CORIZQ CORDER | CORIZQ elementos CORDER
 ;
 
 lista_expresiones_o_cadenas : lista_expresiones_o_cadenas COMA expresion_o_cadena
@@ -111,6 +137,7 @@ lista_variables : lista_identificadores
 ;
 
 llamada_proced : ID PARIZQ elementos PARDER PYC
+               | ID PARIZQ PARDER PYC
 ;
 
 marca_ini_declar_variables : VARBEGIN
@@ -119,20 +146,7 @@ marca_ini_declar_variables : VARBEGIN
 marca_fin_declar_variables : VAREND
 ;
 
-op_binario : SIGNO | BINARIO | ARROBA | DECR
-;
-
-op_unario_der : INCR
-              | DECR
-              | UNARIODER
-;
-
-op_unario_iz : INCR
-             | DECR
-             | UNARIOIZQ
-;
-
-parametros :| lista_parametros
+programa : MAIN bloque
 ;
 
 sentencia : bloque
