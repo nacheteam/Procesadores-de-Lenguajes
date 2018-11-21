@@ -1,8 +1,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <map>
-#include <string>
 #include "yyerror.h"
 
 // // // // // // // // // // // // // // // // // // // //
@@ -58,75 +56,69 @@ void trim(char *s)
     s[strlen(s)-1] = '\0';
 }
 
+#define NUM_TOKENS 38 
 
-
-// map from string to char * for storing nice translation of
-// internal names for tokens.  Preserves (char *) used by
-// bison.
-static std::map<std::string , char *> niceTokenNameMap;    // use an ordered map (not as fast as unordered)
-
-// WARNING: this routine must be called to initialize mapping of
-// (strings returned as error message) --> (human readable strings)
-//
-void initErrorProcessing() {
-    niceTokenNameMap["INCR"] = (char *)"++";
-    niceTokenNameMap["DECR"] = (char *)"--";
-    niceTokenNameMap["ASIGN"] = (char *)"=";
-    niceTokenNameMap["IF"] = (char *)"if";
-    niceTokenNameMap["ELSE"] = (char *)"else";
-    niceTokenNameMap["WHILE"] = (char *)"while";
-    niceTokenNameMap["REPEAT"] = (char *)"repeat";
-    niceTokenNameMap["UNTIL"] = (char *)"until";
-    niceTokenNameMap["READ"] = (char *)"read";
-    niceTokenNameMap["WRITE"] = (char *)"write";
-    niceTokenNameMap["VARBEGIN"] = (char *)"begin";
-    niceTokenNameMap["VAREND"] = (char *)"end";
-    niceTokenNameMap["CADENA"] = (char *)"cadena";
-    niceTokenNameMap["LITERAL"] = (char *)"liter";
-    niceTokenNameMap["LISTOF"] = (char *)"list of";
-    niceTokenNameMap["TIPOBASE"] = (char *)"un tipo";
-    niceTokenNameMap["MAIN"] = (char *)"main()";
-    niceTokenNameMap["ID"] = (char *)"identificador";
-    niceTokenNameMap["PARIZQ"] = (char *)"(";
-    niceTokenNameMap["PARDER"] = (char *)")";
-    niceTokenNameMap["SIGNO"] = (char *)"+|-";
-    niceTokenNameMap["UNARIODER"] = (char *)"<< | >>";
-    niceTokenNameMap["UNARIOIZQ"] = (char *)"operador unario por la izquierda";
-    niceTokenNameMap["OR"] = (char *)"||";
-    niceTokenNameMap["AND"] = (char *)"&&";
-    niceTokenNameMap["XOR"] = (char *)"^";
-    niceTokenNameMap["COMP_IG"] = (char *)"== o !=";
-    niceTokenNameMap["COMP_MM"] = (char *)"<= o >= o < o >";
-    niceTokenNameMap["PROD_DIV_MOD"] = (char *)"multiplicación o división o módulo";
-    niceTokenNameMap["EXP"] = (char *)"**";
-    niceTokenNameMap["ARROBA"] = (char *)"@";
-    niceTokenNameMap["ARROBARROBA"] = (char *)"@@";
-    niceTokenNameMap["LLAIZQ"] = (char *)"{";
-    niceTokenNameMap["LLADER"] = (char *)"}";
-    niceTokenNameMap["CORIZQ"] = (char *)"[";
-    niceTokenNameMap["CORDER"] = (char *)"]";
-    niceTokenNameMap["PYC"] = (char *)";";
-    niceTokenNameMap["COMA"] = (char *)",";
-}
+static char * const MAP_TOKENS[2*NUM_TOKENS] = {
+    "INCR",      "++",
+    "DECR",      "--",
+    "ASIGN",     "=",
+    "IF",        "if",
+    "ELSE",      "else",
+    "WHILE",     "while",
+    "REPEAT",    "repeat",
+    "UNTIL",     "until",
+    "READ",      "read",
+    "WRITE",     "write",
+    "VARBEGIN",  "begin",
+    "VAREND",    "end",
+    "CADENA",    "cadena",
+    "LITERAL",   "liter",
+    "LISTOF",    "list of",
+    "TIPOBASE",  "un tipo",
+    "MAIN",      "main()",
+    "ID",        "identificador",
+    "PARIZQ",    "(",
+    "PARDER",    ")",
+    "SIGNO",     "+|-",
+    "UNARIODER", "<< | >>",
+    "UNARIOIZQ", "operador unario por la izquierda",
+    "OR",        "||",
+    "AND",       "&&",
+    "XOR",       "^",
+    "COMP_IG",   "== o !=",
+    "COMP_MM",   "<= o >= o < o >",
+    "PROD_DIV_MOD", "multiplicación o división o módulo",
+    "EXP",       "**",
+    "ARROBA",    "@",
+    "ARROBARROBA", "@@",
+    "LLAIZQ",    "{",
+    "LLADER",    "}",
+    "CORIZQ",    "[",
+    "CORDER",    "]",
+    "PYC",       ";",
+    "COMA",      ","
+};
 
 
 // looks of pretty printed words for tokens that are
 // not already in single quotes.  It uses the niceTokenNameMap table.
-char *niceTokenStr(char *tokenName ) {
+char *niceTokenStr(char *tokenName) {
     if (tokenName[0] == '\'') return tokenName;
-    if (niceTokenNameMap.find(tokenName) == niceTokenNameMap.end()) {
-        printf("ERROR(sistema): La cadena '%s' no está entre los tokens definidos\n", tokenName);
-        fflush(stdout);
-        exit(1);
-    }
-    return niceTokenNameMap[tokenName];
+
+    for (int i = 0; i < NUM_TOKENS; i++)
+        if (strcmp(tokenName, MAP_TOKENS[2*i]) == 0)
+            return MAP_TOKENS[2*i + 1];
+
+    fprintf(stderr, "Error en la definición de yyerror: '%s' no está entre los tokens definidos\n", tokenName);
+    fflush(stderr);
+    exit(1);
 }
 
 
 // Is this a message that we need to elaborate with the current parsed token.
 // This elaboration is some what of a crap shoot since the token could
 // be already overwritten with a look ahead token.   But probably not.
-bool elaborate(char *s)
+int elaborate(char *s)
 {
     return (strstr(s, "constant") || strstr(s, "identifier"));
 }
@@ -141,7 +133,7 @@ bool elaborate(char *s)
 //    tinySort(str+1, i-1, 2, direction);  // sorts odd number elements in array
 //    tinySort(str, i, 1, direction);      // sorts all elements in array
 //
-void tinySort(char *base[], int num, int step, bool up)
+void tinySort(char *base[], int num, int step, int up)
 {
     for (int i=step; i<num; i+=step) {
         for (int j=0; j<i; j+=step) {
@@ -158,6 +150,12 @@ void tinySort(char *base[], int num, int step, bool up)
 // It only does errors and not warnings.
 void yyerror(const char *msg)
 {
+    if (strncmp(msg, "Error l", 7) == 0) {
+        fprintf(stderr, "[Línea %d] %s", linea, msg);
+        fflush(stderr);   // force a dump of the error
+        return;
+    }
+  
     char *space;
     char *strs[100];
     int numstrs;
@@ -175,21 +173,21 @@ void yyerror(const char *msg)
     }
 
     // print components
-    printf("Error en la línea %d: Error sintáctico, cadena no esperada %s", linea, strs[3]);
+    fprintf(stderr, "[Línea %d] Error sintáctico: se encontró %s", linea, strs[3]);
     if (elaborate(strs[3])) {
-        if (yytext[0]=='\'' || yytext[0]=='"') printf(" %s", yytext);
-        else printf(" \'%s\'", yytext);
+        if (yytext[0]=='\'' || yytext[0]=='"') fprintf(stderr, " %s", yytext);
+        else fprintf(stderr, " \'%s\'", yytext);
     }
 
-    if (numstrs>4) printf(",");
+    if (numstrs>4) fprintf(stderr, ",");
 
     // print sorted list of expected
-    tinySort(strs+5, numstrs-5, 2, true);
+    tinySort(strs+5, numstrs-5, 2, 1);
     for (int i=4; i<numstrs; i++) {
-        printf(" %s", strs[i]);
+        fprintf(stderr, " %s", strs[i]);
     }
-    printf(".\n");
-    fflush(stdout);   // force a dump of the error
+    fprintf(stderr, "\n");
+    fflush(stderr);   // force a dump of the error
 
     free(space);
 }
