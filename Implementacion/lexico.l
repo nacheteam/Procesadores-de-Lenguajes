@@ -62,6 +62,7 @@ id          [a-zA-Z][a-zA-Z0-9]*
 [*/%]       return PROD_DIV_MOD;
 "**"        return EXP;
 "@"         return ARROBA;
+"@@"        return ARROBARROBA;
 "{"         return LLAIZQ;
 "}"         return LLADER;
 "["         return CORIZQ;

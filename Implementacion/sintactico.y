@@ -34,6 +34,7 @@
 %token PROD_DIV_MOD
 %token EXP
 %token ARROBA
+%token ARROBARROBA
 %token LLAIZQ LLADER
 %token CORIZQ CORDER
 %token PYC COMA
@@ -49,6 +50,7 @@
 %left PROD_DIV_MOD
 %left EXP
 %right ARROBA
+%right ARROBARROBA
 %right UNARIOIZQ
 %right DECR
 %right INCR
@@ -90,7 +92,7 @@ elementos : expresion | elementos COMA expresion
 ;
 
 expresion : PARIZQ expresion PARDER
-          | expresion INCR expresion ARROBA expresion
+          | expresion INCR expresion ARROBARROBA expresion
           | INCR expresion
           | DECR expresion
           | UNARIOIZQ expresion
