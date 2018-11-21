@@ -26,6 +26,7 @@ cadena      \"{ascii}*\"
 literal     {numero}|\'{ascii}\'|"True"|"False"
 tbase       "int"|"bool"|"char"|"double"
 id          [a-zA-Z][a-zA-Z0-9]*
+com_linea   (\/\/[^\n]*\n)
 
 %%
 
@@ -69,7 +70,8 @@ id          [a-zA-Z][a-zA-Z0-9]*
 "]"         return CORDER;
 ";"         return PYC;
 ","         return COMA;
-[ \t]+      ;  // Se ignoran los espacios en blanco
+[ \t]+      ;        // Se ignoran los espacios en blanco
+{com_linea} ++linea; // Se ignoran los comentarios al final de línea
 \n          ++linea;
 .           error = 1; snprintf(buffer_error, LONGITUD_ERROR, "Error léxico: '%s' no se identifica con ningún token conocido\n", yytext); yyerror(buffer_error);
 
