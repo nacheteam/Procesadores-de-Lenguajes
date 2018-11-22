@@ -57,44 +57,45 @@ void trim(char *s){
 #define NUM_TOKENS 39
 
 static char * const MAP_TOKENS[2*NUM_TOKENS] = {
-  "INCR",      "++",
-  "DECR",      "--",
-  "ASIGN",     "=",
-  "IF",        "if",
-  "ELSE",      "else",
-  "WHILE",     "while",
-  "REPEAT",    "repeat",
-  "UNTIL",     "until",
-  "READ",      "read",
-  "WRITE",     "write",
-  "VARBEGIN",  "begin",
-  "VAREND",    "end",
-  "CADENA",    "cadena",
-  "LITERAL",   "literal",
-  "LISTOF",    "list of",
+  "INCR",      "'++'",
+  "DECR",      "'--'",
+  "ASIGN",     "'='",
+  "IF",        "'if'",
+  "ELSE",      "'else'",
+  "WHILE",     "'while'",
+  "REPEAT",    "'repeat'",
+  "UNTIL",     "'until'",
+  "READ",      "'read'",
+  "WRITE",     "'write'",
+  "VARBEGIN",  "'begin'",
+  "VAREND",    "'end'",
+  "CADENA",    "una cadena",
+  "LITERAL",   "un literal",
+  "LISTOF",    "'list of'",
   "TIPOBASE",  "un tipo",
-  "MAIN",      "main()",
-  "ID",        "identificador",
-  "PARIZQ",    "(",
-  "PARDER",    ")",
-  "SIGNO",     "+|-",
-  "UNARIODER", "<< | >>",
-  "UNARIOIZQ", "operador unario por la izquierda",
-  "OR",        "||",
-  "AND",       "&&",
-  "XOR",       "^",
-  "COMP_IG",   "== o !=",
-  "COMP_MM",   "<= o >= o < o >",
-  "PROD_DIV_MOD", "multiplicación o división o módulo",
-  "EXP",       "**",
-  "ARROBA",    "@",
-  "ARROBARROBA", "@@",
-  "LLAIZQ",    "{",
-  "LLADER",    "}",
-  "CORIZQ",    "[",
-  "CORDER",    "]",
-  "PYC",       ";",
-  "COMA",      ","
+  "MAIN",      "'main()'",
+  "ID",        "un identificador",
+  "PARIZQ",    "'('",
+  "PARDER",    "')'",
+  "SIGNO",     "'+' o '-'",
+  "UNARIODER", "'<<' o '>>'",
+  "UNARIOIZQ", "'!' o '#' o '?' o '$'",
+  "OR",        "'||'",
+  "AND",       "'&&'",
+  "XOR",       "'^'",
+  "COMP_IG",   "'==' o '!='",
+  "COMP_MM",   "'<=' o '>=' o '<' o '>'",
+  "PROD_DIV_MOD", "'*' o '/' o '%'",
+  "EXP",       "'**'",
+  "ARROBA",    "'@'",
+  "ARROBARROBA", "'@@'",
+  "LLAIZQ",    "'{'",
+  "LLADER",    "'}'",
+  "CORIZQ",    "'['",
+  "CORDER",    "']'",
+  "PYC",       "';'",
+  "COMA",      "','",
+  "$end",      "fin de fichero"
 };
 
 
@@ -118,28 +119,6 @@ char *niceTokenStr(char *tokenName) {
 // be already overwritten with a look ahead token.   But probably not.
 int elaborate(char *s){
   return (strstr(s, "constant") || strstr(s, "identifier"));
-}
-
-
-// A tiny sort routine for SMALL NUMBERS of
-// of char * elements.  num is the total length
-// of the array but only every step elements will
-// be sorted.  The "up" flag is direction of sort.
-// For example:
-//    tinySort(str, i, 2, direction);      // sorts even number elements in array
-//    tinySort(str+1, i-1, 2, direction);  // sorts odd number elements in array
-//    tinySort(str, i, 1, direction);      // sorts all elements in array
-//
-void tinySort(char *base[], int num, int step, int up)
-{
-  for (int i=step; i<num; i+=step) {
-    for (int j=0; j<i; j+=step) {
-      if (up ^ (strcmp(base[i], base[j])>0)) {
-        char *tmp;
-        tmp = base[i]; base[i] = base[j]; base[j] = tmp;
-      }
-    }
-  }
 }
 
 
@@ -178,8 +157,7 @@ void yyerror(const char *msg)
 
   if (numstrs>4) fprintf(stderr, ", se esperaba");
 
-  // print sorted list of expected
-  //tinySort(strs+5, numstrs-5, 2, 1);
+  // print list of expected
   for (int i=5; i<numstrs; i++) {
     if(strcmp(strs[i], "or") == 0)
       fprintf(stderr, " o");
