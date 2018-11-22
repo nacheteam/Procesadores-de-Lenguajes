@@ -32,95 +32,92 @@
 // The array is terminated by a NULL so there must be
 // enough room for all the string pointers plus one for the
 // sentinal marker.
-int split(char *s, char *strs[], char breakchar)
-{
-    int num;
+int split(char *s, char *strs[], char breakchar){
+  int num;
 
-    strs[0] = s;
-    num = 1;
-    for (char *p = s; *p; p++) {
-        if (*p==breakchar) {
-            strs[num++] = p+1;
-            *p = '\0';
-        }
+  strs[0] = s;
+  num = 1;
+  for (char *p = s; *p; p++) {
+    if (*p==breakchar) {
+      strs[num++] = p+1;
+      *p = '\0';
     }
-    strs[num] = NULL;
+  }
+  strs[num] = NULL;
 
-    return num;
+  return num;
 }
 
 
 // trim off the last character
-void trim(char *s)
-{
-    s[strlen(s)-1] = '\0';
+void trim(char *s){
+  s[strlen(s)-1] = '\0';
 }
 
-#define NUM_TOKENS 38 
+#define NUM_TOKENS 39
 
 static char * const MAP_TOKENS[2*NUM_TOKENS] = {
-    "INCR",      "++",
-    "DECR",      "--",
-    "ASIGN",     "=",
-    "IF",        "if",
-    "ELSE",      "else",
-    "WHILE",     "while",
-    "REPEAT",    "repeat",
-    "UNTIL",     "until",
-    "READ",      "read",
-    "WRITE",     "write",
-    "VARBEGIN",  "begin",
-    "VAREND",    "end",
-    "CADENA",    "cadena",
-    "LITERAL",   "liter",
-    "LISTOF",    "list of",
-    "TIPOBASE",  "un tipo",
-    "MAIN",      "main()",
-    "ID",        "identificador",
-    "PARIZQ",    "(",
-    "PARDER",    ")",
-    "SIGNO",     "+|-",
-    "UNARIODER", "<< | >>",
-    "UNARIOIZQ", "operador unario por la izquierda",
-    "OR",        "||",
-    "AND",       "&&",
-    "XOR",       "^",
-    "COMP_IG",   "== o !=",
-    "COMP_MM",   "<= o >= o < o >",
-    "PROD_DIV_MOD", "multiplicación o división o módulo",
-    "EXP",       "**",
-    "ARROBA",    "@",
-    "ARROBARROBA", "@@",
-    "LLAIZQ",    "{",
-    "LLADER",    "}",
-    "CORIZQ",    "[",
-    "CORDER",    "]",
-    "PYC",       ";",
-    "COMA",      ","
+  "INCR",      "++",
+  "DECR",      "--",
+  "ASIGN",     "=",
+  "IF",        "if",
+  "ELSE",      "else",
+  "WHILE",     "while",
+  "REPEAT",    "repeat",
+  "UNTIL",     "until",
+  "READ",      "read",
+  "WRITE",     "write",
+  "VARBEGIN",  "begin",
+  "VAREND",    "end",
+  "CADENA",    "cadena",
+  "LITERAL",   "literal",
+  "LISTOF",    "list of",
+  "TIPOBASE",  "un tipo",
+  "MAIN",      "main()",
+  "ID",        "identificador",
+  "PARIZQ",    "(",
+  "PARDER",    ")",
+  "SIGNO",     "+|-",
+  "UNARIODER", "<< | >>",
+  "UNARIOIZQ", "operador unario por la izquierda",
+  "OR",        "||",
+  "AND",       "&&",
+  "XOR",       "^",
+  "COMP_IG",   "== o !=",
+  "COMP_MM",   "<= o >= o < o >",
+  "PROD_DIV_MOD", "multiplicación o división o módulo",
+  "EXP",       "**",
+  "ARROBA",    "@",
+  "ARROBARROBA", "@@",
+  "LLAIZQ",    "{",
+  "LLADER",    "}",
+  "CORIZQ",    "[",
+  "CORDER",    "]",
+  "PYC",       ";",
+  "COMA",      ","
 };
 
 
 // looks of pretty printed words for tokens that are
 // not already in single quotes.  It uses the niceTokenNameMap table.
 char *niceTokenStr(char *tokenName) {
-    if (tokenName[0] == '\'') return tokenName;
+  if (tokenName[0] == '\'') return tokenName;
 
-    for (int i = 0; i < NUM_TOKENS; i++)
-        if (strcmp(tokenName, MAP_TOKENS[2*i]) == 0)
-            return MAP_TOKENS[2*i + 1];
+  for (int i = 0; i < NUM_TOKENS; i++)
+    if (strcmp(tokenName, MAP_TOKENS[2*i]) == 0)
+      return MAP_TOKENS[2*i + 1];
 
-    fprintf(stderr, "Error en la definición de yyerror: '%s' no está entre los tokens definidos\n", tokenName);
-    fflush(stderr);
-    exit(1);
+  fprintf(stderr, "Error en la definición de yyerror: '%s' no está entre los tokens definidos\n", tokenName);
+  fflush(stderr);
+  exit(1);
 }
 
 
 // Is this a message that we need to elaborate with the current parsed token.
 // This elaboration is some what of a crap shoot since the token could
 // be already overwritten with a look ahead token.   But probably not.
-int elaborate(char *s)
-{
-    return (strstr(s, "constant") || strstr(s, "identifier"));
+int elaborate(char *s){
+  return (strstr(s, "constant") || strstr(s, "identifier"));
 }
 
 
@@ -135,14 +132,14 @@ int elaborate(char *s)
 //
 void tinySort(char *base[], int num, int step, int up)
 {
-    for (int i=step; i<num; i+=step) {
-        for (int j=0; j<i; j+=step) {
-            if (up ^ (strcmp(base[i], base[j])>0)) {
-                char *tmp;
-                tmp = base[i]; base[i] = base[j]; base[j] = tmp;
-            }
-        }
+  for (int i=step; i<num; i+=step) {
+    for (int j=0; j<i; j+=step) {
+      if (up ^ (strcmp(base[i], base[j])>0)) {
+        char *tmp;
+        tmp = base[i]; base[i] = base[j]; base[j] = tmp;
+      }
     }
+  }
 }
 
 
@@ -150,44 +147,47 @@ void tinySort(char *base[], int num, int step, int up)
 // It only does errors and not warnings.
 void yyerror(const char *msg)
 {
-    if (strncmp(msg, "Error l", 7) == 0) {
-        fprintf(stderr, "[Línea %d] %s", linea, msg);
-        fflush(stderr);   // force a dump of the error
-        return;
-    }
-  
-    char *space;
-    char *strs[100];
-    int numstrs;
-
-    // make a copy of msg string
-    space = strdup(msg);
-
-    // split out components
-    numstrs = split(space, strs, ' ');
-    if (numstrs>4) trim(strs[3]);
-
-    // translate components
-    for (int i=3; i<numstrs; i+=2) {
-        strs[i] = niceTokenStr(strs[i]);
-    }
-
-    // print components
-    fprintf(stderr, "[Línea %d] Error sintáctico: se encontró %s", linea, strs[3]);
-    if (elaborate(strs[3])) {
-        if (yytext[0]=='\'' || yytext[0]=='"') fprintf(stderr, " %s", yytext);
-        else fprintf(stderr, " \'%s\'", yytext);
-    }
-
-    if (numstrs>4) fprintf(stderr, ",");
-
-    // print sorted list of expected
-    tinySort(strs+5, numstrs-5, 2, 1);
-    for (int i=4; i<numstrs; i++) {
-        fprintf(stderr, " %s", strs[i]);
-    }
-    fprintf(stderr, "\n");
+  if (strncmp(msg, "Error l", 7) == 0) {
+    fprintf(stderr, "[Línea %d] %s", linea, msg);
     fflush(stderr);   // force a dump of the error
+    return;
+  }
 
-    free(space);
+  char *space;
+  char *strs[100];
+  int numstrs;
+
+  // make a copy of msg string
+  space = strdup(msg);
+
+  // split out components
+  numstrs = split(space, strs, ' ');
+  if (numstrs>4) trim(strs[3]);
+
+  // translate components
+  for (int i=3; i<numstrs; i+=2) {
+    strs[i] = niceTokenStr(strs[i]);
+  }
+
+  // print components
+  fprintf(stderr, "[Línea %d] Error sintáctico: se encontró %s", linea, strs[3]);
+  if (elaborate(strs[3])) {
+    if (yytext[0]=='\'' || yytext[0]=='"') fprintf(stderr, " %s", yytext);
+    else fprintf(stderr, " \'%s\'", yytext);
+  }
+
+  if (numstrs>4) fprintf(stderr, ", se esperaba");
+
+  // print sorted list of expected
+  //tinySort(strs+5, numstrs-5, 2, 1);
+  for (int i=5; i<numstrs; i++) {
+    if(strcmp(strs[i], "or") == 0)
+      fprintf(stderr, " o");
+    else
+      fprintf(stderr, " %s", strs[i]);
+  }
+  fprintf(stderr, "\n");
+  fflush(stderr);   // force a dump of the error
+
+  free(space);
 }
