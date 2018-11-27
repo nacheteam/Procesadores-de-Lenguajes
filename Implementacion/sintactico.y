@@ -75,6 +75,7 @@ cabecera_subprograma : ID PARIZQ lista_parametros PARDER
 ;
 
 cuerpo_declar_variables : tipo lista_identificadores PYC
+                        | error
 ;
 
 declar_de_subprogs : | declar_de_subprogs declar_subprog
@@ -86,6 +87,7 @@ declar_de_variables_locales : |  marca_ini_declar_variables
 ;
 
 declar_subprog : cabecera_subprograma bloque
+               | error
 ;
 
 elementos : expresion | elementos COMA expresion
@@ -159,6 +161,7 @@ sentencia : bloque
           | sentencia_entrada
           | sentencia_salida
           | llamada_proced
+          | error PYC
 ;
 
 sentencia_asignacion :  ID ASIGN expresion PYC
