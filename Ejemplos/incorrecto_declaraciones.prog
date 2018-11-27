@@ -1,10 +1,14 @@
 main(){
 
   begin
-  list of int pe, 2pe;
-  list off double pf, pf2;
+  // Falta PYC
   list of char pc, pc2
+  // Tipo incorrecto
   list of list of pb;
+  // Identificador incorrecto
+  list of int pe, 2pe;
+  // Tipo incorrecto
+  list off double pf, pf2;
   end
 
     funcionA(int a1, double a2, char a3){
@@ -12,8 +16,10 @@ main(){
       funcionB(char b1, bool b2){
       begin
         double xf, x2;
+        // begin sin end
 
         funcionC(bool c1, int c2){
+        // end sin begin
           double x1;
         end
         x1 = 1.3;

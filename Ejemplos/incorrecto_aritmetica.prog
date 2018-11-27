@@ -3,9 +3,18 @@ main(){
   int n;
   end
 
+  // Símbolo menos al final
   n = 0 - 1 -;
+
+  // Correcto, combinación de símbolos
   n = n - + 1;
+
+  // Operador en posición incorrecta
   n = n +* n;
+
+  // Operador en posición incorrecta
   n = /n*20/n;
+
+  // Operador inexistente
   n = n***100;
 }

@@ -4,6 +4,8 @@ main(){
   bool b;
   end
 
+  // Operador en posición incorrecta
   b = true ||;
+  // Operador incorrecto
   b = true === true;
 }
