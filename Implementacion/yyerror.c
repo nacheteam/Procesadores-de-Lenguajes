@@ -118,7 +118,14 @@ char *niceTokenStr(char *tokenName) {
 // This elaboration is some what of a crap shoot since the token could
 // be already overwritten with a look ahead token.   But probably not.
 int elaborate(char *s){
-  return (strstr(s, "constant") || strstr(s, "identifier"));
+  return strncmp(s, "un", 2) == 0;
+}
+
+
+// Devuelve 1 si el token es una lista de varios operadores
+// De esta forma el programa puede tratar de devolver la palabra exacta
+int operador_especifico(char *s) {
+  return strncmp(s + 2, "' o '", 5) == 0 || strncmp(s + 3, "' o '", 5) == 0;
 }
 
 
@@ -149,8 +156,12 @@ void yyerror(const char *msg)
   }
 
   // print components
-  fprintf(stderr, "[Línea %d] Error sintáctico: se encontró %s", linea, strs[3]);
-  if (elaborate(strs[3])) {
+  fprintf(stderr, "[Línea %d] Error sintáctico: se encontró", linea);
+  int especifico = operador_especifico(strs[3]);
+  if (!especifico) {
+    fprintf(stderr, " %s", strs[3]);
+  }
+  if (especifico || elaborate(strs[3])) {
     if (yytext[0]=='\'' || yytext[0]=='"') fprintf(stderr, " %s", yytext);
     else fprintf(stderr, " \'%s\'", yytext);
   }
