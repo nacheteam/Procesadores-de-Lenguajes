@@ -72,6 +72,7 @@ bloque : inicio_de_bloque
 
 cabecera_subprograma : ID PARIZQ lista_parametros PARDER
                      | ID PARIZQ PARDER
+                     | error
 ;
 
 cuerpo_declar_variables : tipo lista_identificadores PYC
@@ -87,7 +88,6 @@ declar_de_variables_locales : |  marca_ini_declar_variables
 ;
 
 declar_subprog : cabecera_subprograma bloque
-               | error
 ;
 
 elementos : expresion | elementos COMA expresion
