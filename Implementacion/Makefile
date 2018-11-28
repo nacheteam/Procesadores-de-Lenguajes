@@ -19,7 +19,7 @@ $(ANALIZADOR_LEXICO): $(OBJ)$(ANALIZADOR_LEXICO).yy.o $(OBJ)yyerror.o
 	gcc -o $@ $^
 
 y.tab.c: $(ANALIZADOR_SINTACTICO).y $(ANALIZADOR_LEXICO).yy.c
-	bison -dy -o $@ $<
+	bison -dyv -o $@ $<
 
 $(OBJ)$(ANALIZADOR_LEXICO).yy.o: $(ANALIZADOR_LEXICO).yy.c y.tab.c
 	gcc -c $< -o $@ $(CHARSET) -DMAIN_LEXICO

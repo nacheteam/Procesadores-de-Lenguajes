@@ -72,7 +72,6 @@ bloque : inicio_de_bloque
 
 cabecera_subprograma : ID PARIZQ lista_parametros PARDER
                      | ID PARIZQ PARDER
-                     | error
 ;
 
 cuerpo_declar_variables : tipo lista_identificadores PYC
@@ -99,6 +98,7 @@ expresion : PARIZQ expresion PARDER
           | DECR expresion
           | UNARIOIZQ expresion
           | expresion UNARIODER
+          | SIGNO expresion  %prec UNARIOIZQ
           | expresion SIGNO expresion
           | expresion OR expresion
           | expresion AND expresion
@@ -112,7 +112,7 @@ expresion : PARIZQ expresion PARDER
           | ID
           | LITERAL
           | lista
-          | SIGNO expresion
+          | error
 ;
 
 expresion_o_cadena : expresion | CADENA
@@ -134,7 +134,7 @@ lista_expresiones_o_cadenas : lista_expresiones_o_cadenas COMA expresion_o_caden
 lista_identificadores : ID | lista_identificadores COMA ID
 ;
 
-lista_parametros : tipo ID | lista_parametros COMA tipo ID
+lista_parametros : parametro | lista_parametros COMA parametro
 ;
 
 lista_variables : lista_identificadores
@@ -150,6 +150,10 @@ marca_ini_declar_variables : VARBEGIN
 marca_fin_declar_variables : VAREND
 ;
 
+parametro : tipo ID
+          | error
+;
+
 programa : MAIN bloque
 ;
 
@@ -161,7 +165,6 @@ sentencia : bloque
           | sentencia_entrada
           | sentencia_salida
           | llamada_proced
-          | error PYC
 ;
 
 sentencia_asignacion :  ID ASIGN expresion PYC
