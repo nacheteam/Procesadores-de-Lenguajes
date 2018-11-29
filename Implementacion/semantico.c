@@ -58,7 +58,7 @@ long int tope = 0; // Índice de la tabla de símbolos
 void pushTS(entrada_ts entrada){
   if(tope == MAX_TS -1){
     printf("\n[Línea %d] Error: La tabla de símbolos está llena", yylineno);
-    return // TODO: Abortar programa
+    exit(2);
   }
   TS[tope] = entrada;
   tope++;
