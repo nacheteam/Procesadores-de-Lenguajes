@@ -1,75 +1,29 @@
 #include <stdio.h>
 #include <string.h>
-
-/* Código adaptado de las diapositivas del tema 7 y del guión de prácticas apéndice F
- (diapositiva 75)
- TODO: No tengo muy claro dónde debería ir este código*/
-
-
-typedef enum {
-  marca, // Indica que la entrada es una marca de principio de bloque
-  procedimiento,
-  variable, // variable local
-  parametroFormal  // parámetro de un procedimiento situado en una entrada anterior de la tabla
-} tipoEntrada;
-
-
-/* Tipo de dato.
-   Sólo aplicable cuando sea funcion, variable o parametroFormal*/
-typedef enum {
-  entero,
-  real,
-  booleano,
-  caracter,
-  lista,
-  desconocido
-} tipoDato;
-
-typedef struct {
-  int token; // Código del token
-  TipoDato tipo; // tipo del token
-  char * lexema; // Nombre del token
-} atributos
-
-#define YYSTYPE atributos
-
-/*******************************************************/
-/* DEFINICIÓN DE LOS ELEMENTOS DE LA TABLA DE SÍMBOLOS */
-/*******************************************************/
-
-#define MAX_TS 1000
-
-
-typedef struct entrada_ts {
-  TipoEntrada tipo_entrada; // Tipo de entrada
-  char * nombre; // nombre del identificador
-  TipoDato tipo_dato; // Tipo del identificador
-  int parametros; // Número de parámetros
-};
-
-struct entrada_ts TS[MAX_TS];
-long int tope = 0; // Índice de la tabla de símbolos
-
+#include <stdlib.h>
+#include "tabla.h"
+#include "y.tab.h"
 
 /* ACCIONES SOBRE LA TABLA DE SÍMBOLOS */
 
+long int tope = 0;
 
 /* Inserta entrada en TS */
 void pushTS(entrada_ts entrada){
-  if(tope == MAX_TS -1){
+  if(tope >= MAX_TS){
     printf("\n[Línea %d] Error: La tabla de símbolos está llena", yylineno);
     exit(2);
   }
+
   TS[tope] = entrada;
   tope++;
 }
 
 /* Halla índice de identificador en TS */
-void findTS(char * identificador){
+int findTS(char * identificador){
   for(int j = 0; j < tope; j++)
     if(!strcmp(TS[j].nombre, identificador))
       return j;
-
   return -1;
 }
 
@@ -110,7 +64,46 @@ TipoDato tipoTS(char * identificador){
 
 
 // Entrada que indica comienzo de bloque
-const entrada_ts * MARCA_BLOQUE = {marca, "1marca", desconocido, 0};
+const entrada_ts MARCA_BLOQUE = {marca, "1marca", desconocido, 0};
+
+char * imprimeTipoE(TipoEntrada tipo){
+  switch (tipo) {
+  case marca: return "marca";
+  case procedimiento: return "procedimiento";
+  case variable: return "variable";
+  case parametroFormal: return "parámetro";
+  default: return "error";
+  }
+}
+
+char * imprimeTipoD(TipoDato tipo){
+  switch (tipo) {
+  case entero: return "entero";
+  case real: return "real";
+  case booleano: return "booleano";
+  case caracter: return "caracter";
+  case lista: return "lista";
+  case desconocido: return "desconocido";
+  default: return "error";
+  }
+}
+
+void imprimeTS(){
+  char sangria[] = "\0";
+  printf("Tabla de símbolos en la línea %d:\n", yylineno);
+  for(int i = 0; i < tope; i++)
+    if(TS[i].tipo_entrada == marca){
+     strcat(sangria, "  ");
+     printf("%s↳ [marca]\n", sangria);
+    } else{
+      printf("%s%s: '%s'", sangria, imprimeTipoE(TS[i].tipo_entrada), TS[i].nombre);
+
+      if(TS[i].tipo_entrada == variable || TS[i].tipo_entrada == parametroFormal)
+        printf(" de tipo %s\n", imprimeTipoD(TS[i].tipo_dato));
+      else
+        printf(" con %d parámetros\n", TS[i].parametros);
+    }
+}
 
 /* Añade a la tabla de símbolos marca de comienzo
  */
@@ -121,10 +114,12 @@ void entraBloqueTS(){
 
 /* Sal de bloque y elimina de la tabla de símbolos todos los símbolos hasta la última marca
  */
-void popTS(){
-  for(int j = i; j > 0; j--){
+void salBloqueTS(){
+  imprimeTS();
+
+  for(int j = tope - 1; j > 0; j--){
     if(TS[j].tipo_entrada == marca){
-      i = j - 1; // TODO: Podría darse j == 0?
+      tope = j - 1; // TODO: Podría darse j == 0?
       return;
     }
   }
