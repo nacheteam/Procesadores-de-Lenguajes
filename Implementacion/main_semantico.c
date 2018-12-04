@@ -35,9 +35,9 @@ int main(int argc, char * argv[]) {
   const entrada_ts B = {variable, "a", entero, 0};
   const entrada_ts MARCA_BLOQUE = {marca, "1marca", desconocido, 0};
 
-  pushTS(A);
-  pushTS(MARCA_BLOQUE);
-  pushTS(B);
+  insertaTS(A);
+  insertaTS(MARCA_BLOQUE);
+  insertaTS(B);
   salBloqueTS();
 
   //yyin = abrir_entrada(argc, argv);

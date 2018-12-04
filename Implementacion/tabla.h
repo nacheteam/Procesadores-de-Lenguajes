@@ -47,5 +47,5 @@ struct entrada_ts TS[MAX_TS];
 extern long int tope; // Índice de la tabla de símbolos
 extern int yylineno;
 
-void pushTS(entrada_ts entrada);
+void insertaTS(entrada_ts entrada);
 void salBloqueTS();

@@ -16,7 +16,7 @@ programas: all
 $(ANALIZADOR_LEXICO).yy.c: $(ANALIZADOR_LEXICO).l
 	flex -o $@ $^
 
-$(ANALIZADOR_LEXICO): $(OBJ)$(ANALIZADOR_LEXICO).yy.o $(OBJ)yyerror.o
+$(ANALIZADOR_LEXICO): $(OBJ)$(ANALIZADOR_LEXICO).yy.o $(OBJ)yyerror.o $(OBJ)tabla.o
 	gcc -o $@ $^
 
 y.tab.c: $(ANALIZADOR_SINTACTICO).y $(ANALIZADOR_LEXICO).yy.c
