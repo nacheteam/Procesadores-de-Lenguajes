@@ -31,13 +31,12 @@ int main(int argc, char * argv[]) {
   /*
    * Ejemplo de prueba inútil de la tabla de símbolos
    */
-  const entrada_ts A = {procedimiento, "main", desconocido, 0};
-  const entrada_ts B = {variable, "a", entero, 0};
-  const entrada_ts MARCA_BLOQUE = {marca, "1marca", desconocido, 0};
 
-  insertaTS(A);
-  insertaTS(MARCA_BLOQUE);
-  insertaTS(B);
+  insertaVar("ejemploVar", entero);
+  insertaProcedimiento("procedure");
+  insertaParametro("parametro", real);
+  insertaParametro("parametro2", real);
+  entraBloqueTS();
   salBloqueTS();
 
   //yyin = abrir_entrada(argc, argv);
