@@ -12,6 +12,10 @@
   char buffer_error[LONGITUD_ERROR];
   int linea = 1;    // En caso de error se imprimirá la línea donde se dio, empezando en 1
   int error = 0;    // El programa devuelve 1 si ha habido errores de léxico
+
+  #ifndef SET_LEXEMA
+    #define SET_LEXEMA
+  #endif
 %}
 
 %option noyywrap
@@ -51,7 +55,7 @@ com_linea   (\/\/[^\n]*\n)
 {tbase}     return TIPOBASE;
 "main()"    return MAIN;
 "void"      return PROCED;
-{id}        {yylval.lexema = strdup(yytext); return ID;} //TODO: request for member ‘lexema’ in something not a structure or union
+{id}        { SET_LEXEMA; return ID;}
 "("         return PARIZQ;
 ")"         return PARDER;
 [+-]        return SIGNO;

@@ -1,3 +1,5 @@
+#ifndef __TABLA_H__
+#define __TABLA_H__
 
 /* Código adaptado de las diapositivas del tema 7 y del guión de prácticas apéndice F
  (diapositiva 75)*/
@@ -51,3 +53,5 @@ void salBloqueTS();
 void insertaVar(char* identificador, char * nombre_dato);
 void insertaProcedimiento(char * identificador);
 void insertaParametro(char * identificador, char * nombre_dato);
+
+#endif
