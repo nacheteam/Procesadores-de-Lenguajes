@@ -1,4 +1,4 @@
-main(){
+void main(){
 
   begin
     int n b,c
@@ -9,17 +9,17 @@ main(){
   list of bool pb;
   end
 
-    funcionA(int a1 c, double a2, char a3){
+    void funcionA(int a1 c, double a2, char a3){
     begin
       int x1, x2;
     end
 
-      funcionB(char b1, bool b2){
+      void funcionB(char b1, bool b2){
       begin
         double xf, x2;
       end
 
-        funcionC(bool c1, int c2){
+        void funcionC(bool c1, int c2){
         begin
           double x1;
         end
@@ -43,13 +43,13 @@ main(){
     x1 = 2;
   }
 
-    funcionD(double d1){
+    void funcionD(double d1){
       begin
         char dato;
       int valor;
       end
 
-        funcionE(char e1, char e2){
+        void funcionE(char e1, char e2){
         read e1, e2;
         if(e1 == 'a')
           e1 = 'A';

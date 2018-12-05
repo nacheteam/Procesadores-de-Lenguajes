@@ -24,6 +24,7 @@
 %token LISTOF
 %token TIPOBASE
 %token MAIN
+%token PROCED
 %token ID
 %token PARIZQ PARDER
 %token SIGNO
@@ -70,8 +71,8 @@ bloque : inicio_de_bloque
          fin_de_bloque
 ;
 
-cabecera_subprograma : ID PARIZQ lista_parametros PARDER
-                     | ID PARIZQ PARDER
+cabecera_subprograma : PROCED ID PARIZQ lista_parametros PARDER
+                     | PROCED ID PARIZQ PARDER
 ;
 
 cuerpo_declar_variables : tipo lista_identificadores PYC
@@ -154,7 +155,7 @@ parametro : tipo ID
           | error
 ;
 
-programa : MAIN bloque
+programa : PROCED MAIN bloque
 ;
 
 sentencia : bloque

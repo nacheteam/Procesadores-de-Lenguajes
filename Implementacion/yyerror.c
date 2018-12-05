@@ -54,7 +54,7 @@ void trim(char *s){
   s[strlen(s)-1] = '\0';
 }
 
-#define NUM_TOKENS 39
+#define NUM_TOKENS 40
 
 static char * const MAP_TOKENS[2*NUM_TOKENS] = {
   "INCR",      "'++'",
@@ -74,6 +74,7 @@ static char * const MAP_TOKENS[2*NUM_TOKENS] = {
   "LISTOF",    "'list of'",
   "TIPOBASE",  "un tipo",
   "MAIN",      "'main()'",
+  "PROCED",    "'void'",
   "ID",        "un identificador",
   "PARIZQ",    "'('",
   "PARDER",    "')'",

@@ -49,6 +49,7 @@ com_linea   (\/\/[^\n]*\n)
 "list of"   return LISTOF;
 {tbase}     return TIPOBASE;
 "main()"    return MAIN;
+"void"      return PROCED;
 {id}        {/*yylval.lexema = strdup(yytext);*/ return ID;} //TODO: request for member ‘lexema’ in something not a structure or union
 "("         return PARIZQ;
 ")"         return PARDER;

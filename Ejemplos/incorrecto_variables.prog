@@ -1,4 +1,4 @@
-main(){
+void main(){
   begin
   list of int pe, pe2;
   // Falta PYC
