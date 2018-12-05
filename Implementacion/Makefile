@@ -1,5 +1,6 @@
 ANALIZADOR_LEXICO = lexico
 ANALIZADOR_SINTACTICO = sintactico
+ANALIZADOR_SEMANTICO = semantico
 OBJ = obj/
 
 ifdef OS
@@ -8,14 +9,14 @@ ifdef OS
 	CHARSET = -fexec-charset=CP850
 endif
 
-all: $(ANALIZADOR_LEXICO) $(ANALIZADOR_SINTACTICO)
+all: $(ANALIZADOR_LEXICO) $(ANALIZADOR_SINTACTICO) $(ANALIZADOR_SEMANTICO)
 
 programas: all
 
 $(ANALIZADOR_LEXICO).yy.c: $(ANALIZADOR_LEXICO).l
 	flex -o $@ $^
 
-$(ANALIZADOR_LEXICO): $(OBJ)$(ANALIZADOR_LEXICO).yy.o $(OBJ)yyerror.o
+$(ANALIZADOR_LEXICO): $(OBJ)$(ANALIZADOR_LEXICO).yy.o $(OBJ)yyerror.o $(OBJ)tabla.o
 	gcc -o $@ $^
 
 y.tab.c: $(ANALIZADOR_SINTACTICO).y $(ANALIZADOR_LEXICO).yy.c
@@ -28,6 +29,9 @@ $(OBJ)%.o: %.c
 	gcc -c $< -o $@ $(CHARSET)
 
 $(ANALIZADOR_SINTACTICO): $(OBJ)main_$(ANALIZADOR_SINTACTICO).o $(OBJ)y.tab.o $(OBJ)yyerror.o
+	gcc -o $@ $^
+
+$(ANALIZADOR_SEMANTICO): $(OBJ)main_$(ANALIZADOR_SEMANTICO).o $(OBJ)y.tab.o $(OBJ)yyerror.o $(OBJ)tabla.o
 	gcc -o $@ $^
 
 clean:
