@@ -28,7 +28,7 @@ $(OBJ)$(ANALIZADOR_LEXICO).yy.o: $(ANALIZADOR_LEXICO).yy.c y.tab.c
 $(OBJ)%.o: %.c
 	gcc -c $< -o $@ $(CHARSET)
 
-$(ANALIZADOR_SINTACTICO): $(OBJ)main_$(ANALIZADOR_SINTACTICO).o $(OBJ)y.tab.o $(OBJ)yyerror.o
+$(ANALIZADOR_SINTACTICO): $(OBJ)main_$(ANALIZADOR_SINTACTICO).o $(OBJ)y.tab.o $(OBJ)yyerror.o $(OBJ)tabla.o
 	gcc -o $@ $^
 
 $(ANALIZADOR_SEMANTICO): $(OBJ)main_$(ANALIZADOR_SEMANTICO).o $(OBJ)y.tab.o $(OBJ)yyerror.o $(OBJ)tabla.o

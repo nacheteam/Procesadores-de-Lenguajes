@@ -7,6 +7,7 @@
   #include <stdio.h>
   #include "y.tab.h"    // Contiene los códigos asociados a los tokens
   #include "yyerror.h"  // Implementación de yyerror
+  #include "tabla.h"
   #define LONGITUD_ERROR 256
   char buffer_error[LONGITUD_ERROR];
   int linea = 1;    // En caso de error se imprimirá la línea donde se dio, empezando en 1
@@ -50,7 +51,7 @@ com_linea   (\/\/[^\n]*\n)
 {tbase}     return TIPOBASE;
 "main()"    return MAIN;
 "void"      return PROCED;
-{id}        {/*yylval.lexema = strdup(yytext);*/ return ID;} //TODO: request for member ‘lexema’ in something not a structure or union
+{id}        {yylval.lexema = strdup(yytext); return ID;} //TODO: request for member ‘lexema’ in something not a structure or union
 "("         return PARIZQ;
 ")"         return PARDER;
 [+-]        return SIGNO;
