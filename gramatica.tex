@@ -12,9 +12,9 @@
 
 <booleano> ::= True | False
 
-<Cabecera_programa> ::= main()
+<Cabecera_programa> ::= def main()
 
-<Cabecera_subprograma> ::= <identificador>(<lista_parametros>) | <identificador>()
+<Cabecera_subprograma> ::= def <identificador>(<lista_parametros>) | <identificador>()
 
 <cadena> ::= '' <lista_imprimibles> ''
 
@@ -73,7 +73,7 @@
 
 <lista_imprimibles> ::= $\varepsilon$ | <lista_imprimibles> <imprimible>
 
-<lista_parametros> ::= <tipo> <identificador> | <lista_parametros>, <tipo> <identificador>
+<lista_parametros> ::= <parametro> | <lista_parametros>, <parametro>
 
 <lista_variables> ::= <lista_identificadores>
 
@@ -99,6 +99,8 @@
 <op_unario_der> ::= | \verb|<<| | \verb|>>|
 
 <op_unario_iz> ::= \verb|++| | \verb|--| | \verb|!| | \verb|#| | \verb|?| | \verb|$|
+
+<parametro> ::= <tipo> <identificador>
 
 <Programa> ::= <Cabecera_programa> <bloque>
 

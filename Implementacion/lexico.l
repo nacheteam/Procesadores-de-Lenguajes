@@ -49,6 +49,7 @@ com_linea   (\/\/[^\n]*\n)
 "list of"   return LISTOF;
 {tbase}     return TIPOBASE;
 "main()"    return MAIN;
+"void"      return PROCED;
 {id}        return ID;
 "("         return PARIZQ;
 ")"         return PARDER;

@@ -1,14 +1,14 @@
-main(){
+void main(){
   begin
   list of int pe;
   end
 
     // Tipo sin identificador
-    funcionA(int, double a2, char a3){
+    void funcionA(int, double a2, char a3){
       // Falta coma
-      funcionB(char b1 bool b2){
+      void funcionB(char b1 bool b2){
       // Coma sin parámetro
-      funcionC(bool c1,){
+      void funcionC(bool c1,){
         c1 = True;
       }
       b1 = 'a';
@@ -16,9 +16,9 @@ main(){
     a2 = 2;
   }
     // Parámetros sin tipos
-    funcionD(d1, d1){
+    void funcionD(d1, d1){
       // Tipo incorrecto
-      funcionE(charrr e1, char e2){
+      void funcionE(charrr e1, char e2){
         read e1, e2;
       }
       d1 = d1 + 1;

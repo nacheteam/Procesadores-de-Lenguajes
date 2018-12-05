@@ -1,4 +1,4 @@
-main(){
+void main(){
 
   begin
   // Falta PYC
@@ -11,14 +11,14 @@ main(){
   list off double pf, pf2;
   end
 
-    funcionA(int a1, double a2, char a3){
+    void funcionA(int a1, double a2, char a3){
 
-      funcionB(char b1, bool b2){
+      void funcionB(char b1, bool b2){
       begin
         double xf, x2;
         // begin sin end
 
-        funcionC(bool c1, int c2){
+        void funcionC(bool c1, int c2){
         // end sin begin
           double x1;
         end
@@ -29,9 +29,9 @@ main(){
     x1 = 2;
   }
 
-    funcionD(double d1){
+    void funcionD(double d1){
 
-     funcionE(char e1, char e2){
+     void funcionE(char e1, char e2){
         read e1, e2;
       }
 
