@@ -1,0 +1,10 @@
+void main(){
+begin
+  bool € = 0;                //Error léxico
+  int n;
+  int t=True;             //Error semántico
+  list of int l1, l2;
+  char c = int;           //Error sintáctico
+  int k;
+end
+}
