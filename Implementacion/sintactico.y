@@ -5,6 +5,7 @@
   ***************************************/
 
   #include <stdio.h>
+  #include "tabla.h"
   void yyerror(const char * msg);
   int yylex();
 %}
@@ -71,8 +72,8 @@ bloque : inicio_de_bloque
          fin_de_bloque
 ;
 
-cabecera_subprograma : PROCED ID PARIZQ lista_parametros PARDER {insertaProcedimiento($1);} // TODO: Es así?
-                     | PROCED ID PARIZQ PARDER {insertaProcedimiento($1);} // TODO: Es así?
+cabecera_subprograma : PROCED ID PARIZQ lista_parametros PARDER //{insertaProcedimiento($1);} // TODO: Es así?
+   | PROCED ID PARIZQ PARDER //{insertaProcedimiento($1);} // TODO: Es así?
 ;
 
 cuerpo_declar_variables : tipo lista_identificadores PYC
@@ -119,10 +120,10 @@ expresion : PARIZQ expresion PARDER
 expresion_o_cadena : expresion | CADENA
 ;
 
-fin_de_bloque : LLADER {salBloqueTS();}
+fin_de_bloque : LLADER //{salBloqueTS();}
 ;
 
-inicio_de_bloque : LLAIZQ {entraBloqueTS();}
+inicio_de_bloque : LLAIZQ //{entraBloqueTS();}
 ;
 
 lista : CORIZQ CORDER | CORIZQ elementos CORDER
@@ -152,7 +153,7 @@ marca_ini_declar_variables : VARBEGIN
 marca_fin_declar_variables : VAREND
 ;
 
-parametro : tipo ID {insertaParametro($2, $1);} // TODO: Es así?
+parametro : tipo ID //{insertaParametro($2, $1);} // TODO: Es así?
           | error
 ;
 

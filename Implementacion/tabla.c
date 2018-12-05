@@ -32,7 +32,6 @@ int findTS(char * identificador){
   return -1;
 }
 
-/* Halla índice de
 
 /*
  * Devuelve el tipo de identificador en TS

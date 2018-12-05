@@ -11,7 +11,7 @@ typedef enum {
 
 
 /* Tipo de dato.
-   Sólo aplicable cuando sea funcion, variable o parametroFormal*/
+   Sólo aplicable cuando sea variable o parametroFormal*/
 typedef enum {
   entero,
   real,
@@ -21,7 +21,7 @@ typedef enum {
   desconocido
 } TipoDato;
 
-typedef struct {
+typedef struct atributos{
   int token; // Código del token
   TipoDato tipo; // tipo del token
   char * lexema; // Nombre del token
@@ -33,8 +33,7 @@ typedef struct {
 /* DEFINICIÓN DE LOS ELEMENTOS DE LA TABLA DE SÍMBOLOS */
 /*******************************************************/
 
-#define MAX_TS 1000
-
+#define MAX_TS 1024
 
 typedef struct entrada_ts {
   TipoEntrada tipo_entrada; // Tipo de entrada
@@ -49,6 +48,6 @@ extern int yylineno;
 
 void entraBloqueTS();
 void salBloqueTS();
-void insertaVar(char* identificador, TipoDato tipo_dato);
+void insertaVar(char* identificador, char * nombre_dato);
 void insertaProcedimiento(char * identificador);
-void insertaParametro(char * identificador, TipoDato tipo_dato);
+void insertaParametro(char * identificador, char * nombre_dato);

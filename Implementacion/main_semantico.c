@@ -32,10 +32,10 @@ int main(int argc, char * argv[]) {
    * Ejemplo de prueba inútil de la tabla de símbolos
    */
 
-  insertaVar("ejemploVar", entero);
+  insertaVar("ejemploVar", "int");
   insertaProcedimiento("procedure");
-  insertaParametro("parametro", real);
-  insertaParametro("parametro2", real);
+  insertaParametro("parametro", "double");
+  insertaParametro("parametro2", "double");
   entraBloqueTS();
   salBloqueTS();
 
