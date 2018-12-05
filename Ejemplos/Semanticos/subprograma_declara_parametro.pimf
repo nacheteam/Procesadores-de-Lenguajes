@@ -1,0 +1,14 @@
+main(){
+  begin
+    int a;
+    int b;
+    char c;
+  end
+
+  void declaraParametro(int a, int b, char c){
+    begin
+      int a;
+    end
+    write "Fallo.";
+  }
+}
