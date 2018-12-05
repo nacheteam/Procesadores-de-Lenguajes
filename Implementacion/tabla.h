@@ -17,7 +17,7 @@ typedef enum {
   real,
   booleano,
   caracter,
-  lista,
+  lista, // TODO: no se distingue?
   desconocido
 } TipoDato;
 
@@ -47,5 +47,8 @@ struct entrada_ts TS[MAX_TS];
 extern long int tope; // Índice de la tabla de símbolos
 extern int yylineno;
 
-void insertaTS(entrada_ts entrada);
+void entraBloqueTS();
 void salBloqueTS();
+void insertaVar(char* identificador, TipoDato tipo_dato);
+void insertaProcedimiento(char * identificador);
+void insertaParametro(char * identificador, TipoDato tipo_dato);

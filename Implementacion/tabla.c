@@ -131,15 +131,33 @@ void salBloqueTS(){
 /* INSERCIÓN EN LA TS */
 /**********************/
 
+// Lee el tipo de dato
+// TODO: ¿Qué pasa con las listas?
+TipoDato leeTipoDato(char * nombre_tipo){
+  if(!strcmp(nombre_tipo, "int"))
+    return entero;
+  else if(!strcmp(nombre_tipo, "double"))
+    return real;
+  else if(!strcmp(nombre_tipo, "bool"))
+    return booleano;
+  else if(!strcmp(nombre_tipo, "char"))
+    return caracter;
+
+  printf("\n[Linea %d] Error de implementación, '%s' no es un tipo válido", yylineno, nombre_tipo);
+  return desconocido;
+}
+
 /*
  * Introduce un identificador en la tabla de símbolos
  */
-void insertaVar(char* identificador, TipoDato tipo_dato){
+void insertaVar(char* identificador, char * nombre_tipo){
 
   if(findTS(identificador) != -1){
     printf("\n[Línea %d] Error semántico: Identificador duplicado '%s'\n", yylineno, identificador);
     return;
   }
+
+  TipoDato tipo_dato = leeTipoDato(nombre_tipo);
 
   entrada_ts entrada = {
     variable,
@@ -180,7 +198,7 @@ void insertaProcedimiento(char * identificador){
 /*
  * Inserta parámetro formal en la tabla de símbolos
  */
-void insertaParametro(char * identificador, TipoDato tipo_dato){
+void insertaParametro(char * identificador, char * nombre_tipo){
   if(findTS(identificador) != -1){
     printf("\n[Línea %d] Error semántico: Identificador duplicado '%s'\n", yylineno, identificador);
     return;
@@ -192,6 +210,7 @@ void insertaParametro(char * identificador, TipoDato tipo_dato){
     return;
   }
 
+  TipoDato tipo_dato = leeTipoDato(nombre_tipo);
   entrada_ts entrada = {
     parametroFormal,
     strdup(identificador),
