@@ -1,0 +1,20 @@
+void main(){
+  begin
+    int a;
+    char c;
+  end
+
+  void funcion1(int a){
+    begin
+      int n;
+    end
+    a = 7**3;
+  }
+  a=2;
+  funcion1(a,a);      // Se llama a la función con más parámetros de los que tiene.
+  c='c';
+  funcion1(c);        // Se llama a la función con argumentos de tipo erróneo.
+  write "Hola!";
+  funcion1(n);        // Se llama a la función con variables declaradas fuera de alcance.
+  a=4+3;
+}
