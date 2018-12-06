@@ -1,0 +1,14 @@
+void main(){
+  begin
+    int n;
+    list of int i;
+    list of double d;
+  end
+
+  i = [1,2,3];
+  d = [0.1, 0.2, 0.3];
+  i=i++0.2@@1;      // Asignación de un double cuando es una lista de ints.
+  d=d++0.4@@3;
+  i=d;        // Los tipos de las listas no concuerdan.
+  n=0;
+}
