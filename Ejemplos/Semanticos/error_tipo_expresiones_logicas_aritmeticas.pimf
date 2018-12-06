@@ -1,0 +1,18 @@
+void main(){
+  begin
+    int a;
+    int b;
+    bool bo;
+    char c;
+  end
+  a = 1;
+  c = 'c';
+  bo = (a==c);      // Error en los tipos de la comparación.
+  write "1";
+  bo = (a<c);       // Error en los tipos de la desigualdad.
+  b = 2;
+  a = b+c;          // Error en los tipos en la suma.
+  write "2";
+  a = c**b;         // Error en el tipo de la base.
+  write "Hola!";
+}
