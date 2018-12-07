@@ -72,8 +72,8 @@ bloque : inicio_de_bloque
          fin_de_bloque
 ;
 
-cabecera_subprograma : PROCED ID PARIZQ lista_parametros PARDER //{insertaProcedimiento($1);} // TODO: Es así?
-   | PROCED ID PARIZQ PARDER //{insertaProcedimiento($1);} // TODO: Es así?
+cabecera_subprograma : PROCED ID PARIZQ lista_parametros PARDER {insertaProcedimiento($2);} // TODO: Es así?
+   | PROCED ID PARIZQ PARDER {insertaProcedimiento($2);} // TODO: Es así?
 ;
 
 cuerpo_declar_variables : tipo lista_identificadores PYC
@@ -120,10 +120,10 @@ expresion : PARIZQ expresion PARDER
 expresion_o_cadena : expresion | CADENA
 ;
 
-fin_de_bloque : LLADER //{salBloqueTS();}
+fin_de_bloque : LLADER {salBloqueTS();}
 ;
 
-inicio_de_bloque : LLAIZQ //{entraBloqueTS();}
+inicio_de_bloque : LLAIZQ {entraBloqueTS();}
 ;
 
 lista : CORIZQ CORDER | CORIZQ elementos CORDER
@@ -133,7 +133,7 @@ lista_expresiones_o_cadenas : lista_expresiones_o_cadenas COMA expresion_o_caden
                             | expresion_o_cadena
 ;
 
-lista_identificadores : ID | lista_identificadores COMA ID
+lista_identificadores : ID  | lista_identificadores COMA ID
 ;
 
 lista_parametros : parametro
