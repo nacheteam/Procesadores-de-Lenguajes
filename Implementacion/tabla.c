@@ -24,18 +24,23 @@ void insertaTS(entrada_ts entrada){
   tope++;
 }
 
-/* Halla índice de identificador en TS */
+/* Halla índice de identificador de variable o procedimiento en TS
+ * Nota: NO funciona con parámetro
+*/
 int findTS(char * identificador){
   for(int j = 0; j < tope; j++)
-    if(!strcmp(TS[j].nombre, identificador))
+    if(!strcmp(TS[j].nombre, identificador) &&
+       (TS[j].tipo_entrada == variable || TS[j].tipo_entrada == procedimiento))
       return j;
   return -1;
 }
 
 
+
 /*
  * Devuelve el tipo de identificador en TS
  * Si no existe el tipo es "desconocido"
+ * Nota: para los parámetros se añaden después como variable así que esto sirve.
  */
 
 TipoDato tipoTS(char * identificador){
@@ -70,7 +75,11 @@ char * imprimeTipoD(TipoDato tipo){
   case entero: return "entero";
   case real: return "real";
   case booleano: return "booleano";
-  case caracter: return "caracter";
+  case caracter: return "carácter";
+  case listaentero: return "lista de enteros";
+  case listareal: return "lista de reales";
+  case listabool: return "lista de booleanos";
+  case listachar: return "lista de caracteres";
   case lista: return "lista";
   case desconocido: return "desconocido";
   default: return "error";
@@ -107,6 +116,8 @@ void entraBloqueTS(){
   // Entrada que indica comienzo de bloque
   const entrada_ts MARCA_BLOQUE = {marca, "1marca", desconocido, 0};
   insertaTS(MARCA_BLOQUE);
+
+  // TODO: Incluir aquí los parámetros como variables si se entra en un bloque de subprograma.
 }
 
 
@@ -117,7 +128,7 @@ void salBloqueTS(){
 
   for(int j = tope - 1; j > 0; j--){
     if(TS[j].tipo_entrada == marca){
-      tope = j - 1; // TODO: Podría darse j == 0?
+      tope = j - 1;
       return;
     }
   }
@@ -131,7 +142,6 @@ void salBloqueTS(){
 /**********************/
 
 // Lee el tipo de dato
-// TODO: ¿Qué pasa con las listas?
 TipoDato leeTipoDato(char * nombre_tipo){
   if(!strcmp(nombre_tipo, "int"))
     return entero;
@@ -141,6 +151,14 @@ TipoDato leeTipoDato(char * nombre_tipo){
     return booleano;
   else if(!strcmp(nombre_tipo, "char"))
     return caracter;
+  else if(!strcmp(nombre_tipo, "list of int"))
+    return listaentero;
+  else if(!strcmp(nombre_tipo, "list of double"))
+    return listadouble;
+  else if(!strcmp(nombre_tipo, "list of bool"))
+    return listabool;
+  else if(!strcmp(nombre_tipo, "list of char"))
+    return listachar;
 
   printf("\n[Linea %d] Error de implementación, '%s' no es un tipo válido", yylineno, nombre_tipo);
   return desconocido;
@@ -169,15 +187,12 @@ void insertaVar(char* identificador, char * nombre_tipo){
 }
 
 // Posición en la tabla de símbolos del último procedimiento
-// TODO: Alguna idea mejor?
-// TODO: ¿Deberíamos controlarlo cuando se elimine una marca de la Tabla de símbolos?
 long int ultimoProcedimiento = -1;
 
 /*
  * Inserta procedimiento en la tabla de símbolos
  */
 void insertaProcedimiento(char * identificador){
-  // TODO: Puede un procedimiento tener el mismo nombre que una variable? Asumo que no
   if(findTS(identificador) != -1){
     printf("\n[Línea %d] Error semántico: Identificador duplicado '%s'\n", yylineno, identificador);
     return;

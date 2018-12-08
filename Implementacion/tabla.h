@@ -19,7 +19,10 @@ typedef enum {
   real,
   booleano,
   caracter,
-  lista, // TODO: no se distingue?
+  listaentero,
+  listareal,
+  listabool,
+  listachar,
   desconocido
 } TipoDato;
 
