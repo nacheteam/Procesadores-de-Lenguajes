@@ -34,13 +34,15 @@ int main(int argc, char * argv[]) {
    * Ejemplo de prueba inútil de la tabla de símbolos
    */
 
+/*
   insertaVar("ejemploVar", "int");
   insertaProcedimiento("procedure");
   insertaParametro("parametro", "double");
   insertaParametro("parametro2", "double");
   entraBloqueTS();
   salBloqueTS();
+*/
 
-  //yyin = abrir_entrada(argc, argv);
-  //return yyparse();
+  yyin = abrir_entrada(argc, argv);
+  return yyparse();
 }
