@@ -1,5 +1,5 @@
 ---
-title: "Práctica 1 y 2: \\nombre"
+title: "\\nombre"
 subtitle: Procesadores de Lenguajes
 toc: true
 documentclass: scrartcl
