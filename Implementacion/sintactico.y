@@ -12,6 +12,12 @@
 
 %error-verbose   // Permite mensajes de error detallados
 
+// Structs usados en herencia para la tabla de símbolos
+%union{
+  char * lexema;
+  int token;
+  int tipo
+}
 
 // Lista de nombres de los tokens
 
@@ -23,10 +29,10 @@
 %token CADENA
 %token LITERAL
 %token LISTOF
-%token TIPOBASE
+%token <lexema> TIPOBASE
 %token MAIN
 %token PROCED
-%token ID
+%token <lexema> ID
 %token PARIZQ PARDER
 %token SIGNO
 %token UNARIODER
@@ -40,6 +46,8 @@
 %token LLAIZQ LLADER
 %token CORIZQ CORDER
 %token PYC COMA
+
+%type <lexema> tipo lista_identificadores
 
 // Precedencias
 
@@ -76,7 +84,7 @@ cabecera_subprograma : PROCED ID PARIZQ lista_parametros PARDER {insertaProcedim
    | PROCED ID PARIZQ PARDER {insertaProcedimiento($2);} // TODO: Es así?
 ;
 
-cuerpo_declar_variables : tipo lista_identificadores PYC
+cuerpo_declar_variables : tipo lista_identificadores {$2 = $1;} PYC
                         | error
 ;
 
@@ -133,7 +141,7 @@ lista_expresiones_o_cadenas : lista_expresiones_o_cadenas COMA expresion_o_caden
                             | expresion_o_cadena
 ;
 
-lista_identificadores : ID  | lista_identificadores COMA ID
+lista_identificadores : ID {insertaVar($1,$$);} | lista_identificadores COMA ID {insertaVar($3,$1);}
 ;
 
 lista_parametros : parametro
@@ -153,7 +161,7 @@ marca_ini_declar_variables : VARBEGIN
 marca_fin_declar_variables : VAREND
 ;
 
-parametro : tipo ID //{insertaParametro($2, $1);} // TODO: Es así?
+parametro : tipo ID {insertaParametro($2, $1);} // TODO: Es así?
           | error
 ;
 
@@ -195,7 +203,7 @@ sentencias : sentencias sentencia
            | sentencia
 ;
 
-tipo : TIPOBASE | LISTOF TIPOBASE
+tipo : TIPOBASE {$$=$1;} | LISTOF TIPOBASE {$$=$2;}
 ;
 
 variables_locales : variables_locales cuerpo_declar_variables
