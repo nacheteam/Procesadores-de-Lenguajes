@@ -80,7 +80,6 @@ char * imprimeTipoD(TipoDato tipo){
   case listareal: return "lista de reales";
   case listabool: return "lista de booleanos";
   case listachar: return "lista de caracteres";
-  case lista: return "lista";
   case desconocido: return "desconocido";
   default: return "error";
   }
@@ -154,7 +153,7 @@ TipoDato leeTipoDato(char * nombre_tipo){
   else if(!strcmp(nombre_tipo, "list of int"))
     return listaentero;
   else if(!strcmp(nombre_tipo, "list of double"))
-    return listadouble;
+    return listareal;
   else if(!strcmp(nombre_tipo, "list of bool"))
     return listabool;
   else if(!strcmp(nombre_tipo, "list of char"))
