@@ -12,12 +12,12 @@
 
 %error-verbose   // Permite mensajes de error detallados
 
-// Structs usados en herencia para la tabla de símbolos
-%union{
-  char * lexema;
-  int token;
-  int tipo
-}
+/* // Structs usados en herencia para la tabla de símbolos */
+/* %union{ */
+/*   char * lexema; */
+/*   int token; */
+/*   int tipo; */
+/*  } */
 
 // Lista de nombres de los tokens
 

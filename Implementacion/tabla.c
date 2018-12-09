@@ -4,6 +4,9 @@
 #include "tabla.h"
 #include "y.tab.h"
 
+// Muestra DEBUG sii DEBUG no es 0.
+#define DEBUG 1
+
 /* ACCIONES SOBRE LA TABLA DE SÍMBOLOS */
 
 long int tope = 0;
@@ -15,8 +18,14 @@ long int tope = 0;
 
 /* Inserta entrada en TS */
 void insertaTS(entrada_ts entrada){
+  if(DEBUG){
+    printf("[insertaTS] entrada con nombre '%s' en línea %d\n", entrada.nombre, yylineno);
+    fflush(stdout);
+  }
+
   if(tope >= MAX_TS){
     printf("\n[Línea %d] Error: La tabla de símbolos está llena", yylineno);
+    fflush(stdout);
     exit(2);
   }
 
@@ -28,6 +37,12 @@ void insertaTS(entrada_ts entrada){
  * Nota: NO funciona con parámetro
 */
 int findTS(char * identificador){
+
+  if(DEBUG){
+    printf("[findTS] '%s' en línea %d\n", identificador, yylineno);
+    fflush(stdout);
+  }
+
   for(int j = 0; j < tope; j++)
     if(!strcmp(TS[j].nombre, identificador) &&
        (TS[j].tipo_entrada == variable || TS[j].tipo_entrada == procedimiento))
@@ -44,6 +59,11 @@ int findTS(char * identificador){
  */
 
 TipoDato tipoTS(char * identificador){
+  if(DEBUG){
+    printf("[tipoTS] Encuentra tipo de '%s' en línea %d\n", identificador, yylineno);
+    fflush(stdout);
+  }
+
   int j = findTS(identificador);
 
   if(j != -1)
@@ -88,6 +108,7 @@ char * imprimeTipoD(TipoDato tipo){
 void imprimeTS(){
   char sangria[] = "\0";
   printf("Tabla de símbolos en la línea %d:\n", yylineno);
+  fflush(stdout);
   for(int i = 0; i < tope; i++)
     if(TS[i].tipo_entrada == marca){
      strcat(sangria, "  ");
@@ -113,7 +134,7 @@ void imprimeTS(){
  */
 void entraBloqueTS(){
   // Entrada que indica comienzo de bloque
-  const entrada_ts MARCA_BLOQUE = {marca, "1marca", desconocido, 0};
+  const entrada_ts MARCA_BLOQUE = {marca, "[MARCA]", desconocido, 0};
   insertaTS(MARCA_BLOQUE);
 
   // TODO: Incluir aquí los parámetros como variables si se entra en un bloque de subprograma.
@@ -142,6 +163,11 @@ void salBloqueTS(){
 
 // Lee el tipo de dato
 TipoDato leeTipoDato(char * nombre_tipo){
+  if(DEBUG){
+    printf("[leeTipoDato] Lee tipo '%s' en línea %d\n", nombre_tipo, yylineno);
+    fflush(stdout);
+  }
+
   if(!strcmp(nombre_tipo, "int"))
     return entero;
   else if(!strcmp(nombre_tipo, "double"))
@@ -167,6 +193,10 @@ TipoDato leeTipoDato(char * nombre_tipo){
  * Introduce un identificador en la tabla de símbolos
  */
 void insertaVar(char* identificador, char * nombre_tipo){
+  if(DEBUG){
+    printf("[insertaVar] variable '%s' con tipo '%s' en línea %d\n", identificador, nombre_tipo, yylineno);
+    fflush(stdout);
+  }
 
   if(findTS(identificador) != -1){
     printf("\n[Línea %d] Error semántico: Identificador duplicado '%s'\n", yylineno, identificador);
@@ -192,6 +222,11 @@ long int ultimoProcedimiento = -1;
  * Inserta procedimiento en la tabla de símbolos
  */
 void insertaProcedimiento(char * identificador){
+  if(DEBUG){
+    printf("[insertaProcedimiento] procedimiento '%s' en línea %d\n", identificador, yylineno);
+    fflush(stdout);
+  }
+
   if(findTS(identificador) != -1){
     printf("\n[Línea %d] Error semántico: Identificador duplicado '%s'\n", yylineno, identificador);
     return;
@@ -212,6 +247,11 @@ void insertaProcedimiento(char * identificador){
  * Inserta parámetro formal en la tabla de símbolos
  */
 void insertaParametro(char * identificador, char * nombre_tipo){
+  if(DEBUG){
+    printf("[insertaParametro] '%s' con tipo '%s' en línea %d\n", identificador, nombre_tipo, yylineno);
+    fflush(stdout);
+  }
+
   if(findTS(identificador) != -1){
     printf("\n[Línea %d] Error semántico: Identificador duplicado '%s'\n", yylineno, identificador);
     return;
