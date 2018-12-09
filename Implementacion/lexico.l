@@ -55,7 +55,7 @@ com_linea   (\/\/[^\n]*\n)
 {tbase}     return TIPOBASE;
 "main()"    return MAIN;
 "void"      return PROCED;
-{id}        { SET_LEXEMA; return ID;}
+{id}        {yylval.lexema = strdup(yytext); return ID;}
 "("         return PARIZQ;
 ")"         return PARDER;
 [+-]        return SIGNO;

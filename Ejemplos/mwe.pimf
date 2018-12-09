@@ -11,6 +11,6 @@ void f(int e){
 }
 
 a = 1;
-f(a)
+f(a);
 
 }

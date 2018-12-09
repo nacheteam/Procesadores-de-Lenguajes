@@ -5,7 +5,7 @@
 #include "y.tab.h"
 
 // Muestra DEBUG sii DEBUG no es 0.
-#define DEBUG 1
+#define DEBUG 0
 
 /* ACCIONES SOBRE LA TABLA DE SÍMBOLOS */
 
@@ -24,7 +24,7 @@ void insertaTS(entrada_ts entrada){
   }
 
   if(tope >= MAX_TS){
-    printf("\n[Línea %d] Error: La tabla de símbolos está llena", yylineno);
+    printf("[Línea %d] Error: La tabla de símbolos está llena\n", yylineno);
     fflush(stdout);
     exit(2);
   }
@@ -69,7 +69,7 @@ TipoDato tipoTS(char * identificador){
   if(j != -1)
     return TS[j].tipo_dato;
 
-  printf("\n[Línea %d] Error semántico: Identificador no declarado %s\n", yylineno, identificador);
+  printf("[Línea %d] Error semántico: Identificador no declarado %s\n", yylineno, identificador);
   return desconocido;
 }
 
@@ -153,7 +153,7 @@ void salBloqueTS(){
     }
   }
 
-  printf("\n[Linea %d] Error de implementación, se intentó salir de un bloque cuando no hay", yylineno);
+  printf("[Linea %d] Error de implementación, se intentó salir de un bloque cuando no hay\n", yylineno);
 }
 
 
@@ -185,7 +185,7 @@ TipoDato leeTipoDato(char * nombre_tipo){
   else if(!strcmp(nombre_tipo, "list of char"))
     return listachar;
 
-  printf("\n[Linea %d] Error de implementación, '%s' no es un tipo válido", yylineno, nombre_tipo);
+  printf("[Linea %d] Error de implementación, '%s' no es un tipo válido\n", yylineno, nombre_tipo);
   return desconocido;
 }
 
@@ -199,7 +199,7 @@ void insertaVar(char* identificador, char * nombre_tipo){
   }
 
   if(findTS(identificador) != -1){
-    printf("\n[Línea %d] Error semántico: Identificador duplicado '%s'\n", yylineno, identificador);
+    printf("[Línea %d] Error semántico: Identificador duplicado '%s'\n", yylineno, identificador);
     return;
   }
 
@@ -228,7 +228,7 @@ void insertaProcedimiento(char * identificador){
   }
 
   if(findTS(identificador) != -1){
-    printf("\n[Línea %d] Error semántico: Identificador duplicado '%s'\n", yylineno, identificador);
+    printf("[Línea %d] Error semántico: Identificador duplicado '%s'\n", yylineno, identificador);
     return;
   }
 
@@ -253,12 +253,12 @@ void insertaParametro(char * identificador, char * nombre_tipo){
   }
 
   if(findTS(identificador) != -1){
-    printf("\n[Línea %d] Error semántico: Identificador duplicado '%s'\n", yylineno, identificador);
+    printf("[Línea %d] Error semántico: Identificador duplicado '%s'\n", yylineno, identificador);
     return;
   }
 
   if(ultimoProcedimiento == -1){
-    printf("\n[Línea %d] Error de implementación: Parámetro formal '%s' sin procedimiento anterior\n",
+    printf("[Línea %d] Error de implementación: Parámetro formal '%s' sin procedimiento anterior\n",
            yylineno, identificador);
     return;
   }
