@@ -205,7 +205,7 @@ sentencias : sentencias sentencia
            | sentencia
 ;
 
-tipo : TIPOBASE {$$=$1;} | LISTOF TIPOBASE {char str[100]="list of ";strcpy(str,$2);$$=str;}
+tipo : TIPOBASE {$$=$1;} | LISTOF TIPOBASE {char str[100]="list of", str1[100];strcat(str," ");strcat(str,$2);$$=str;}
 ;
 
 variables_locales : variables_locales cuerpo_declar_variables

@@ -106,12 +106,10 @@ char * imprimeTipoD(TipoDato tipo){
 }
 
 void imprimeTS(){
-  char sangria[] = "\0";
+  char sangria[100] = "\0";
   printf("Tabla de símbolos en la línea %d:\n", yylineno);
   fflush(stdout);
   for(int i = 0; i < tope; i++){
-    printf("Empieza una iteración %i / %i\n",i,tope-1);
-    fflush(stdout);
     if(TS[i].tipo_entrada == marca){
      strcat(sangria, "  ");
      printf("%s↳ [marca]\n", sangria);
@@ -137,8 +135,10 @@ void imprimeTS(){
  */
 void entraBloqueTS(){
   // Entrada que indica comienzo de bloque
-  if(DEBUG)
+  if(DEBUG){
     printf("Estoy entrando en un bloque.\n");
+    fflush(stdout);
+  }
   const entrada_ts MARCA_BLOQUE = {marca, "[MARCA]", desconocido, 0};
   insertaTS(MARCA_BLOQUE);
 
@@ -149,14 +149,12 @@ void entraBloqueTS(){
 /* Sal de bloque y elimina de la tabla de símbolos todos los símbolos hasta la última marca
  */
 void salBloqueTS(){
-  if(DEBUG)
+  if(DEBUG){
     printf("Estoy saliendo en un bloque.\n");
-  imprimeTS();
-  printf("Justo antes del for\n");
-  fflush(stdout);
-  for(int j = tope - 1; j > 0; j--){
-    printf("Justo antes del if\n");
     fflush(stdout);
+  }
+  imprimeTS();
+  for(int j = tope - 1; j >= 0; j--){
     if(TS[j].tipo_entrada == marca){
       tope = j - 1;
       return;

@@ -9,10 +9,7 @@ void main(){
     end
     k = k+1;
   }
-
-  begin
-    int n;
-  end
+  
   funcion1(a,b);
   funcion1(c,d);
 }
