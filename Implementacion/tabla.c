@@ -9,7 +9,14 @@
 
 /* ACCIONES SOBRE LA TABLA DE SÍMBOLOS */
 
+// Tope de la tabla de símbolos
 long int tope = 0;
+
+// Posición en la tabla de símbolos del último procedimiento
+long int ultimoProcedimiento = -1;
+
+// Si los parámetros del último procedimiento se han insertado como variables
+int insertaParam = 0;
 
 
 /********************/
@@ -127,44 +134,6 @@ void imprimeTS(){
 
 //////////////////////////////////////////////////////
 
-/*******************************/
-/* ENTRADA Y SALIDA DE BLOQUES */
-/*******************************/
-
-/* Añade a la tabla de símbolos marca de comienzo
- */
-void entraBloqueTS(){
-  // Entrada que indica comienzo de bloque
-  if(DEBUG){
-    printf("Estoy entrando en un bloque.\n");
-    fflush(stdout);
-  }
-  const entrada_ts MARCA_BLOQUE = {marca, "[MARCA]", desconocido, 0};
-  insertaTS(MARCA_BLOQUE);
-
-  // TODO: Incluir aquí los parámetros como variables si se entra en un bloque de subprograma.
-}
-
-
-/* Sal de bloque y elimina de la tabla de símbolos todos los símbolos hasta la última marca
- */
-void salBloqueTS(){
-  if(DEBUG){
-    printf("Estoy saliendo en un bloque.\n");
-    fflush(stdout);
-  }
-  imprimeTS();
-  for(int j = tope - 1; j >= 0; j--){
-    if(TS[j].tipo_entrada == marca){
-      tope = j;
-      return;
-    }
-  }
-
-  printf("[Linea %d] Error de implementación, se intentó salir de un bloque cuando no hay\n", yylineno);
-}
-
-
 /**********************/
 /* INSERCIÓN EN LA TS */
 /**********************/
@@ -200,9 +169,11 @@ TipoDato leeTipoDato(char * nombre_tipo){
 /*
  * Introduce un identificador en la tabla de símbolos
  */
-void insertaVar(char* identificador, char * nombre_tipo){
+
+void insertaVarTipo(char * identificador, TipoDato tipo_dato){
   if(DEBUG){
-    printf("[insertaVar] variable '%s' con tipo '%s' en línea %d\n", identificador, nombre_tipo, yylineno);
+    printf("[insertaVar] variable '%s' con tipo '%s' en línea %d\n",
+           identificador, imprimeTipoD(tipo_dato), yylineno);
     fflush(stdout);
   }
 
@@ -210,8 +181,6 @@ void insertaVar(char* identificador, char * nombre_tipo){
     printf("[Línea %d] Error semántico: Identificador duplicado '%s'\n", yylineno, identificador);
     return;
   }
-
-  TipoDato tipo_dato = leeTipoDato(nombre_tipo);
 
   entrada_ts entrada = {
     variable,
@@ -223,8 +192,10 @@ void insertaVar(char* identificador, char * nombre_tipo){
   insertaTS(entrada);
 }
 
-// Posición en la tabla de símbolos del último procedimiento
-long int ultimoProcedimiento = -1;
+void insertaVar(char* identificador, char * nombre_tipo){
+  TipoDato tipo_dato = leeTipoDato(nombre_tipo);
+  insertaVarTipo(identificador, tipo_dato);
+}
 
 /*
  * Inserta procedimiento en la tabla de símbolos
@@ -249,6 +220,7 @@ void insertaProcedimiento(char * identificador){
 
   insertaTS(entrada);
   ultimoProcedimiento = tope - 1;
+  insertaParam = 1; // Indica que hay que insertar parámetros como variables
 }
 
 /*
@@ -281,4 +253,51 @@ void insertaParametro(char * identificador, char * nombre_tipo){
 
   insertaTS(entrada);
   TS[ultimoProcedimiento].parametros += 1;
+}
+
+
+/*******************************/
+/* ENTRADA Y SALIDA DE BLOQUES */
+/*******************************/
+
+// Inserta parámetros como variables en la TS
+void insertaParametrosComoVariables(){
+  for (int i = 1; i <= TS[ultimoProcedimiento].parametros; i++)
+    insertaVarTipo(TS[ultimoProcedimiento + i].nombre, TS[ultimoProcedimiento + i].tipo_dato);
+}
+
+/* Añade a la tabla de símbolos marca de comienzo
+ */
+void entraBloqueTS(){
+  // Entrada que indica comienzo de bloque
+  if(DEBUG){
+    printf("Estoy entrando en un bloque.\n");
+    fflush(stdout);
+  }
+  const entrada_ts MARCA_BLOQUE = {marca, "[MARCA]", desconocido, 0};
+  insertaTS(MARCA_BLOQUE);
+
+  if(insertaParam){
+    insertaParametrosComoVariables();
+    insertaParam = 0;
+  }
+}
+
+
+/* Sal de bloque y elimina de la tabla de símbolos todos los símbolos hasta la última marca
+ */
+void salBloqueTS(){
+  if(DEBUG){
+    printf("Estoy saliendo en un bloque.\n");
+    fflush(stdout);
+  }
+  imprimeTS();
+  for(int j = tope - 1; j >= 0; j--){
+    if(TS[j].tipo_entrada == marca){
+      tope = j;
+      return;
+    }
+  }
+
+  printf("[Linea %d] Error de implementación, se intentó salir de un bloque cuando no hay\n", yylineno);
 }

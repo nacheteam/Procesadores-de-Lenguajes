@@ -26,6 +26,8 @@ typedef enum {
   desconocido
 } TipoDato;
 
+
+// TODO: Documentar
 #define MAX_IDS 50
 
 typedef struct IDS{
@@ -35,6 +37,7 @@ typedef struct IDS{
 
 #define INIT_IDS(X) IDS X = {.tope_id = 0}
 
+/* Tipo de dato de los atributos */
 typedef struct atributos{
   int token; // Código del token
   TipoDato tipo; // tipo del token
