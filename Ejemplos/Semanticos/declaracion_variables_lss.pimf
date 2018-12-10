@@ -1,10 +1,13 @@
 void main(){
   begin
-    bool € = 0;                //Error léxico
+    bool €;          //Error léxico
     int n;
-    int t=True;             //Error semántico
+    int t;
     list of int l1, l2;
-    char c = int;           //Error sintáctico
+    char c;           //Error sintáctico
     int k;
   end
+
+t = True;
+c = int;
 }
