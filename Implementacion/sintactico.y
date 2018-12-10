@@ -6,6 +6,7 @@
 
   #include <stdio.h>
   #include "tabla.h"
+  #include "string.h"
   void yyerror(const char * msg);
   int yylex();
 %}
@@ -28,7 +29,7 @@
 %token READ WRITE
 %token CADENA
 %token LITERAL
-%token LISTOF
+%token <lexema> LISTOF
 %token <lexema> TIPOBASE
 %token MAIN
 %token PROCED
@@ -47,7 +48,8 @@
 %token CORIZQ CORDER
 %token PYC COMA
 
-%type <lexema> tipo lista_identificadores
+%type <lexema> tipo
+%type <lid> lista_identificadores
 
 // Precedencias
 
@@ -80,11 +82,11 @@ bloque : inicio_de_bloque
          fin_de_bloque
 ;
 
-cabecera_subprograma : PROCED ID PARIZQ lista_parametros PARDER {insertaProcedimiento($2);} // TODO: Es así?
-   | PROCED ID PARIZQ PARDER {insertaProcedimiento($2);} // TODO: Es así?
+cabecera_subprograma : PROCED ID PARIZQ {insertaProcedimiento($2);} lista_parametros PARDER // TODO: Es así?
+   | PROCED ID PARIZQ PARDER {insertaProcedimiento($2);}
 ;
 
-cuerpo_declar_variables : tipo lista_identificadores {$2 = $1;} PYC
+cuerpo_declar_variables : tipo lista_identificadores {for(int i=0; i<$2.tope_id;++i){insertaVar($2.lista_ids[i],$1);};} PYC
                         | error
 ;
 
@@ -141,7 +143,7 @@ lista_expresiones_o_cadenas : lista_expresiones_o_cadenas COMA expresion_o_caden
                             | expresion_o_cadena
 ;
 
-lista_identificadores : ID {insertaVar($1,$$);} | lista_identificadores COMA ID {insertaVar($3,$1);}
+lista_identificadores : ID {$$.lista_ids[$$.tope_id] = $1;$$.tope_id+=1;} | lista_identificadores COMA ID {$$.lista_ids[$$.tope_id] = $3;$$.tope_id+=1;}
 ;
 
 lista_parametros : parametro
@@ -203,7 +205,7 @@ sentencias : sentencias sentencia
            | sentencia
 ;
 
-tipo : TIPOBASE {$$=$1;} | LISTOF TIPOBASE {$$=$2;}
+tipo : TIPOBASE {$$=$1;} | LISTOF TIPOBASE {char str[100]="list of ";strcpy(str,$2);$$=str;}
 ;
 
 variables_locales : variables_locales cuerpo_declar_variables

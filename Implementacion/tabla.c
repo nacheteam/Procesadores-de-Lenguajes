@@ -5,7 +5,7 @@
 #include "y.tab.h"
 
 // Muestra DEBUG sii DEBUG no es 0.
-#define DEBUG 0
+#define DEBUG 1
 
 /* ACCIONES SOBRE LA TABLA DE SÍMBOLOS */
 
@@ -134,6 +134,8 @@ void imprimeTS(){
  */
 void entraBloqueTS(){
   // Entrada que indica comienzo de bloque
+  if(DEBUG)
+    printf("Estoy entrando en un bloque.\n");
   const entrada_ts MARCA_BLOQUE = {marca, "[MARCA]", desconocido, 0};
   insertaTS(MARCA_BLOQUE);
 
@@ -144,8 +146,9 @@ void entraBloqueTS(){
 /* Sal de bloque y elimina de la tabla de símbolos todos los símbolos hasta la última marca
  */
 void salBloqueTS(){
+  if(DEBUG)
+    printf("Estoy saliendo en un bloque.\n");
   imprimeTS();
-
   for(int j = tope - 1; j > 0; j--){
     if(TS[j].tipo_entrada == marca){
       tope = j - 1;

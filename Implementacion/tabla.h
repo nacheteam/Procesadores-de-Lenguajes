@@ -26,10 +26,20 @@ typedef enum {
   desconocido
 } TipoDato;
 
+#define MAX_IDS 50
+
+typedef struct IDS{
+  int tope_id;
+  char* lista_ids[MAX_IDS];
+} IDS;
+
+#define INIT_IDS(X) IDS X = {.tope_id = 0}
+
 typedef struct atributos{
   int token; // Código del token
   TipoDato tipo; // tipo del token
   char * lexema; // Nombre del token
+  IDS lid;
 } atributos;
 
 #define YYSTYPE atributos

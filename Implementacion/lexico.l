@@ -51,8 +51,8 @@ com_linea   (\/\/[^\n]*\n)
 "end"       return VAREND;
 {cadena}    return CADENA;
 {literal}   return LITERAL;
-"list of"   return LISTOF;
-{tbase}     return TIPOBASE;
+"list of"   {yylval.lexema = strdup(yytext); return LISTOF;}
+{tbase}     {yylval.lexema = strdup(yytext); return TIPOBASE;}
 "main()"    return MAIN;
 "void"      return PROCED;
 {id}        {yylval.lexema = strdup(yytext); return ID;}
