@@ -5,7 +5,7 @@
 #include "y.tab.h"
 
 // Muestra DEBUG sii DEBUG no es 0.
-#define DEBUG 1
+#define DEBUG 0
 
 /* ACCIONES SOBRE LA TABLA DE SÍMBOLOS */
 
@@ -156,7 +156,7 @@ void salBloqueTS(){
   imprimeTS();
   for(int j = tope - 1; j >= 0; j--){
     if(TS[j].tipo_entrada == marca){
-      tope = j - 1;
+      tope = j;
       return;
     }
   }
