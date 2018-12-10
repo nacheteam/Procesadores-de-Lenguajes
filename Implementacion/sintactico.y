@@ -82,7 +82,7 @@ bloque : inicio_de_bloque
          fin_de_bloque
 ;
 
-cabecera_subprograma : PROCED ID PARIZQ {insertaProcedimiento($2);} lista_parametros PARDER // TODO: Es así?
+cabecera_subprograma : PROCED ID PARIZQ {insertaProcedimiento($2);} lista_parametros PARDER
    | PROCED ID PARIZQ PARDER {insertaProcedimiento($2);}
 ;
 
@@ -163,7 +163,7 @@ marca_ini_declar_variables : VARBEGIN
 marca_fin_declar_variables : VAREND
 ;
 
-parametro : tipo ID {insertaParametro($2, $1);} // TODO: Es así?
+parametro : tipo ID {insertaParametro($2, $1);}
           | error
 ;
 
