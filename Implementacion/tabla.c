@@ -109,7 +109,9 @@ void imprimeTS(){
   char sangria[] = "\0";
   printf("Tabla de símbolos en la línea %d:\n", yylineno);
   fflush(stdout);
-  for(int i = 0; i < tope; i++)
+  for(int i = 0; i < tope; i++){
+    printf("Empieza una iteración %i / %i\n",i,tope-1);
+    fflush(stdout);
     if(TS[i].tipo_entrada == marca){
      strcat(sangria, "  ");
      printf("%s↳ [marca]\n", sangria);
@@ -121,6 +123,7 @@ void imprimeTS(){
       else
         printf(" con %d parámetros\n", TS[i].parametros);
     }
+  }
 }
 
 
@@ -149,7 +152,11 @@ void salBloqueTS(){
   if(DEBUG)
     printf("Estoy saliendo en un bloque.\n");
   imprimeTS();
+  printf("Justo antes del for\n");
+  fflush(stdout);
   for(int j = tope - 1; j > 0; j--){
+    printf("Justo antes del if\n");
+    fflush(stdout);
     if(TS[j].tipo_entrada == marca){
       tope = j - 1;
       return;
