@@ -50,7 +50,7 @@ com_linea   (\/\/[^\n]*\n)
 "begin"     return VARBEGIN;
 "end"       return VAREND;
 {cadena}    return CADENA;
-{literal}   return LITERAL;
+{literal}   {yylval.lexema = strdup(yytext); return LITERAL;}
 "list of"   {yylval.lexema = strdup(yytext); return LISTOF;}
 {tbase}     {yylval.lexema = strdup(yytext); return TIPOBASE;}
 "main()"    return MAIN;

@@ -6,9 +6,12 @@
 
   #include <stdio.h>
   #include "tabla.h"
+  #include "comprobaciones.h"
   #include "string.h"
   void yyerror(const char * msg);
   int yylex();
+
+  //TipoDato getTipoLiteral(char * literal);
 %}
 
 %error-verbose   // Permite mensajes de error detallados
@@ -28,7 +31,7 @@
 %token IF ELSE WHILE REPEAT UNTIL
 %token READ WRITE
 %token CADENA
-%token LITERAL
+%token <lexema> LITERAL
 %token <lexema> LISTOF
 %token <lexema> TIPOBASE
 %token MAIN
@@ -50,6 +53,8 @@
 
 %type <lexema> tipo
 %type <lid> lista_identificadores
+%type <tipo> expresion
+%type <tipo> elementos
 
 // Precedencias
 
@@ -101,17 +106,18 @@ declar_de_variables_locales : |  marca_ini_declar_variables
 declar_subprog : cabecera_subprograma bloque
 ;
 
-elementos : expresion | elementos COMA expresion
+elementos : expresion {$$ = $1;}
+          | elementos COMA expresion {$$ = $3;} // TODO: Comprobación
 ;
 
-expresion : PARIZQ expresion PARDER
-          | expresion INCR expresion ARROBARROBA expresion
-          | INCR expresion
-          | DECR expresion
-          | UNARIOIZQ expresion
-          | expresion UNARIODER
-          | SIGNO expresion  %prec UNARIOIZQ
-          | expresion SIGNO expresion
+expresion : PARIZQ expresion PARDER {$$ = $2;}
+          | expresion INCR expresion ARROBARROBA expresion {$$ = $1;} // TODO: Comprobación
+          | INCR expresion {$$ = $2;} // TODO: Comprobación
+          | DECR expresion {$$ = $2;} // TODO: Comprobación
+          | UNARIOIZQ expresion {$$ = $2;} // TODO: Comprobar según token
+          | expresion UNARIODER {$$ = $1;} // TODO: Comprobar según token
+          | SIGNO expresion  {$$ = $2;} %prec UNARIOIZQ // TODO: Comprobar según token
+          | expresion SIGNO expresion {$$ = $1;} // TODO: Comprobar según token
           | expresion OR expresion
           | expresion AND expresion
           | expresion XOR expresion
@@ -121,8 +127,8 @@ expresion : PARIZQ expresion PARDER
           | expresion EXP expresion
           | expresion ARROBA expresion
           | expresion DECR expresion
-          | ID
-          | LITERAL
+          | ID {$$ = tipoTS($1);}
+          | LITERAL {$$ = getTipoLiteral($1);}
           | lista
           | error
 ;
@@ -189,16 +195,16 @@ sentencia_else :| ELSE sentencia
 sentencia_entrada : READ lista_variables PYC
 ;
 
-sentencia_if : IF PARIZQ expresion PARDER sentencia sentencia_else
+sentencia_if : IF PARIZQ expresion PARDER sentencia sentencia_else {compruebaCondicion("if", $3);}
 ;
 
-sentencia_repeat_until : REPEAT sentencia UNTIL expresion PYC
+sentencia_repeat_until : REPEAT sentencia UNTIL expresion PYC {compruebaCondicion("repeat-until", $4);}
 ;
 
 sentencia_salida : WRITE lista_expresiones_o_cadenas PYC
 ;
 
-sentencia_while : WHILE PARIZQ expresion PARDER sentencia
+sentencia_while : WHILE PARIZQ expresion PARDER sentencia {compruebaCondicion("while", $3);}
 ;
 
 sentencias : sentencias sentencia

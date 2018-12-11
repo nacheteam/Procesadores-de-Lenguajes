@@ -9,7 +9,7 @@ ifdef OS
 	CHARSET = -fexec-charset=CP850
 endif
 
-all: $(ANALIZADOR_SINTACTICO) $(ANALIZADOR_SEMANTICO)
+all: $(ANALIZADOR_SEMANTICO) $(ANALIZADOR_SINTACTICO)
 
 programas: all
 
