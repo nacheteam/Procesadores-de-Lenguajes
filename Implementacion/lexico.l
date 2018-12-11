@@ -59,8 +59,8 @@ com_linea   (\/\/[^\n]*\n)
 "("         return PARIZQ;
 ")"         return PARDER;
 [+-]        return SIGNO;
-"<<"|">>"   return UNARIODER;
-[!#?$]      return UNARIOIZQ;
+"<<"|">>"   {yylval.lexema = strdup(yytext); return UNARIODER;}
+[!#?$]      {yylval.lexema = strdup(yytext); return UNARIOIZQ;}
 "||"        return OR;
 "&&"        return AND;
 "^"         return XOR;
