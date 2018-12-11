@@ -62,7 +62,7 @@ typedef struct entrada_ts {
 
 struct entrada_ts TS[MAX_TS];
 extern long int tope; // Índice de la tabla de símbolos
-extern int yylineno;
+extern int linea;
 
 void entraBloqueTS();
 void salBloqueTS();
