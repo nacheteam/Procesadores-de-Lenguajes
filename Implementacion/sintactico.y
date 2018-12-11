@@ -38,15 +38,15 @@
 %token PROCED
 %token <lexema> ID
 %token PARIZQ PARDER
-%token SIGNO
+%token <lexema> SIGNO
 %token <lexema> UNARIODER
 %token <lexema> UNARIOIZQ
-%token OR AND XOR
-%token COMP_IG COMP_MM
+%token <lexema> OR AND XOR
+%token <lexema> COMP_IG COMP_MM
 %token <lexema> PROD_DIV_MOD
 %token <lexema> EXP
 %token <lexema> ARROBA
-%token ARROBARROBA
+%token <lexema> ARROBARROBA
 %token LLAIZQ LLADER
 %token CORIZQ CORDER
 %token PYC COMA
@@ -114,15 +114,15 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
           | expresion INCR expresion ARROBARROBA expresion {if(($1==listaentero && $3==entero && $5==entero) || ($1==listareal && $3==real && $5==entero) || ($1==listabool && $3==booleano && $5==entero) || ($1==listachar && $3==caracter && $5==entero))
                                                               $$ = $1;
                                                             else
-                                                              printf("Los tipos %s y %s no son compatibles o %s no es entero\n",tipoStr($1),tipoStr($3),tipoStr($5));} // TODO: Comprobación
+                                                              printf("Los tipos %s y %s no son compatibles o %s no es entero para aplicar el operador ternario %s y %s\n",tipoStr($1),tipoStr($3),tipoStr($5),$2,$4);} // TODO: Comprobación
           | INCR expresion {if($2==entero || $2==real)
                               $$ = $2;
                             else
-                              printf("El tipo %s no es ni entero ni real\n",tipoStr($2));} // TODO: Comprobación
+                              printf("El tipo %s no es ni entero ni real para aplicar el operador unario %s\n",tipoStr($2),$1);} // TODO: Comprobación
           | DECR expresion {if($2==entero || $2==real)
                               $$ = $2;
                             else
-                              printf("El tipo %s no es ni entero ni real\n",tipoStr($2));} // TODO: Comprobación
+                              printf("El tipo %s no es ni entero ni real para aplicar el operador unario %s\n",tipoStr($2),$1);} // TODO: Comprobación
           | UNARIOIZQ expresion {if((strcmp($1,"!")==0 && $2==booleano) || ((strcmp($1,"#")==0 || strcmp($1,"?")==0 || strcmp($1,"$")==0) && ($2==listaentero || $2==listareal || $2==listabool || $2==listachar)))
                                   $$ = $2;
                                 else
@@ -134,31 +134,31 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
           | SIGNO expresion  {if($2==entero || $2==real)
                                 $$ = $2;
                               else
-                                printf("El tipo %s no es compatible con + y -\n",tipoStr($2));} %prec UNARIOIZQ // TODO: Comprobar según token
+                                printf("El tipo %s no es compatible con el operador unario %s\n",tipoStr($2),$1);} %prec UNARIOIZQ // TODO: Comprobar según token
           | expresion SIGNO expresion {if(($1==$3 && ($1==listaentero || $1==listareal || $1==listabool || $1==listachar)) || (($1==entero || $1==real) && ($3==entero || $3==real)))
                                         $$ = $1;
                                       else
-                                        printf("Los tipos %s y %s no son iguales o no son un entero, real o lista.\n",tipoStr($1),tipoStr($3));} // TODO: Comprobar según token
+                                        printf("Los tipos %s y %s no son iguales o no son un entero, real o lista para aplicar %s\n",tipoStr($1),tipoStr($3),$2);} // TODO: Comprobar según token
           | expresion OR expresion {if($1==booleano && $3==booleano)
                                       $$=$1;
                                     else
-                                      printf("Los tipos %s y %s no son booleanos.\n", tipoStr($1),tipoStr($3));}
+                                      printf("Los tipos %s y %s no son booleanos para aplicar %s.\n", tipoStr($1),tipoStr($3),$2);}
           | expresion AND expresion {if($1==booleano && $3==booleano)
                                       $$=$1;
                                     else
-                                      printf("Los tipos %s y %s no son booleanos.\n", tipoStr($1),tipoStr($3));}
+                                      printf("Los tipos %s y %s no son booleanos para aplicar %s.\n", tipoStr($1),tipoStr($3),$2);}
           | expresion XOR expresion {if($1==booleano && $3==booleano)
                                       $$=$1;
                                     else
-                                      printf("Los tipos %s y %s no son booleanos.\n", tipoStr($1),tipoStr($3));}
+                                      printf("Los tipos %s y %s no son booleanos para aplicar %s.\n", tipoStr($1),tipoStr($3),$2);}
           | expresion COMP_IG expresion {if($1==$3)
                                           $$=$1;
                                         else
-                                          printf("Los tipos %s y %s no coinciden.\n", tipoStr($1),tipoStr($3));}
+                                          printf("Los tipos %s y %s no coinciden para aplicar %s.\n", tipoStr($1),tipoStr($3),$2);}
           | expresion COMP_MM expresion {if($1==$3 && ($1==entero || $1==real))
                                           $$=$1;
                                         else
-                                          printf("Los tipos %s y %s no coinciden o no son enteros o reales\n", tipoStr($1),tipoStr($3));}
+                                          printf("Los tipos %s y %s no coinciden o no son enteros o reales para aplicar %s\n", tipoStr($1),tipoStr($3),$2);}
           | expresion PROD_DIV_MOD expresion {if((strcmp($2,"%")==0 && ($1==entero || $1==real) && $1==entero) || ($1==$2 && ($1==listaentero || $1==listareal || $1==listabool || $1==listachar)) || (($1==entero || $1==real) && ($3==entero || $3==real)))
                                                 $$ = $1;
                                               else
@@ -174,7 +174,7 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
           | expresion DECR expresion {if(($1==listaentero || $1==listareal || $1==listabool || $1==listachar) && $3==entero)
                                         $$=$1;
                                       else
-                                        printf("%s no es una lista o %s no es entero para aplicar %s",tipoStr($1),tipoStr($3),$2);}
+                                        printf("%s no es una lista o %s no es entero para aplicar %s\n",tipoStr($1),tipoStr($3),$2);}
           | ID {$$ = tipoTS($1);}
           | LITERAL {$$ = getTipoLiteral($1);}
           | lista

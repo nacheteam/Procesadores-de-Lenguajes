@@ -58,18 +58,18 @@ com_linea   (\/\/[^\n]*\n)
 {id}        {yylval.lexema = strdup(yytext); return ID;}
 "("         return PARIZQ;
 ")"         return PARDER;
-[+-]        return SIGNO;
+[+-]        {yylval.lexema = strdup(yytext); return SIGNO;}
 "<<"|">>"   {yylval.lexema = strdup(yytext); return UNARIODER;}
 [!#?$]      {yylval.lexema = strdup(yytext); return UNARIOIZQ;}
-"||"        return OR;
-"&&"        return AND;
-"^"         return XOR;
+"||"        {yylval.lexema = strdup(yytext); return OR;}
+"&&"        {yylval.lexema = strdup(yytext); return AND;}
+"^"         {yylval.lexema = strdup(yytext); return XOR;}
 [=!]=       return COMP_IG;
 [<>]=?      return COMP_MM;
 [*/%]       {yylval.lexema = strdup(yytext); return PROD_DIV_MOD;}
 "**"        {yylval.lexema = strdup(yytext); return EXP;}
 "@"         {yylval.lexema = strdup(yytext); return ARROBA;}
-"@@"        return ARROBARROBA;
+"@@"        {yylval.lexema = strdup(yytext); return ARROBARROBA;}
 "{"         return LLAIZQ;
 "}"         return LLADER;
 "["         return CORIZQ;
