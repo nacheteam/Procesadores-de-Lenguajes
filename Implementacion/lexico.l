@@ -37,8 +37,8 @@ com_linea   (\/\/[^\n]*\n)
 
  // Reglas
 
-"++"        return INCR;
-"--"        return DECR;
+"++"        {yylval.lexema = strdup(yytext); return INCR;}
+"--"        {yylval.lexema = strdup(yytext); return DECR;}
 "="         return ASIGN;
 "if"        return IF;
 "else"      return ELSE;
@@ -66,9 +66,9 @@ com_linea   (\/\/[^\n]*\n)
 "^"         return XOR;
 [=!]=       return COMP_IG;
 [<>]=?      return COMP_MM;
-[*/%]       return PROD_DIV_MOD;
-"**"        return EXP;
-"@"         return ARROBA;
+[*/%]       {yylval.lexema = strdup(yytext); return PROD_DIV_MOD;}
+"**"        {yylval.lexema = strdup(yytext); return EXP;}
+"@"         {yylval.lexema = strdup(yytext); return ARROBA;}
 "@@"        return ARROBARROBA;
 "{"         return LLAIZQ;
 "}"         return LLADER;
