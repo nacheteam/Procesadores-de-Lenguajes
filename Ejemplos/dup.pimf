@@ -1,0 +1,17 @@
+void main(){
+begin
+int a;
+bool a;
+end
+
+void f(int e){
+  begin
+   bool a;
+  end
+  write e;
+}
+
+a = 1;
+f(a);
+
+}

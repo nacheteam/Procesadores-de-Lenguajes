@@ -50,13 +50,26 @@ int findTS(char * identificador){
     fflush(stdout);
   }
 
-  for(int j = 0; j < tope; j++)
+  for(int j = tope - 1; j >= 0; j--)
     if(!strcmp(TS[j].nombre, identificador) &&
        (TS[j].tipo_entrada == variable || TS[j].tipo_entrada == procedimiento))
-      return j;
+      return j; // Devuelve primera ocurrencia de abajo a arriba
   return -1;
 }
 
+
+/* Comprueba si un identificador está duplicado en su ámbito.
+ * 0 si no es duplicado, 1 si sí lo es
+ */
+int esDuplicado(char * identificador){
+  for(int j = tope - 1; j >= 0; j--){
+    if(!strcmp(TS[j].nombre, identificador) &&
+       (TS[j].tipo_entrada == variable || TS[j].tipo_entrada == procedimiento))
+      return 1; // Si hay uno con el mismo nombre en el mismo bloque
+    else if(TS[j].tipo_entrada == marca)
+      return 0;
+  }
+}
 
 
 /*
@@ -177,7 +190,7 @@ void insertaVarTipo(char * identificador, TipoDato tipo_dato){
     fflush(stdout);
   }
 
-  if(findTS(identificador) != -1){
+  if(esDuplicado(identificador)){
     printf("[Línea %d] Error semántico: Identificador duplicado '%s'\n", linea, identificador);
     return;
   }
@@ -206,7 +219,7 @@ void insertaProcedimiento(char * identificador){
     fflush(stdout);
   }
 
-  if(findTS(identificador) != -1){
+  if(esDuplicado(identificador)){
     printf("[Línea %d] Error semántico: Identificador duplicado '%s'\n", linea, identificador);
     return;
   }
@@ -232,7 +245,7 @@ void insertaParametro(char * identificador, char * nombre_tipo){
     fflush(stdout);
   }
 
-  if(findTS(identificador) != -1){
+  if(esDuplicado(identificador)){
     printf("[Línea %d] Error semántico: Identificador duplicado '%s'\n", linea, identificador);
     return;
   }
