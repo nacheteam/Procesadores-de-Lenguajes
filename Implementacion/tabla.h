@@ -70,5 +70,6 @@ void insertaVar(char* identificador, char * nombre_dato);
 void insertaProcedimiento(char * identificador);
 void insertaParametro(char * identificador, char * nombre_dato);
 TipoDato tipoTS(char * identificador);
+char* tipoStr(TipoDato tipo);
 
 #endif

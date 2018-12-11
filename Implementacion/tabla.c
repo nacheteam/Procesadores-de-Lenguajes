@@ -23,6 +23,24 @@ int subProg = 0;
 /* ACCIONES BÁSICAS */
 /********************/
 
+/*
+ * Devuelve una cadena con el tipo del parámetro.
+ */
+char* tipoStr(TipoDato tipo){
+  switch (tipo) {
+  case entero: return "entero";
+  case real: return "real";
+  case booleano: return "booleano";
+  case caracter: return "caracter";
+  case listaentero: return "listaentero";
+  case listareal: return "listareal";
+  case listabool: return "listabool";
+  case listachar: return "listachar";
+  case desconocido: return "desconocido";
+  default: return "error";
+  }
+}
+
 /* Inserta entrada en TS */
 void insertaTS(entrada_ts entrada){
   if(DEBUG){
