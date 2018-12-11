@@ -16,7 +16,7 @@ long int tope = 0;
 long int ultimoProcedimiento = -1;
 
 // Si los parámetros del último procedimiento se han insertado como variables
-int insertaParam = 0;
+int subProg = 0;
 
 
 /********************/
@@ -233,7 +233,7 @@ void insertaProcedimiento(char * identificador){
 
   insertaTS(entrada);
   ultimoProcedimiento = tope - 1;
-  insertaParam = 1; // Indica que hay que insertar parámetros como variables
+  subProg = 1; // Indica que hay que insertar parámetros como variables
 }
 
 /*
@@ -290,9 +290,9 @@ void entraBloqueTS(){
   const entrada_ts MARCA_BLOQUE = {marca, "[MARCA]", desconocido, 0};
   insertaTS(MARCA_BLOQUE);
 
-  if(insertaParam){
+  if(subProg){
     insertaParametrosComoVariables();
-    insertaParam = 0;
+    subProg = 0;
   }
 }
 
