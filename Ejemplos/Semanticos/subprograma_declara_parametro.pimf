@@ -8,7 +8,7 @@ void main(){
   void declaraParametro(int l, int k, char t){
     // Se vuelve a declarar el parámetro a.
     begin
-      int a;
+      int l;
     end
     write "Fallo.";
   }
