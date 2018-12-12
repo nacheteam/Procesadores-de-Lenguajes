@@ -107,8 +107,8 @@ declar_de_variables_locales : |  marca_ini_declar_variables
 declar_subprog : cabecera_subprograma bloque
 ;
 
-elementos : expresion {$$ = $1;}
-          | elementos COMA expresion {$$ = $3;} // TODO: Comprobación
+elementos : expresion { $$.tipos[$$.tope_elem] = $1; $$.tope_elem++; }
+          | elementos COMA expresion { $$.tipos[$$.tope_elem] = $3; $$.tope_elem++; } // TODO: Comprobación
 ;
 
 expresion : PARIZQ expresion PARDER {$$ = $2;}
@@ -223,8 +223,8 @@ lista_parametros : parametro
 lista_variables : lista_identificadores
 ;
 
-llamada_proced : ID PARIZQ elementos PARDER PYC {/* TODO: comprobación semántica here */}
-               | ID PARIZQ PARDER PYC
+llamada_proced : ID PARIZQ elementos PARDER PYC { compruebaLlamada(&$3, $1); }
+               | ID PARIZQ PARDER PYC { compruebaLlamada(NULL, $1); }
 ;
 
 marca_ini_declar_variables : VARBEGIN

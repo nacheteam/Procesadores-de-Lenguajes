@@ -37,9 +37,9 @@ typedef struct IDS{
 } IDS;
 
 typedef struct Elem{
-  TipoDato* tipos[MAX_ELEM];
+  TipoDato tipos[MAX_ELEM];
   int tope_elem;
-}
+} Elem;
 
 #define INIT_IDS(X) IDS X = {.tope_id = 0}
 #define INIT_Elem(X) Elem X = {.tope_elem = 0}
@@ -79,5 +79,6 @@ void insertaProcedimiento(char * identificador);
 void insertaParametro(char * identificador, char * nombre_dato);
 TipoDato tipoTS(char * identificador);
 char* tipoStr(TipoDato tipo);
+int findTS(char * identificador);
 
 #endif
