@@ -264,9 +264,12 @@ TSWLatexianTemp*
 *.tab.c
 *.tab.h
 
+# Código para el programa que realiza únicamente análisis sintáctico
+Implementacion/sintactico.y
+
 # Ejecutables Windows
 *.exe
 
 # Código objeto
 *.o
-Implementacion/y.output
+*.output

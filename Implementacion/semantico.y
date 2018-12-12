@@ -132,12 +132,16 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
                                   $$ = $2;
                                 else if(strcmp($1,"#")==0 && ($2==listaentero || $2==listareal || $2==listabool || $2==listachar))
                                   $$ = entero;
+                                                   
                                 else if(strcmp($1,"?")==0 && $2==listaentero)
                                   $$ = entero;
+                                                   
                                 else if(strcmp($1,"?")==0 && $2==listareal)
                                   $$=real;
+                                                   
                                 else if(strcmp($1,"?")==0 && $2==listabool)
                                   $$=booleano;
+                                                   
                                 else if(strcmp($1,"?")==0 && $2==listachar)
                                   $$=caracter;
                                 else if(strcmp($1,"$")==0)
@@ -160,7 +164,7 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
           | expresion SIGNO expresion {if(($1==$3 && ($1==listaentero || $1==listareal || $1==listabool || $1==listachar)) || (($1==entero || $1==real) && ($3==entero || $3==real)))
                                         $$ = $1;
                                       else{
-                                        printf("[%d] Error semántico: Los tipos %s y %s no son iguales o no son un entero, real o lista para aplicar %s\n", linea, tipoStr($1),tipoStr($3),$2);
+                                        printf("[%d] Error semántico: Los tipos %s y %s no son iguales o no son un entero, real o lista para aplicar %sn", linea, tipoStr($1),tipoStr($3),$2);
                                         $$ = desconocido;}} // TODO: Comprobar según token
           | expresion OR expresion {if($1==booleano && $3==booleano)
                                       $$=$1;

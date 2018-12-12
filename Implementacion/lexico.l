@@ -5,15 +5,19 @@
   ***********************************/
 
   #include <stdio.h>
+  #include "tabla.h"
   #include "y.tab.h"    // Contiene los códigos asociados a los tokens
   #include "yyerror.h"  // Implementación de yyerror
-  #include "tabla.h"
   #define LONGITUD_ERROR 256
   char buffer_error[LONGITUD_ERROR];
   int linea = 1;    // En caso de error se imprimirá la línea donde se dio, empezando en 1
   int error = 0;    // El programa devuelve 1 si ha habido errores de léxico
 
-  #define SET_LEXEMA { yylval.lexema = strdup(yytext); }
+  #ifndef MAIN_LEXICO
+    #define SET_LEXEMA { yylval.lexema = strdup(yytext); }
+  #else
+    #define SET_LEXEMA
+  #endif
 %}
 
 %option noyywrap
