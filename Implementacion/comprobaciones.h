@@ -1,6 +1,8 @@
 #ifndef __COMPROBACIONES_H__
 #define __COMPROBACIONES_H__
 
+#include <string.h>
+
 extern int linea;
 
 /* Obtiene el tipo de un literal */
@@ -17,7 +19,6 @@ TipoDato getTipoLiteral(char * literal){
       for (char * p = literal; *p != '\0'; ++p)
         if (*p <= '0' || *p >= '9')
           return real;
-
       return entero;
   }
 }
