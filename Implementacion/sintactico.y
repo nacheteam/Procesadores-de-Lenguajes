@@ -206,7 +206,14 @@ fin_de_bloque : LLADER {salBloqueTS();}
 inicio_de_bloque : LLAIZQ {entraBloqueTS();}
 ;
 
-lista : CORIZQ CORDER {$$=desconocido;} | CORIZQ elementos CORDER {$$=$2;}
+lista : CORIZQ CORDER {$$=desconocido;} | CORIZQ elementos CORDER {for(int i=0;i<$2.tope_elem-1;++i)
+                                                                    if($2.tipos[$2.tope_elem]!=$2.tipos[$2.tope_elem+1]){
+                                                                      $$=desconocido;
+                                                                      break;
+                                                                    }
+                                                                    else{
+                                                                      $$=$2.tipos[0];
+                                                                      }}
 ;
 
 lista_expresiones_o_cadenas : lista_expresiones_o_cadenas COMA expresion_o_cadena
