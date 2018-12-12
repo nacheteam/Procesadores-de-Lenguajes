@@ -239,7 +239,6 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
                                               }
                                         }
                                   }
-                                              }}
           | expresion EXP expresion { if ($1 == entero || $1 == real) {
                                       if ($3 == entero)
                                         $$=$1;
@@ -283,7 +282,7 @@ lista : CORIZQ elementos CORDER {for(int i=0;i<$2.tope_elem-1;++i)
                                                                       printf("[%d] Error semántico: lista con elementos de distinto tipo: %s y %s\n", linea, tipoStr($2.tipos[i]),tipoStr($2.tipos[i+1]));
                                                                       break;
                                                                     }
-                                                                    
+
                                                                     if ($$!=desconocido) {
                                                                       if($2.tipos[0]==entero)
                                                                         $$=listaentero;
