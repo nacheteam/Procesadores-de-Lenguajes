@@ -70,7 +70,7 @@ void main(){
     }
 
   pe = [1,2,3];
-  pe2 = pe**[];
+  pe2 = pe**[4];
 
   if(?pe2 == 1)
     write "El primer elemento de pe2 es 1";

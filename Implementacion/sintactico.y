@@ -181,7 +181,7 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
                                                 printf("[%d] Error semántico: Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", linea, tipoStr($1),tipoStr($3),$2);}
           | expresion EXP expresion {if(($1==entero || $1==real) && $3==entero)
                                       $$=$1;
-                                    else
+                                    else if ($1==$3 && ($1==listaentero || $1==listachar || $1==listabool || $1==listareal))
                                       printf("[%d] Error semántico: %s debe entero y %s debe ser entero o real para aplicar %s\n", linea, tipoStr($3),tipoStr($1),$2);}
           | expresion ARROBA expresion {if(($1==listaentero || $1==listareal || $1==listabool || $1==listachar) && $3==entero)
                                           $$=$1;
@@ -206,7 +206,7 @@ fin_de_bloque : LLADER {salBloqueTS();}
 inicio_de_bloque : LLAIZQ {entraBloqueTS();}
 ;
 
-lista : CORIZQ CORDER {$$=desconocido;} | CORIZQ elementos CORDER {for(int i=0;i<$2.tope_elem-1;++i)
+lista : CORIZQ elementos CORDER {for(int i=0;i<$2.tope_elem-1;++i)
                                                                     if($2.tipos[$2.tope_elem]!=$2.tipos[$2.tope_elem+1]){
                                                                       $$=desconocido;
                                                                       break;
