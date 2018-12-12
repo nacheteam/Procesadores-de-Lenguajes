@@ -55,6 +55,7 @@
 %type <lid> lista_identificadores
 %type <tipo> expresion
 %type <tipo> elementos
+%type <tipo> lista
 
 // Precedencias
 
@@ -123,8 +124,20 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
                               $$ = $2;
                             else
                               printf("[Línea %d] Error semántico: El tipo %s no es ni entero ni real para aplicar el operador unario %s\n", linea, tipoStr($2),$1);} // TODO: Comprobación
-          | UNARIOIZQ expresion {if((strcmp($1,"!")==0 && $2==booleano) || ((strcmp($1,"#")==0 || strcmp($1,"?")==0 || strcmp($1,"$")==0) && ($2==listaentero || $2==listareal || $2==listabool || $2==listachar)))
+          | UNARIOIZQ expresion {if((strcmp($1,"!")==0 && $2==booleano))
                                   $$ = $2;
+                                else if(strcmp($1,"#")==0 && ($2==listaentero || $2==listareal || $2==listabool || $2==listachar))
+                                  $$ = entero;
+                                else if(strcmp($1,"?")==0 && $2==listaentero)
+                                  $$ = entero;
+                                else if(strcmp($1,"?")==0 && $2==listareal)
+                                  $$=real;
+                                else if(strcmp($1,"?")==0 && $2==listabool)
+                                  $$=booleano;
+                                else if(strcmp($1,"?")==0 && $2==listachar)
+                                  $$=caracter;
+                                else if(strcmp($1,"$")==0)
+                                  $$=$2;
                                 else
                                   printf("[Línea %d] Error semántico: El tipo %s no se corresponde con el operador %s\n", linea, tipoStr($2),$1);} // TODO: Comprobar según token
           | expresion UNARIODER {if($1,listaentero || $1==listareal || $1==listabool || $1==listachar)
@@ -177,7 +190,7 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
                                         printf("[Línea %d] Error semántico: %s no es una lista o %s no es entero para aplicar %s\n", linea, tipoStr($1),tipoStr($3),$2);}
           | ID {$$ = tipoTS($1);}
           | LITERAL {$$ = getTipoLiteral($1);}
-          | lista
+          | lista {$$=$1;}
           | error
 ;
 
@@ -190,7 +203,7 @@ fin_de_bloque : LLADER {salBloqueTS();}
 inicio_de_bloque : LLAIZQ {entraBloqueTS();}
 ;
 
-lista : CORIZQ CORDER | CORIZQ elementos CORDER
+lista : CORIZQ CORDER {$$=desconocido;} | CORIZQ elementos CORDER {$$=$2;}
 ;
 
 lista_expresiones_o_cadenas : lista_expresiones_o_cadenas COMA expresion_o_cadena
