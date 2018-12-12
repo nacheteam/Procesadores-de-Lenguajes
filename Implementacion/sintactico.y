@@ -279,11 +279,12 @@ inicio_de_bloque : LLAIZQ {entraBloqueTS();}
 ;
 
 lista : CORIZQ elementos CORDER {for(int i=0;i<$2.tope_elem-1;++i)
-                                                                    if($2.tipos[$2.tope_elem]!=$2.tipos[$2.tope_elem+1]){
-                                                                      $$=desconocido;
+                                                                    if($2.tipos[i]!=$2.tipos[i+1]){
+                                                                      printf("[%d] Error semántico: lista con elementos de distinto tipo: %s y %s\n", linea, tipoStr($2.tipos[i]),tipoStr($2.tipos[i+1]));
                                                                       break;
                                                                     }
-                                                                    else{
+                                                                    
+                                                                    if ($$!=desconocido) {
                                                                       if($2.tipos[0]==entero)
                                                                         $$=listaentero;
                                                                       else if($2.tipos[0]==real)
@@ -292,7 +293,8 @@ lista : CORIZQ elementos CORDER {for(int i=0;i<$2.tope_elem-1;++i)
                                                                         $$=listachar;
                                                                       else if($2.tipos[0]==booleano)
                                                                         $$=listabool;
-                                                                      }}
+                                                                      }
+                                                                    }
 ;
 
 lista_expresiones_o_cadenas : lista_expresiones_o_cadenas COMA expresion_o_cadena
