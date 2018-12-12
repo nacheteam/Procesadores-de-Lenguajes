@@ -29,5 +29,27 @@ void compruebaCondicion(char * sentencia, TipoDato tipo){
     printf("[%d] Error semántico: Expresión de tipo '%s' en condición para '%s'\n", linea, tipoStr(tipo), sentencia);
 }
 
+void compruebaLlamada(Elem * elems, char * proced) {
+  INIT_Elem(_elems);
+  if (elems == NULL)
+    elems = &_elems;
+
+  int proced_id = findTS(proced);
+  int parametros_esperados = TS[proced_id].parametros;
+
+  if (elems->tope_elem != parametros_esperados) {
+    printf("[Línea %d] Error semántico: Número de parámetros inesperado en una llamada a '%s': se esperaban %d y se ha llamado con %d\n", linea, proced, parametros_esperados, elems->tope_elem);
+    return;
+  }
+
+  for (int i = 0; i < parametros_esperados; i++) {
+    TipoDato tipo_usado = elems->tipos[i];
+    TipoDato tipo_esperado = TS[proced_id + i].tipo_dato;
+    if (tipo_usado != tipo_esperado) {
+      printf("[Línea %d] Error semántico: El parámetro número %d con el que se ha llamado a '%s' no tiene el tipo esperado: se esperaba %s y se ha recibido %s\n", linea, i, proced, tipoStr(tipo_esperado), tipoStr(tipo_usado));
+    }
+  }
+}
+
 
 #endif

@@ -107,8 +107,8 @@ declar_de_variables_locales : |  marca_ini_declar_variables
 declar_subprog : cabecera_subprograma bloque
 ;
 
-elementos : expresion {$$ = $1;}
-          | elementos COMA expresion {$$ = $3;} // TODO: Comprobación
+elementos : expresion { $$.tipos[$$.tope_elem] = $1; $$.tope_elem++; }
+          | elementos COMA expresion { $$.tipos[$$.tope_elem] = $3; $$.tope_elem++; } // TODO: Comprobación
 ;
 
 expresion : PARIZQ expresion PARDER {$$ = $2;}
@@ -182,7 +182,7 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
           | expresion EXP expresion {if(($1==entero || $1==real) && $3==entero)
                                       $$=$1;
                                     else
-                                      printf("[%d] Error semántico: %s no es entero o %s no es entero o real para aplicar %s\n", linea, tipoStr($3),tipoStr($1),$2);}
+                                      printf("[%d] Error semántico: %s debe entero y %s debe ser entero o real para aplicar %s\n", linea, tipoStr($3),tipoStr($1),$2);}
           | expresion ARROBA expresion {if(($1==listaentero || $1==listareal || $1==listabool || $1==listachar) && $3==entero)
                                           $$=$1;
                                         else
@@ -194,7 +194,7 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
           | ID {$$ = tipoTS($1);}
           | LITERAL {$$ = getTipoLiteral($1);}
           | lista {$$=$1;}
-          | error
+          | error {$$ = desconocido;}
 ;
 
 expresion_o_cadena : expresion | CADENA
@@ -230,8 +230,8 @@ lista_parametros : parametro
 lista_variables : lista_identificadores
 ;
 
-llamada_proced : ID PARIZQ elementos PARDER PYC {/* TODO: comprobación semántica here */}
-               | ID PARIZQ PARDER PYC
+llamada_proced : ID PARIZQ elementos PARDER PYC { compruebaLlamada(&$3, $1); }
+               | ID PARIZQ PARDER PYC { compruebaLlamada(NULL, $1); }
 ;
 
 marca_ini_declar_variables : VARBEGIN
