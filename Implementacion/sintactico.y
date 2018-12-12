@@ -192,12 +192,53 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
                                              $$ = desconocido;
                                          }}
           // TODO: ($1==entero || $1==real) && $1==entero <-- absorción; revisar la lógica
-          | expresion PROD_DIV_MOD expresion {if((strcmp($2,"%")==0 && ($1==entero || $1==real) && $1==entero) || ($1==$3 && ($1==listaentero || $1==listareal || $1==listabool || $1==listachar)) || (($1==entero || $1==real) && ($3==entero || $3==real)))
-                                                $$ = $1;
+          | expresion PROD_DIV_MOD expresion {
+                                        if(strcmp($2,"/")==0) {
+                                             if (($1==entero || $1==real) && $1==$3){
+                                                  $$ = $1;
+                                             }
+                                             else if (($1==listareal) && $3==real) {
+                                                  $$ = $1;
+                                             }
                                              else{
                                                  printf("[%d] Error semántico: Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", linea, tipoStr($1),tipoStr($3),$2);
                                                  $$ = desconocido;
-                                              }}
+                                              }
+                                        }
+                                        if(strcmp($2,"*")==0) {
+                                             if (($1==entero || $1==real) && ($1==$3)){
+                                                  $$ = $1;
+                                             }
+                                             else if (($1==listareal) && $3==real) {
+                                                  $$ = $1;
+                                             }
+                                             else if (($3==listareal) && $1==real) {
+                                                  $$ = $1;
+                                             }
+                                             else if (($1==listaentero) && $3==entero) {
+                                                  $$ = $1;
+                                             }
+                                             else if (($3==listaentero) && $1==entero) {
+                                                  $$ = $1;
+                                             }
+                                             else{
+                                                 printf("[%d] Error semántico: Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", linea, tipoStr($1),tipoStr($3),$2);
+                                                 $$ = desconocido;
+                                              }
+                                        }
+                                        if(strcmp($2,"%")==0) {
+                                             if (($1==entero) && ($1==$3)){
+                                                  $$ = $1;
+                                             }
+                                             else if (($1==listaentero) && ($3==entero)){
+                                                  $$ = $1;
+                                             }
+                                             else{
+                                                 printf("[%d] Error semántico: Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", linea, tipoStr($1),tipoStr($3),$2);
+                                                 $$ = desconocido;
+                                              }
+                                        }
+                                  }
           | expresion EXP expresion {if(($1==entero || $1==real) && $3==entero)
                                       $$=$1;
                                     else{
