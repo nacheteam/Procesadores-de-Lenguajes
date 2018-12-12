@@ -17,8 +17,9 @@ TipoDato getTipoLiteral(char * literal){
       return caracter;
     default:
       for (char * p = literal; *p != '\0'; ++p)
-        if (*p <= '0' || *p >= '9')
+        if (*p == '.'){
           return real;
+        }
       return entero;
   }
 }
