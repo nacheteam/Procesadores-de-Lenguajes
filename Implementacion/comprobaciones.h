@@ -39,10 +39,14 @@ void compruebaLlamada(Elem * elems, char * proced) {
 
   if (elems->tope_elem != parametros_esperados) {
     printf("[%d] Error semántico: Número de parámetros inesperado en una llamada a '%s': se esperaban %d y se ha llamado con %d\n", linea, proced, parametros_esperados, elems->tope_elem);
-    return;
   }
 
-  for (int i = 0; i < parametros_esperados; i++) {
+  // Comprueba los primeros parámetros aunque haya parámetros de más o de menos
+  int n_param = parametros_esperados;
+  if (n_param > elems->tope_elem)
+    n_param = elems->tope_elem;
+
+  for (int i = 0; i < n_param; i++) {
     TipoDato tipo_usado = elems->tipos[i];
     TipoDato tipo_esperado = TS[proced_id + i + 1].tipo_dato;
     if (tipo_usado != tipo_esperado) {
