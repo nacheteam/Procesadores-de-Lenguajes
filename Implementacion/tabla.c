@@ -7,6 +7,9 @@
 // Muestra DEBUG sii DEBUG no es 0.
 #define DEBUG 0
 
+// Muestra tabla de símbolos antes de eliminar una marca sii IMPRIME no es 0
+#define IMPRIME 0
+
 /* ACCIONES SOBRE LA TABLA DE SÍMBOLOS */
 
 // Tope de la tabla de símbolos
@@ -322,7 +325,10 @@ void salBloqueTS(){
     printf("Estoy saliendo en un bloque.\n");
     fflush(stdout);
   }
-  imprimeTS();
+
+  if(IMPRIME)
+    imprimeTS();
+
   for(int j = tope - 1; j >= 0; j--){
     if(TS[j].tipo_entrada == marca){
       tope = j;

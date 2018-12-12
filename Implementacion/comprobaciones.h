@@ -24,7 +24,7 @@ TipoDato getTipoLiteral(char * literal){
 
 void compruebaCondicion(char * sentencia, TipoDato tipo){
   if(tipo != booleano)
-    printf("[Línea %d] Error semántico: Expresión de tipo %d en condición para '%s'\n", linea, tipo, sentencia);
+    printf("[Línea %d] Error semántico: Expresión de tipo '%s' en condición para '%s'\n", linea, tipoStr(tipo), sentencia);
 }
 
 
