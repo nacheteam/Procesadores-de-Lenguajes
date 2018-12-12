@@ -157,7 +157,7 @@ void yyerror(const char *msg)
   }
 
   // print components
-  fprintf(stderr, "[Línea %d] Error sintáctico: se encontró", linea);
+  fprintf(stderr, "[%d] Error sintáctico: se encontró", linea);
   int especifico = operador_especifico(strs[3]);
   if (!especifico) {
     fprintf(stderr, " %s", strs[3]);
