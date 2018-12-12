@@ -44,9 +44,9 @@ void compruebaLlamada(Elem * elems, char * proced) {
 
   for (int i = 0; i < parametros_esperados; i++) {
     TipoDato tipo_usado = elems->tipos[i];
-    TipoDato tipo_esperado = TS[proced_id + i].tipo_dato;
+    TipoDato tipo_esperado = TS[proced_id + i + 1].tipo_dato;
     if (tipo_usado != tipo_esperado) {
-      printf("[Línea %d] Error semántico: El parámetro número %d con el que se ha llamado a '%s' no tiene el tipo esperado: se esperaba %s y se ha recibido %s\n", linea, i, proced, tipoStr(tipo_esperado), tipoStr(tipo_usado));
+      printf("[Línea %d] Error semántico: El parámetro número %d con el que se ha llamado a '%s' no tiene el tipo esperado: se esperaba %s y se ha recibido %s\n", linea, i+1, proced, tipoStr(tipo_esperado), tipoStr(tipo_usado));
     }
   }
 }
