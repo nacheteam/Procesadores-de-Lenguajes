@@ -182,7 +182,7 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
           | expresion EXP expresion {if(($1==entero || $1==real) && $3==entero)
                                       $$=$1;
                                     else
-                                      printf("[%d] Error semántico: %s no es entero o %s no es entero o real para aplicar %s\n", linea, tipoStr($3),tipoStr($1),$2);}
+                                      printf("[%d] Error semántico: %s debe entero y %s debe ser entero o real para aplicar %s\n", linea, tipoStr($3),tipoStr($1),$2);}
           | expresion ARROBA expresion {if(($1==listaentero || $1==listareal || $1==listabool || $1==listachar) && $3==entero)
                                           $$=$1;
                                         else
@@ -194,7 +194,7 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
           | ID {$$ = tipoTS($1);}
           | LITERAL {$$ = getTipoLiteral($1);}
           | lista {$$=$1;}
-          | error
+          | error {$$ = desconocido;}
 ;
 
 expresion_o_cadena : expresion | CADENA
