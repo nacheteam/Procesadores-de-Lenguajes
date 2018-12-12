@@ -81,7 +81,7 @@ void main(){
   pf = [1.1,-1.0,1.1,-3.4];
     repeat{
     ve = #pf - 1;
-    if(?pf > 0)
+    if(?pf > 0.0)
      pf = pf--ve;
     else
       pf = pf * -1.0;
