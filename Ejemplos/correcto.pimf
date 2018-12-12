@@ -1,51 +1,51 @@
 void main(){
 
   begin
-  int n;
+  int ve;
+  double vf;
+  char vc;
+  bool vl;
   list of int pe, pe2;
   list of double pf, pf2;
   list of char pc, pc2;
-  list of bool pb;
+  list of bool pl;
   end
 
     void funcionA(int a1, double a2, char a3){
     begin
-      double x1;
-      int x2;
+      int x1, x2;
     end
 
       void funcionB(char b1, bool b2){
       begin
-        double xf, x3;
+        double xf, x2;
       end
 
         void funcionC(bool c1, int c2){
         begin
-          double x4;
+          double x1;
         end
 
         x1 = 1.3;
-        if(c2 > 10){
+        if(c2 > 10)
           c2 = c2 - 1;
-        } else
+        else
           x1 = 3.1;
         c1 = x1 > 3.0 || c2 >= 4;
       }
 
-      funcionC(False, x2);
+      funcionC(True, 10);
       repeat
-        x1 = x1*xf;
-      until ((x1 - xf) < 10.0);
-
-      b2 = x2 == x2;
+        x2 = x2*xf;
+      until (x1 < 10);
     }
-    x1 = 2.0;
+    x1 = 0;
   }
 
     void funcionD(double d1){
       begin
-        double dato;
-        double valor;
+        char dato;
+        int valor;
       end
 
         void funcionE(char e1, char e2){
@@ -60,7 +60,10 @@ void main(){
 
       read valor;
       if(d1 > 0.0){
-        dato = 2.0;
+        begin
+         int dato;
+        end
+        dato = 2;
         dato = valor*20/dato;
       }
       else{
@@ -77,9 +80,9 @@ void main(){
 
   pf = [1.1,-1.0,1.1,-3.4];
     repeat{
-    n = #pf - 1;
+    ve = #pf - 1;
     if(?pf > 0)
-     pf = pf--n;
+     pf = pf--ve;
     else
       pf = pf * -1.0;
   }
