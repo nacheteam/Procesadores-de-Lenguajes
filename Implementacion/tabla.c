@@ -52,7 +52,7 @@ void insertaTS(entrada_ts entrada){
   }
 
   if(tope >= MAX_TS){
-    printf("[Línea %d] Error: La tabla de símbolos está llena\n", linea);
+    printf("[%d] Error: La tabla de símbolos está llena\n", linea);
     fflush(stdout);
     exit(2);
   }
@@ -110,7 +110,7 @@ TipoDato tipoTS(char * identificador){
   if(j != -1)
     return TS[j].tipo_dato;
 
-  printf("[Línea %d] Error semántico: Identificador no declarado %s\n", linea, identificador);
+  printf("[%d] Error semántico: Identificador no declarado %s\n", linea, identificador);
   return desconocido;
 }
 
@@ -212,7 +212,7 @@ void insertaVarTipo(char * identificador, TipoDato tipo_dato){
   }
 
   if(esDuplicado(identificador)){
-    printf("[Línea %d] Error semántico: Identificador duplicado '%s'\n", linea, identificador);
+    printf("[%d] Error semántico: Identificador duplicado '%s'\n", linea, identificador);
     return;
   }
 
@@ -241,7 +241,7 @@ void insertaProcedimiento(char * identificador){
   }
 
   if(esDuplicado(identificador)){
-    printf("[Línea %d] Error semántico: Identificador duplicado '%s'\n", linea, identificador);
+    printf("[%d] Error semántico: Identificador duplicado '%s'\n", linea, identificador);
     return;
   }
 
@@ -267,12 +267,12 @@ void insertaParametro(char * identificador, char * nombre_tipo){
   }
 
   if(esDuplicado(identificador)){
-    printf("[Línea %d] Error semántico: Identificador duplicado '%s'\n", linea, identificador);
+    printf("[%d] Error semántico: Identificador duplicado '%s'\n", linea, identificador);
     return;
   }
 
   if(ultimoProcedimiento == -1){
-    printf("[Línea %d] Error de implementación: Parámetro formal '%s' sin procedimiento anterior\n",
+    printf("[%d] Error de implementación: Parámetro formal '%s' sin procedimiento anterior\n",
            linea, identificador);
     return;
   }

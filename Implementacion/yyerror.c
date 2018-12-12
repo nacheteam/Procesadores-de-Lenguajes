@@ -135,7 +135,7 @@ int operador_especifico(char *s) {
 void yyerror(const char *msg)
 {
   if (strncmp(msg, "Error l", 7) == 0) {
-    fprintf(stderr, "[Línea %d] %s", linea, msg);
+    fprintf(stderr, "[%d] %s", linea, msg);
     fflush(stderr);   // force a dump of the error
     return;
   }
