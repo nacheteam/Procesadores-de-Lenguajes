@@ -191,10 +191,8 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
                                              printf("[%d] Error semántico: Los tipos %s y %s no coinciden o no son enteros o reales para aplicar %s\n", linea, tipoStr($1),tipoStr($3),$2);
                                              $$ = desconocido;
                                          }}
-          // TODO: en la siguiente línea hay al menos dos problemas:
-          // 1: $1 y $2 tienen distinto tipo ($1 es un tipo, $2 es una cadena)
-          // 2: ($1==entero || $1==real) && $1==entero <-- absorción; revisar la lógica
-          | expresion PROD_DIV_MOD expresion {if((strcmp($2,"%")==0 && ($1==entero || $1==real) && $1==entero) || ($1==$2 && ($1==listaentero || $1==listareal || $1==listabool || $1==listachar)) || (($1==entero || $1==real) && ($3==entero || $3==real)))
+          // TODO: ($1==entero || $1==real) && $1==entero <-- absorción; revisar la lógica
+          | expresion PROD_DIV_MOD expresion {if((strcmp($2,"%")==0 && ($1==entero || $1==real) && $1==entero) || ($1==$3 && ($1==listaentero || $1==listareal || $1==listabool || $1==listachar)) || (($1==entero || $1==real) && ($3==entero || $3==real)))
                                                 $$ = $1;
                                              else{
                                                  printf("[%d] Error semántico: Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", linea, tipoStr($1),tipoStr($3),$2);
