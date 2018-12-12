@@ -32,7 +32,7 @@ void main(){
         c1 = x1 > 3.0 || c2 >= 4;
       }
 
-      funcionC(False, xf);
+      funcionC(False, x2);
       repeat
         x1 = x1*xf;
       until ((x1 - xf) < 10.0);
@@ -81,7 +81,7 @@ void main(){
     if(?pf > 0)
      pf = pf--n;
     else
-      pf = pf * -1;
+      pf = pf * -1.0;
   }
     until(#pf == 0);
 

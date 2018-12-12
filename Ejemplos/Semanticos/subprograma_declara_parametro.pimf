@@ -6,7 +6,7 @@ void main(){
   end
 
   void declaraParametro(int l, int k, char t){
-    // Se vuelve a declarar el parámetro a.
+    // Se vuelve a declarar el parámetro l.
     begin
       int l;
     end

@@ -114,16 +114,20 @@ elementos : expresion { $$.tipos[$$.tope_elem] = $1; $$.tope_elem++; }
 expresion : PARIZQ expresion PARDER {$$ = $2;}
           | expresion INCR expresion ARROBARROBA expresion {if(($1==listaentero && $3==entero && $5==entero) || ($1==listareal && $3==real && $5==entero) || ($1==listabool && $3==booleano && $5==entero) || ($1==listachar && $3==caracter && $5==entero))
                                                               $$ = $1;
-                                                            else
-                                                              printf("[%d] Error semántico: Los tipos %s y %s no son compatibles o %s no es entero para aplicar el operador ternario %s y %s\n", linea, tipoStr($1),tipoStr($3),tipoStr($5),$2,$4);} // TODO: Comprobación
+                                                            else{
+                                                              printf("[%d] Error semántico: Los tipos %s y %s no son compatibles o %s no es entero para aplicar el operador ternario %s y %s\n", linea, tipoStr($1),tipoStr($3),tipoStr($5),$2,$4);
+                                                              $$ = desconocido;}} // TODO: Comprobación
           | INCR expresion {if($2==entero || $2==real)
                               $$ = $2;
-                            else
-                              printf("[%d] Error semántico: El tipo %s no es ni entero ni real para aplicar el operador unario %s\n", linea, tipoStr($2),$1);} // TODO: Comprobación
+                           else{
+                             printf("[%d] Error semántico: El tipo %s no es ni entero ni real para aplicar el operador unario %s\n", linea, tipoStr($2),$1);
+                             $$ = desconocido;
+                            }} // TODO: Comprobación
           | DECR expresion {if($2==entero || $2==real)
                               $$ = $2;
-                            else
-                              printf("[%d] Error semántico: El tipo %s no es ni entero ni real para aplicar el operador unario %s\n", linea, tipoStr($2),$1);} // TODO: Comprobación
+                            else{
+                              printf("[%d] Error semántico: El tipo %s no es ni entero ni real para aplicar el operador unario %s\n", linea, tipoStr($2),$1);
+                              $$ = desconocido;}} // TODO: Comprobación
           | UNARIOIZQ expresion {if((strcmp($1,"!")==0 && $2==booleano))
                                   $$ = $2;
                                 else if(strcmp($1,"#")==0 && ($2==listaentero || $2==listareal || $2==listabool || $2==listachar))
@@ -138,59 +142,84 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
                                   $$=caracter;
                                 else if(strcmp($1,"$")==0)
                                   $$=$2;
-                                else
-                                  printf("[%d] Error semántico: El tipo %s no se corresponde con el operador %s\n", linea, tipoStr($2),$1);} // TODO: Comprobar según token
+                                else{
+                                  printf("[%d] Error semántico: El tipo %s no se corresponde con el operador %s\n", linea, tipoStr($2),$1);
+                                  $$ = desconocido;
+                                }} // TODO: Comprobar según token
           | expresion UNARIODER {if($1,listaentero || $1==listareal || $1==listabool || $1==listachar)
                                   $$ = $1;
-                                else
-                                  printf("[%d] Error semántico: El tipo %s no es una lista para aplicar %s\n", linea, tipoStr($1),$2);} // TODO: Comprobar según token
+                                else{
+                                  printf("[%d] Error semántico: El tipo %s no es una lista para aplicar %s\n", linea, tipoStr($1),$2);
+                                  $$ = desconocido;
+                                }} // TODO: Comprobar según token
           | SIGNO expresion  {if($2==entero || $2==real)
                                 $$ = $2;
                               else
-                                printf("[%d] Error semántico: El tipo %s no es compatible con el operador unario %s\n", linea, tipoStr($2),$1);} %prec UNARIOIZQ // TODO: Comprobar según token
+                                { printf("[%d] Error semántico: El tipo %s no es compatible con el operador unario %s\n", linea, tipoStr($2),$1);
+                                  $$ = desconocido;}} %prec UNARIOIZQ // TODO: Comprobar según token
           | expresion SIGNO expresion {if(($1==$3 && ($1==listaentero || $1==listareal || $1==listabool || $1==listachar)) || (($1==entero || $1==real) && ($3==entero || $3==real)))
                                         $$ = $1;
-                                      else
-                                        printf("[%d] Error semántico: Los tipos %s y %s no son iguales o no son un entero, real o lista para aplicar %s\n", linea, tipoStr($1),tipoStr($3),$2);} // TODO: Comprobar según token
+                                      else{
+                                        printf("[%d] Error semántico: Los tipos %s y %s no son iguales o no son un entero, real o lista para aplicar %s\n", linea, tipoStr($1),tipoStr($3),$2);
+                                        $$ = desconocido;}} // TODO: Comprobar según token
           | expresion OR expresion {if($1==booleano && $3==booleano)
                                       $$=$1;
-                                    else
-                                      printf("[%d] Error semántico: Los tipos %s y %s no son booleanos para aplicar %s.\n", linea,  tipoStr($1),tipoStr($3),$2);}
+                                   else{
+                                   printf("[%d] Error semántico: Los tipos %s y %s no son booleanos para aplicar %s.\n", linea,  tipoStr($1),tipoStr($3),$2);
+                                   $$ = desconocido;
+                                   }}
           | expresion AND expresion {if($1==booleano && $3==booleano)
                                       $$=$1;
-                                    else
-                                      printf("[%d] Error semántico: Los tipos %s y %s no son booleanos para aplicar %s.\n", linea,  tipoStr($1),tipoStr($3),$2);}
+                                    else{
+                                      printf("[%d] Error semántico: Los tipos %s y %s no son booleanos para aplicar %s.\n", linea,  tipoStr($1),tipoStr($3),$2);
+                                      $$ = desconocido;
+                                    }}
           | expresion XOR expresion {if($1==booleano && $3==booleano)
                                       $$=$1;
-                                    else
-                                      printf("[%d] Error semántico: Los tipos %s y %s no son booleanos para aplicar %s.\n", linea,  tipoStr($1),tipoStr($3),$2);}
+                                    else{
+                                      printf("[%d] Error semántico: Los tipos %s y %s no son booleanos para aplicar %s.\n", linea,  tipoStr($1),tipoStr($3),$2);
+                                      $$ = desconocido;}}
           | expresion COMP_IG expresion {if($1==$3)
                                           $$=booleano;
-                                        else
-                                          printf("[%d] Error semántico: Los tipos %s y %s no coinciden para aplicar %s.\n", linea,  tipoStr($1),tipoStr($3),$2);}
+                                        else{
+                                          printf("[%d] Error semántico: Los tipos %s y %s no coinciden para aplicar %s.\n", linea,  tipoStr($1),tipoStr($3),$2);
+                                          $$ = desconocido;
+                                        }}
           | expresion COMP_MM expresion {if($1==$3 && ($1==entero || $1==real))
                                           $$=booleano;
-                                        else
-                                          printf("[%d] Error semántico: Los tipos %s y %s no coinciden o no son enteros o reales para aplicar %s\n", linea, tipoStr($1),tipoStr($3),$2);}
-          // TODO: en la siguiente línea hay al menos dos problemas:
-          // 1: $1 y $2 tienen distinto tipo ($1 es un tipo, $2 es una cadena)
-          // 2: ($1==entero || $1==real) && $1==entero <-- absorción; revisar la lógica
-          | expresion PROD_DIV_MOD expresion {if((strcmp($2,"%")==0 && ($1==entero || $1==real) && $1==entero) || ($1==$2 && ($1==listaentero || $1==listareal || $1==listabool || $1==listachar)) || (($1==entero || $1==real) && ($3==entero || $3==real)))
+                                         else{
+                                             printf("[%d] Error semántico: Los tipos %s y %s no coinciden o no son enteros o reales para aplicar %s\n", linea, tipoStr($1),tipoStr($3),$2);
+                                             $$ = desconocido;
+                                         }}
+          // TODO: ($1==entero || $1==real) && $1==entero <-- absorción; revisar la lógica
+          | expresion PROD_DIV_MOD expresion {if((strcmp($2,"%")==0 && ($1==entero || $1==real) && $1==entero) || ($1==$3 && ($1==listaentero || $1==listareal || $1==listabool || $1==listachar)) || (($1==entero || $1==real) && ($3==entero || $3==real)))
                                                 $$ = $1;
-                                              else
-                                                printf("[%d] Error semántico: Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", linea, tipoStr($1),tipoStr($3),$2);}
-          | expresion EXP expresion {if(($1==entero || $1==real) && $3==entero)
-                                      $$=$1;
-                                    else if ($1==$3 && ($1==listaentero || $1==listachar || $1==listabool || $1==listareal))
-                                      printf("[%d] Error semántico: %s debe entero y %s debe ser entero o real para aplicar %s\n", linea, tipoStr($3),tipoStr($1),$2);}
-          | expresion ARROBA expresion {if(($1==listaentero || $1==listareal || $1==listabool || $1==listachar) && $3==entero)
-                                          $$=$1;
-                                        else
-                                          printf("[%d] Error semántico: %s no es una lista o %s no es entero para aplicar %s\n", linea, tipoStr($1),tipoStr($3),$2);}
-          | expresion DECR expresion {if(($1==listaentero || $1==listareal || $1==listabool || $1==listachar) && $3==entero)
+                                             else{
+                                                 printf("[%d] Error semántico: Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", linea, tipoStr($1),tipoStr($3),$2);
+                                                 $$ = desconocido;
+                                              }}
+          | expresion EXP expresion { if ($1 == entero || $1 == real) {
+                                      if ($3 == entero)
                                         $$=$1;
                                       else
-                                        printf("[%d] Error semántico: %s no es una lista o %s no es entero para aplicar %s\n", linea, tipoStr($1),tipoStr($3),$2);}
+                                        printf("[%d] Error semántico: %s debe entero y %s debe ser entero o real para aplicar %s\n", linea, tipoStr($3),tipoStr($1),$2);
+                                      } else if ($1==$3 && ($1==listaentero || $1==listachar || $1==listabool || $1==listareal))
+                                        $$=$1;
+                                      else
+                                        printf("[%d] Error semántico: Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", linea, tipoStr($1),tipoStr($3),$2);
+                                    }
+          | expresion ARROBA expresion {if(($1==listaentero || $1==listareal || $1==listabool || $1==listachar) && $3==entero)
+                                          $$=$1;
+                                       else {
+                                         printf("[%d] Error semántico: %s no es una lista o %s no es entero para aplicar %s\n", linea, tipoStr($1),tipoStr($3),$2);
+                                         $$ = desconocido;
+                                       }}
+          | expresion DECR expresion {if(($1==listaentero || $1==listareal || $1==listabool || $1==listachar) && $3==entero)
+                                        $$=$1;
+                                      else{
+                                        printf("[%d] Error semántico: %s no es una lista o %s no es entero para aplicar %s\n", linea, tipoStr($1),tipoStr($3),$2);
+                                        $$ = desconocido;}
+                                       }
           | ID {$$ = tipoTS($1);}
           | LITERAL {$$ = getTipoLiteral($1);}
           | lista {$$=$1;}
