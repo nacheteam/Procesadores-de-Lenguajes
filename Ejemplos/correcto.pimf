@@ -38,7 +38,6 @@ void main(){
       until ((x1 - xf) < 10.0);
 
       b2 = x1 == x2;
-      b1 = !x1;
     }
     x1 = 2;
   }
