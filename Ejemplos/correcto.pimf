@@ -37,16 +37,15 @@ void main(){
         x1 = x1*xf;
       until ((x1 - xf) < 10.0);
 
-      b2 = x1 == x2;
-      b1 = !x1;
+      b2 = x2 == x2;
     }
-    x1 = 2;
+    x1 = 2.0;
   }
 
     void funcionD(double d1){
       begin
-        char dato;
-      int valor;
+        double dato;
+        double valor;
       end
 
         void funcionE(char e1, char e2){
@@ -61,7 +60,7 @@ void main(){
 
       read valor;
       if(d1 > 0.0){
-        dato = 2;
+        dato = 2.0;
         dato = valor*20/dato;
       }
       else{
@@ -86,4 +85,4 @@ void main(){
   }
     until(#pf == 0);
 
-    }
+}

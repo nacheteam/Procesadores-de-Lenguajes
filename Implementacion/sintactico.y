@@ -264,7 +264,7 @@ sentencia_else :| ELSE sentencia
 sentencia_entrada : READ lista_variables PYC
 ;
 
-sentencia_if : IF PARIZQ expresion PARDER sentencia sentencia_else {compruebaCondicion("if", $3);}
+sentencia_if : IF PARIZQ expresion PARDER {compruebaCondicion("if", $3);} sentencia sentencia_else
 ;
 
 sentencia_repeat_until : REPEAT sentencia UNTIL expresion PYC {compruebaCondicion("repeat-until", $4);}
@@ -273,7 +273,7 @@ sentencia_repeat_until : REPEAT sentencia UNTIL expresion PYC {compruebaCondicio
 sentencia_salida : WRITE lista_expresiones_o_cadenas PYC
 ;
 
-sentencia_while : WHILE PARIZQ expresion PARDER sentencia {compruebaCondicion("while", $3);}
+sentencia_while : WHILE PARIZQ expresion PARDER {compruebaCondicion("while", $3);} sentencia
 ;
 
 sentencias : sentencias sentencia
