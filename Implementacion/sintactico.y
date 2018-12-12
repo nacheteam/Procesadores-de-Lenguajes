@@ -54,7 +54,7 @@
 %type <lexema> tipo
 %type <lid> lista_identificadores
 %type <tipo> expresion
-%type <tipo> elementos
+%type <el> elementos
 %type <tipo> lista
 
 // Precedencias
