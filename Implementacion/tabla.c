@@ -266,11 +266,6 @@ void insertaParametro(char * identificador, char * nombre_tipo){
     fflush(stdout);
   }
 
-  if(esDuplicado(identificador)){
-    printf("[%d] Error semántico: Identificador duplicado '%s'\n", linea, identificador);
-    return;
-  }
-
   if(ultimoProcedimiento == -1){
     printf("[%d] Error de implementación: Parámetro formal '%s' sin procedimiento anterior\n",
            linea, identificador);

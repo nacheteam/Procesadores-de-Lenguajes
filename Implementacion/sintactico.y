@@ -194,7 +194,7 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
           | ID {$$ = tipoTS($1);}
           | LITERAL {$$ = getTipoLiteral($1);}
           | lista {$$=$1;}
-          | error
+          | error {$$ = desconocido;}
 ;
 
 expresion_o_cadena : expresion | CADENA
