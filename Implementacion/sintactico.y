@@ -165,11 +165,11 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
                                     else
                                       printf("[Línea %d] Error semántico: Los tipos %s y %s no son booleanos para aplicar %s.\n", linea,  tipoStr($1),tipoStr($3),$2);}
           | expresion COMP_IG expresion {if($1==$3)
-                                          $$=$1;
+                                          $$=booleano;
                                         else
                                           printf("[Línea %d] Error semántico: Los tipos %s y %s no coinciden para aplicar %s.\n", linea,  tipoStr($1),tipoStr($3),$2);}
           | expresion COMP_MM expresion {if($1==$3 && ($1==entero || $1==real))
-                                          $$=$1;
+                                          $$=booleano;
                                         else
                                           printf("[Línea %d] Error semántico: Los tipos %s y %s no coinciden o no son enteros o reales para aplicar %s\n", linea, tipoStr($1),tipoStr($3),$2);}
           // TODO: en la siguiente línea hay al menos dos problemas:
@@ -252,7 +252,7 @@ sentencia : bloque
 
 sentencia_asignacion :  ID ASIGN expresion PYC {
   if(tipoTS($1) != desconocido && tipoTS($1) != $3){
-    printf("[Línea %d] Error semántico: Asignación de expresión de tipo '%s' a variable '%s' de tipo '%s'\n",
+    printf("[Línea %d] Error semántico: Asignación de '%s' a variable '%s' de tipo '%s'\n",
            linea, tipoStr($3), $1, tipoStr(tipoTS($1)));
    }
  }
