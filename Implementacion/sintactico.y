@@ -212,7 +212,14 @@ lista : CORIZQ CORDER {$$=desconocido;} | CORIZQ elementos CORDER {for(int i=0;i
                                                                       break;
                                                                     }
                                                                     else{
-                                                                      $$=$2.tipos[0];
+                                                                      if($2.tipos[0]==entero)
+                                                                        $$=listaentero;
+                                                                      else if($2.tipos[0]==real)
+                                                                        $$=listareal;
+                                                                      else if($2.tipos[0]==caracter)
+                                                                        $$=listachar;
+                                                                      else if($2.tipos[0]==booleano)
+                                                                        $$=listabool;
                                                                       }}
 ;
 
