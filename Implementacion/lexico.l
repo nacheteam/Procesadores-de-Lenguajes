@@ -62,8 +62,8 @@ com_linea   (\/\/[^\n]*\n)
 "||"        {SET_LEXEMA; return OR;}
 "&&"        {SET_LEXEMA; return AND;}
 "^"         {SET_LEXEMA; return XOR;}
-[=!]=       return COMP_IG;
-[<>]=?      return COMP_MM;
+[=!]=       {SET_LEXEMA; return COMP_IG;}
+[<>]=?      {SET_LEXEMA; return COMP_MM;}
 [*/%]       {SET_LEXEMA; return PROD_DIV_MOD;}
 "**"        {SET_LEXEMA; return EXP;}
 "@"         {SET_LEXEMA; return ARROBA;}
