@@ -13,9 +13,7 @@
   int linea = 1;    // En caso de error se imprimirá la línea donde se dio, empezando en 1
   int error = 0;    // El programa devuelve 1 si ha habido errores de léxico
 
-  #ifndef SET_LEXEMA
-    #define SET_LEXEMA
-  #endif
+  #define SET_LEXEMA { yylval.lexema = strdup(yytext); }
 %}
 
 %option noyywrap
@@ -37,8 +35,8 @@ com_linea   (\/\/[^\n]*\n)
 
  // Reglas
 
-"++"        {yylval.lexema = strdup(yytext); return INCR;}
-"--"        {yylval.lexema = strdup(yytext); return DECR;}
+"++"        {SET_LEXEMA; return INCR;}
+"--"        {SET_LEXEMA; return DECR;}
 "="         return ASIGN;
 "if"        return IF;
 "else"      return ELSE;
@@ -50,26 +48,26 @@ com_linea   (\/\/[^\n]*\n)
 "begin"     return VARBEGIN;
 "end"       return VAREND;
 {cadena}    return CADENA;
-{literal}   {yylval.lexema = strdup(yytext); return LITERAL;}
-"list of"   {yylval.lexema = strdup(yytext); return LISTOF;}
-{tbase}     {yylval.lexema = strdup(yytext); return TIPOBASE;}
+{literal}   {SET_LEXEMA; return LITERAL;}
+"list of"   {SET_LEXEMA; return LISTOF;}
+{tbase}     {SET_LEXEMA; return TIPOBASE;}
 "main()"    return MAIN;
 "void"      return PROCED;
-{id}        {yylval.lexema = strdup(yytext); return ID;}
+{id}        {SET_LEXEMA; return ID;}
 "("         return PARIZQ;
 ")"         return PARDER;
-[+-]        {yylval.lexema = strdup(yytext); return SIGNO;}
-"<<"|">>"   {yylval.lexema = strdup(yytext); return UNARIODER;}
-[!#?$]      {yylval.lexema = strdup(yytext); return UNARIOIZQ;}
-"||"        {yylval.lexema = strdup(yytext); return OR;}
-"&&"        {yylval.lexema = strdup(yytext); return AND;}
-"^"         {yylval.lexema = strdup(yytext); return XOR;}
+[+-]        {SET_LEXEMA; return SIGNO;}
+"<<"|">>"   {SET_LEXEMA; return UNARIODER;}
+[!#?$]      {SET_LEXEMA; return UNARIOIZQ;}
+"||"        {SET_LEXEMA; return OR;}
+"&&"        {SET_LEXEMA; return AND;}
+"^"         {SET_LEXEMA; return XOR;}
 [=!]=       return COMP_IG;
 [<>]=?      return COMP_MM;
-[*/%]       {yylval.lexema = strdup(yytext); return PROD_DIV_MOD;}
-"**"        {yylval.lexema = strdup(yytext); return EXP;}
-"@"         {yylval.lexema = strdup(yytext); return ARROBA;}
-"@@"        {yylval.lexema = strdup(yytext); return ARROBARROBA;}
+[*/%]       {SET_LEXEMA; return PROD_DIV_MOD;}
+"**"        {SET_LEXEMA; return EXP;}
+"@"         {SET_LEXEMA; return ARROBA;}
+"@@"        {SET_LEXEMA; return ARROBARROBA;}
 "{"         return LLAIZQ;
 "}"         return LLADER;
 "["         return CORIZQ;

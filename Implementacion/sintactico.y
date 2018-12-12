@@ -11,7 +11,7 @@
   void yyerror(const char * msg);
   int yylex();
 
-  //TipoDato getTipoLiteral(char * literal);
+  TipoDato getTipoLiteral(char * literal);
 %}
 
 %error-verbose   // Permite mensajes de error detallados
@@ -159,6 +159,9 @@ expresion : PARIZQ expresion PARDER {$$ = $2;}
                                           $$=$1;
                                         else
                                           printf("Los tipos %s y %s no coinciden o no son enteros o reales para aplicar %s\n", tipoStr($1),tipoStr($3),$2);}
+          // TODO: en la siguiente línea hay al menos dos problemas:
+          // 1: $1 y $2 tienen distinto tipo ($1 es un tipo, $2 es una cadena)
+          // 2: ($1==entero || $1==real) && $1==entero <-- absorción; revisar la lógica
           | expresion PROD_DIV_MOD expresion {if((strcmp($2,"%")==0 && ($1==entero || $1==real) && $1==entero) || ($1==$2 && ($1==listaentero || $1==listareal || $1==listabool || $1==listachar)) || (($1==entero || $1==real) && ($3==entero || $3==real)))
                                                 $$ = $1;
                                               else
@@ -207,7 +210,7 @@ lista_parametros : parametro
 lista_variables : lista_identificadores
 ;
 
-llamada_proced : ID PARIZQ elementos PARDER PYC
+llamada_proced : ID PARIZQ elementos PARDER PYC {/* TODO: comprobación semántica here */}
                | ID PARIZQ PARDER PYC
 ;
 

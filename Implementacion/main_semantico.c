@@ -7,8 +7,6 @@
 #include <stdlib.h>
 #include "tabla.h"
 
-#define SET_LEXEMA { printf("%s", yytext);fflush(stdout); yylval.lexema = strdup(yytext) }
-
 extern FILE *yyin;
 int     yyparse();
 
