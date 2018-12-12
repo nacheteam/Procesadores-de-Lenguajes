@@ -234,7 +234,12 @@ sentencia : bloque
           | llamada_proced
 ;
 
-sentencia_asignacion :  ID ASIGN expresion PYC
+sentencia_asignacion :  ID ASIGN expresion PYC {
+  if(tipoTS($1) != desconocido && tipoTS($1) != $3){
+    printf("[Línea %d] Error semántico: Asignación de expresión de tipo '%s' a variable '%s' de tipo '%s'",
+           linea, tipoStr($3), $1, tipoStr(tipoTS($1)));
+   }
+ }
 ;
 
 sentencia_else :| ELSE sentencia
