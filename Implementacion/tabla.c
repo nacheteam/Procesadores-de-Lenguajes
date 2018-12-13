@@ -10,6 +10,11 @@
 // Muestra tabla de símbolos antes de eliminar una marca sii IMPRIME no es 0
 #define IMPRIME 0
 
+
+#ifndef PUNTO
+  #define PUNTO "↳"
+#endif
+
 /* ACCIONES SOBRE LA TABLA DE SÍMBOLOS */
 
 // Tope de la tabla de símbolos
@@ -153,7 +158,7 @@ void imprimeTS(){
   for(int i = 0; i < tope; i++){
     if(TS[i].tipo_entrada == marca){
      strcat(sangria, "  ");
-     printf("%s↳ [marca]\n", sangria);
+     printf("%s%s [marca]\n", sangria, PUNTO);
     } else{
       printf("%s%s: '%s'", sangria, imprimeTipoE(TS[i].tipo_entrada), TS[i].nombre);
 

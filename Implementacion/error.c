@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "yyerror.h"
+#include "error.h"
 
 // // // // // // // // // // // // // // // // // // // //
 //
@@ -130,16 +130,24 @@ int operador_especifico(char *s) {
 }
 
 
+// Imprime la línea donde se ha producido un error
+void linea_error() {
+  fprintf(stderr, "[%d] ", linea);
+}
+
+
+// Imprime un error léxico
+void lerror(const char * msg) {
+  linea_error();
+  fprintf(stderr, "Error léxico: %s", msg);
+  fflush(stderr);
+}
+
+
 // This is the yyerror called by the bison parser for errors.
 // It only does errors and not warnings.
 void yyerror(const char *msg)
 {
-  if (strncmp(msg, "Error l", 7) == 0) {
-    fprintf(stderr, "[%d] %s", linea, msg);
-    fflush(stderr);   // force a dump of the error
-    return;
-  }
-
   char *space;
   char *strs[100];
   int numstrs;
@@ -157,7 +165,8 @@ void yyerror(const char *msg)
   }
 
   // print components
-  fprintf(stderr, "[%d] Error sintáctico: se encontró", linea);
+  linea_error();
+  fprintf(stderr, "Error sintáctico: se encontró");
   int especifico = operador_especifico(strs[3]);
   if (!especifico) {
     fprintf(stderr, " %s", strs[3]);

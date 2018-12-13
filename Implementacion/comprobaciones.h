@@ -2,8 +2,7 @@
 #define __COMPROBACIONES_H__
 
 #include <string.h>
-
-extern int linea;
+#include "error.h"
 
 /* Obtiene el tipo de un literal */
 // TODO: probar
@@ -26,7 +25,7 @@ TipoDato getTipoLiteral(char * literal){
 
 void compruebaCondicion(char * sentencia, TipoDato tipo){
   if(tipo != booleano)
-    printf("[%d] Error semántico: Expresión de tipo no booleano en condición para '%s'\n", linea, sentencia);
+    semprintf("Expresión de tipo no booleano en condición para '%s'\n", sentencia);
 }
 
 void compruebaLlamada(Elem * elems, char * proced) {
@@ -38,7 +37,7 @@ void compruebaLlamada(Elem * elems, char * proced) {
   int parametros_esperados = TS[proced_id].parametros;
 
   if (elems->tope_elem != parametros_esperados) {
-    printf("[%d] Error semántico: Número de parámetros inesperado en una llamada a '%s': se esperaban %d y se ha llamado con %d\n", linea, proced, parametros_esperados, elems->tope_elem);
+    semprintf("Número de parámetros inesperado en una llamada a '%s': se esperaban %d y se ha llamado con %d\n", proced, parametros_esperados, elems->tope_elem);
   }
 
   // Comprueba los primeros parámetros aunque haya parámetros de más o de menos
@@ -50,7 +49,7 @@ void compruebaLlamada(Elem * elems, char * proced) {
     TipoDato tipo_usado = elems->tipos[i];
     TipoDato tipo_esperado = TS[proced_id + i + 1].tipo_dato;
     if (tipo_usado != tipo_esperado) {
-      printf("[%d] Error semántico: El parámetro número %d con el que se ha llamado a '%s' no tiene el tipo esperado: se esperaba %s y se ha recibido %s\n", linea, i+1, proced, tipoStr(tipo_esperado), tipoStr(tipo_usado));
+      semprintf("El parámetro número %d con el que se ha llamado a '%s' no tiene el tipo esperado: se esperaba %s y se ha recibido %s\n", i+1, proced, tipoStr(tipo_esperado), tipoStr(tipo_usado));
     }
   }
 }

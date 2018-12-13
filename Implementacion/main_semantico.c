@@ -26,21 +26,8 @@ FILE * abrir_entrada(int argc, char* argv[]) {
 
 // Programa sencillo que analiza sintácticamente,
 // imprime los errores léxicos y sintácticos y
-// devuelve 1 si hubo algún error irrecuperable y 0 en otro caso
+// devuelve 1 si hubo algún error sintáctico irrecuperable y 0 en otro caso
 int main(int argc, char * argv[]) {
-  /*
-   * Ejemplo de prueba inútil de la tabla de símbolos
-   */
-
-/*
-  insertaVar("ejemploVar", "int");
-  insertaProcedimiento("procedure");
-  insertaParametro("parametro", "double");
-  insertaParametro("parametro2", "double");
-  entraBloqueTS();
-  salBloqueTS();
-*/
-
   yyin = abrir_entrada(argc, argv);
   return yyparse();
 }

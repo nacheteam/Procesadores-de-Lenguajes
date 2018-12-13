@@ -6,8 +6,8 @@
 
   #include <stdio.h>
   #include "tabla.h"
-  #include "y.tab.h"    // Contiene los códigos asociados a los tokens
-  #include "yyerror.h"  // Implementación de yyerror
+  #include "y.tab.h"  // Contiene los códigos asociados a los tokens
+  #include "error.h"  // Presentación de errores
   #define LONGITUD_ERROR 256
   char buffer_error[LONGITUD_ERROR];
   int linea = 1;    // En caso de error se imprimirá la línea donde se dio, empezando en 1
@@ -81,7 +81,7 @@ com_linea   (\/\/[^\n]*\n)
 [ \t]+      ;        // Se ignoran los espacios en blanco
 {com_linea} ++linea; // Se ignoran los comentarios al final de línea
 \n          ++linea;
-.           error = 1; snprintf(buffer_error, LONGITUD_ERROR, "Error léxico: '%s' no se identifica con ningún token conocido\n", yytext); yyerror(buffer_error);
+.           error = 1; snprintf(buffer_error, LONGITUD_ERROR, "'%s' no se identifica con ningún token conocido\n", yytext); lerror(buffer_error);
 
 %%
 
