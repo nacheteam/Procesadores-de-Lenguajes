@@ -1,0 +1,24 @@
+void main(){
+  begin
+    int n, curr, d;
+  end
+
+  write "introduce un numero : "
+  read n;
+  write n, " == ";
+  curr = 2;
+
+  while(curr <= n)
+    {
+      d = n/curr;
+
+      if (d*curr == n)
+        {
+          write "*", curr;
+          n = n/curr;
+        }
+      else
+        curr = curr+1;
+      write "\n";
+    }
+}
