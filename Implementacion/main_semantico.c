@@ -1,31 +1,16 @@
-/**************************************
-** main.c                            **
-** Programa principial               **
-**************************************/
+/*************************************************
+** main_semantico.c                             **
+** Programa principial del analizador semántico **
+*************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "file_io.h"
 #include "tabla.h"
 
 extern FILE *yyin;
 int     yyparse();
 
-FILE * abrir_entrada(int argc, char* argv[]) {
-  FILE *f = NULL;
-  if (argc > 1) {
-    f = fopen(argv[1], "r");
-    if (f == NULL) {
-      fprintf(stderr, "No se ha podido abrir el fichero %s", argv[1]);
-      exit(1);
-    }
-  } else
-    printf("Leyendo código a través de entrada estándar...\n");
-
-  return f;
-}
-
-// Programa sencillo que analiza sintácticamente,
-// imprime los errores léxicos y sintácticos y
+// Programa sencillo que analiza sintáctica y semánticamente,
+// imprime los errores léxicos, sintácticos y semánticos y
 // devuelve 1 si hubo algún error sintáctico irrecuperable y 0 en otro caso
 int main(int argc, char * argv[]) {
   yyin = abrir_entrada(argc, argv);

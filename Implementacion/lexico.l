@@ -5,6 +5,7 @@
   ***********************************/
 
   #include <stdio.h>
+  #include "file_io.h"
   #include "tabla.h"
   #include "y.tab.h"  // Contiene los códigos asociados a los tokens
   #include "error.h"  // Presentación de errores
@@ -89,7 +90,8 @@ com_linea   (\/\/[^\n]*\n)
  // MAIN_LEXICO; así solo se usa en el ejecutable del analizador léxico
 
 #ifdef MAIN_LEXICO
-int main() {
+int main(int argc, char* argv[]) {
+  yyin = abrir_entrada(argc, argv);
   int val = yylex();
   while (val != 0) {
     printf(" %d <- %s\n", val, yytext);

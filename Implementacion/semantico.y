@@ -1,8 +1,8 @@
 %{
-  /***************************************
-  ** sintactico.y                       **
-  ** Analizador sintáctico del lenguaje **
-  ***************************************/
+  /****************************************
+  ** semantico.y                         **
+  ** Analizador y traductor del lenguaje **
+  ****************************************/
 
   #include <stdio.h>
   #include "tabla.h"
@@ -12,6 +12,8 @@
   int yylex();
 
   TipoDato getTipoLiteral(char * literal);
+  char * etiqueta();
+  char * temporal();
 %}
 
 %error-verbose   // Permite mensajes de error detallados
