@@ -89,7 +89,8 @@ void insertaRepeatUntil(char * etiqueta_entrada);
 void insertaWhile(char * etiqueta_entrada, char * etiqueta_salida);
 void salEstructuraControl();
 TipoDato tipoTS(char * identificador);
-char* tipoStr(TipoDato tipo);
+char * tipoStr(TipoDato tipo);
+char * tipoCStr(TipoDato tipo);    // Devuelve tipo correspodiente en C
 int findTS(char * identificador);
 char * findGotoSalida();
 char * findGotoElse();

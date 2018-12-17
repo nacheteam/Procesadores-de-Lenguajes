@@ -32,7 +32,25 @@ int subProg = 0;
 /********************/
 
 /*
- * Devuelve una cadena con el tipo del parámetro.
+ * Devuelve una cadena con el tipo que corresponda en C
+ */
+char * tipoCStr(TipoDato tipo) {
+  switch(tipo) {
+    case entero:
+    case booleano: // en C las variables booleanas son int
+      return "int";
+    case real:
+      return "double";
+    case caracter:
+      return "char";
+    default:
+      printf("[Línea %d] Error de implementación, %s no está asociado a ningún tipo nativo de C\n", linea, tipoStr(tipo));
+      return "error";
+  }
+}
+
+/*
+ * Devuelve una cadena con el tipo del parámetro
  */
 char* tipoStr(TipoDato tipo){
   switch (tipo) {
