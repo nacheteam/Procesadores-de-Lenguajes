@@ -113,7 +113,9 @@ elementos : expresion { $$.el.tipos[$$.el.tope_elem] = $1.tipo; $$.el.tope_elem+
           | elementos COMA expresion { $$.el.tipos[$$.el.tope_elem] = $3.tipo; $$.el.tope_elem++; }
 ;
 
-expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;}
+expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
+                                    $$.lexema = temporal();
+                                    $$.codigo = uneCadenas("(",$2.codigo,")");}
 | expresion INCR expresion ARROBARROBA expresion {if(esTipoElemento($3.tipo,$1.tipo) && $5.tipo==entero)
                                                               $$.tipo = $1.tipo;
                                                             else{
