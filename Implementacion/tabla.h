@@ -53,7 +53,6 @@ typedef struct atributos{
   Elem el;
 } atributos;
 
-#define YYSTYPE atributos
 
 /*******************************************************/
 /* DEFINICIÓN DE LOS ELEMENTOS DE LA TABLA DE SÍMBOLOS */

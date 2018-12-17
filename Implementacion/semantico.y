@@ -19,11 +19,11 @@
 %error-verbose   // Permite mensajes de error detallados
 
 /* // Structs usados en herencia para la tabla de símbolos */
-/* %union{ */
-/*   char * lexema; */
-/*   int token; */
-/*   int tipo; */
-/*  } */
+ %union{
+  char * lexema;
+  struct atributos atrib;
+  TipoDato tipo;
+ }
 
 // Lista de nombres de los tokens
 
@@ -54,9 +54,9 @@
 %token PYC COMA
 
 %type <lexema> tipo
-%type <lid> lista_identificadores
-%type <tipo> expresion
-%type <el> elementos
+%type <atrib> lista_identificadores
+%type <atrib> expresion
+%type <atrib> elementos
 %type <tipo> lista
 
 // Precedencias
@@ -94,7 +94,7 @@ cabecera_subprograma : PROCED ID PARIZQ {insertaProcedimiento($2);} lista_parame
    | PROCED ID PARIZQ PARDER {insertaProcedimiento($2);}
 ;
 
-cuerpo_declar_variables : tipo lista_identificadores {for(int i=0; i<$2.tope_id;++i){insertaVar($2.lista_ids[i],$1);};} PYC
+cuerpo_declar_variables : tipo lista_identificadores {for(int i=0; i<$2.lid.tope_id;++i){insertaVar($2.lid.lista_ids[i],$1);};} PYC
                         | error
 ;
 
@@ -109,169 +109,169 @@ declar_de_variables_locales : |  marca_ini_declar_variables
 declar_subprog : cabecera_subprograma bloque
 ;
 
-elementos : expresion { $$.tipos[$$.tope_elem] = $1; $$.tope_elem++; }
-          | elementos COMA expresion { $$.tipos[$$.tope_elem] = $3; $$.tope_elem++; } // TODO: Comprobación
+elementos : expresion { $$.el.tipos[$$.el.tope_elem] = $1.tipo; $$.el.tope_elem++; }
+          | elementos COMA expresion { $$.el.tipos[$$.el.tope_elem] = $3.tipo; $$.el.tope_elem++; }
 ;
 
-expresion : PARIZQ expresion PARDER {$$ = $2;}
-          | expresion INCR expresion ARROBARROBA expresion {if(($1==listaentero && $3==entero && $5==entero) || ($1==listareal && $3==real && $5==entero) || ($1==listabool && $3==booleano && $5==entero) || ($1==listachar && $3==caracter && $5==entero))
-                                                              $$ = $1;
+expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;}
+          | expresion INCR expresion ARROBARROBA expresion {if(($1.tipo==listaentero && $3.tipo==entero && $5.tipo==entero) || ($1.tipo==listareal && $3.tipo==real && $5.tipo==entero) || ($1.tipo==listabool && $3.tipo==booleano && $5.tipo==entero) || ($1.tipo==listachar && $3.tipo==caracter && $5.tipo==entero))
+                                                              $$.tipo = $1.tipo;
                                                             else{
-                                                              semprintf("Los tipos %s y %s no son compatibles o %s no es entero para aplicar el operador ternario %s y %s\n", tipoStr($1),tipoStr($3),tipoStr($5),$2,$4);
-                                                              $$ = desconocido;}} // TODO: Comprobación
-          | INCR expresion {if($2==entero || $2==real)
-                              $$ = $2;
+                                                              semprintf("Los tipos %s y %s no son compatibles o %s no es entero para aplicar el operador ternario %s y %s\n", tipoStr($1.tipo),tipoStr($3.tipo),tipoStr($5.tipo),$2,$4);
+                                                              $$.tipo = desconocido;}}
+          | INCR expresion {if($2.tipo==entero || $2.tipo==real)
+                              $$.tipo = $2.tipo;
                            else{
-                             semprintf("El tipo %s no es ni entero ni real para aplicar el operador unario %s\n", tipoStr($2),$1);
-                             $$ = desconocido;
-                            }} // TODO: Comprobación
-          | DECR expresion {if($2==entero || $2==real)
-                              $$ = $2;
+                             semprintf("El tipo %s no es ni entero ni real para aplicar el operador unario %s\n", tipoStr($2.tipo),$1);
+                             $$.tipo = desconocido;
+                            }}
+          | DECR expresion {if($2.tipo==entero || $2.tipo==real)
+                              $$.tipo = $2.tipo;
                             else{
-                              semprintf("El tipo %s no es ni entero ni real para aplicar el operador unario %s\n", tipoStr($2),$1);
-                              $$ = desconocido;}} // TODO: Comprobación
-          | UNARIOIZQ expresion {if((strcmp($1,"!")==0 && $2==booleano))
-                                  $$ = $2;
-                                else if(strcmp($1,"#")==0 && ($2==listaentero || $2==listareal || $2==listabool || $2==listachar))
-                                  $$ = entero;
-                                                   
-                                else if(strcmp($1,"?")==0 && $2==listaentero)
-                                  $$ = entero;
-                                                   
-                                else if(strcmp($1,"?")==0 && $2==listareal)
-                                  $$=real;
-                                                   
-                                else if(strcmp($1,"?")==0 && $2==listabool)
-                                  $$=booleano;
-                                                   
-                                else if(strcmp($1,"?")==0 && $2==listachar)
-                                  $$=caracter;
+                              semprintf("El tipo %s no es ni entero ni real para aplicar el operador unario %s\n", tipoStr($2.tipo),$1);
+                              $$.tipo = desconocido;}}
+          | UNARIOIZQ expresion {if((strcmp($1,"!")==0 && $2.tipo==booleano))
+                                  $$.tipo  = $2.tipo;
+                                else if(strcmp($1,"#")==0 && ($2.tipo==listaentero || $2.tipo==listareal || $2.tipo==listabool || $2.tipo==listachar))
+                                  $$.tipo  = entero;
+
+                                else if(strcmp($1,"?")==0 && $2.tipo==listaentero)
+                                  $$.tipo  = entero;
+
+                                else if(strcmp($1,"?")==0 && $2.tipo==listareal)
+                                  $$.tipo =real;
+
+                                else if(strcmp($1,"?")==0 && $2.tipo==listabool)
+                                  $$.tipo =booleano;
+
+                                else if(strcmp($1,"?")==0 && $2.tipo==listachar)
+                                  $$.tipo =caracter;
                                 else if(strcmp($1,"$")==0)
-                                  $$=$2;
+                                  $$.tipo =$2.tipo;
                                 else{
-                                  semprintf("El tipo %s no se corresponde con el operador %s\n", tipoStr($2),$1);
-                                  $$ = desconocido;
-                                }} // TODO: Comprobar según token
-          | expresion UNARIODER {if($1,listaentero || $1==listareal || $1==listabool || $1==listachar)
-                                  $$ = $1;
+                                  semprintf("El tipo %s no se corresponde con el operador %s\n", tipoStr($2.tipo),$1);
+                                  $$.tipo  = desconocido;
+                                }}
+          | expresion UNARIODER {if($1.tipo,listaentero || $1.tipo==listareal || $1.tipo==listabool || $1.tipo==listachar)
+                                  $$.tipo = $1.tipo;
                                 else{
-                                  semprintf("El tipo %s no es una lista para aplicar %s\n", tipoStr($1),$2);
-                                  $$ = desconocido;
-                                }} // TODO: Comprobar según token
-          | SIGNO expresion  {if($2==entero || $2==real)
-                                $$ = $2;
+                                  semprintf("El tipo %s no es una lista para aplicar %s\n", tipoStr($1.tipo),$2);
+                                  $$.tipo = desconocido;
+                                }}
+          | SIGNO expresion  {if($2.tipo==entero || $2.tipo==real)
+                                $$.tipo = $2.tipo;
                               else
-                                { semprintf("El tipo %s no es compatible con el operador unario %s\n", tipoStr($2),$1);
-                                  $$ = desconocido;}} %prec UNARIOIZQ // TODO: Comprobar según token
-          | expresion SIGNO expresion {if(($1==$3 && ($1==listaentero || $1==listareal || $1==listabool || $1==listachar)) || (($1==entero || $1==real) && ($3==entero || $3==real)))
-                                        $$ = $1;
+                                { semprintf("El tipo %s no es compatible con el operador unario %s\n", tipoStr($2.tipo),$1);
+                                  $$.tipo = desconocido;}} %prec UNARIOIZQ // TODO: Comprobar según token
+          | expresion SIGNO expresion {if(($1.tipo==$3.tipo && ($1.tipo==listaentero || $1.tipo==listareal || $1.tipo==listabool || $1.tipo==listachar)) || (($1.tipo==entero || $1.tipo==real) && ($3.tipo==entero || $3.tipo==real)))
+                                        $$.tipo = $1.tipo;
                                       else{
-                                        semprintf("Los tipos %s y %s no son iguales o no son un entero, real o lista para aplicar %s.\n", tipoStr($1),tipoStr($3),$2);
-                                        $$ = desconocido;}} // TODO: Comprobar según token
-          | expresion OR expresion {if($1==booleano && $3==booleano)
-                                      $$=$1;
+                                        semprintf("Los tipos %s y %s no son iguales o no son un entero, real o lista para aplicar %s.\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
+                                        $$.tipo = desconocido;}} // TODO: Comprobar según token
+          | expresion OR expresion {if($1.tipo==booleano && $3.tipo==booleano)
+                                      $$.tipo=$1.tipo;
                                    else{
-                                   semprintf("Los tipos %s y %s no son booleanos para aplicar %s.\n", tipoStr($1),tipoStr($3),$2);
-                                   $$ = desconocido;
+                                   semprintf("Los tipos %s y %s no son booleanos para aplicar %s.\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
+                                   $$.tipo = desconocido;
                                    }}
-          | expresion AND expresion {if($1==booleano && $3==booleano)
-                                      $$=$1;
+          | expresion AND expresion {if($1.tipo==booleano && $3.tipo==booleano)
+                                      $$.tipo=$1.tipo;
                                     else{
-                                      semprintf("Los tipos %s y %s no son booleanos para aplicar %s.\n", tipoStr($1),tipoStr($3),$2);
-                                      $$ = desconocido;
+                                      semprintf("Los tipos %s y %s no son booleanos para aplicar %s.\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
+                                      $$.tipo = desconocido;
                                     }}
-          | expresion XOR expresion {if($1==booleano && $3==booleano)
-                                      $$=$1;
+          | expresion XOR expresion {if($1.tipo==booleano && $3.tipo==booleano)
+                                      $$.tipo=$1.tipo;
                                     else{
-                                      semprintf("Los tipos %s y %s no son booleanos para aplicar %s.\n", tipoStr($1),tipoStr($3),$2);
-                                      $$ = desconocido;}}
-          | expresion COMP_IG expresion {if($1==$3)
-                                          $$=booleano;
+                                      semprintf("Los tipos %s y %s no son booleanos para aplicar %s.\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
+                                      $$.tipo = desconocido;}}
+          | expresion COMP_IG expresion {if($1.tipo==$3.tipo)
+                                          $$.tipo=booleano;
                                         else{
-                                          semprintf("Los tipos %s y %s no coinciden para aplicar %s.\n", tipoStr($1),tipoStr($3),$2);
-                                          $$ = desconocido;
+                                          semprintf("Los tipos %s y %s no coinciden para aplicar %s.\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
+                                          $$.tipo = desconocido;
                                         }}
-          | expresion COMP_MM expresion {if($1==$3 && ($1==entero || $1==real))
-                                          $$=booleano;
+          | expresion COMP_MM expresion {if($1.tipo==$3.tipo && ($1.tipo==entero || $1.tipo==real))
+                                          $$.tipo=booleano;
                                          else{
-                                             semprintf("Los tipos %s y %s no coinciden o no son enteros o reales para aplicar %s\n", tipoStr($1),tipoStr($3),$2);
-                                             $$ = desconocido;
+                                             semprintf("Los tipos %s y %s no coinciden o no son enteros o reales para aplicar %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
+                                             $$.tipo = desconocido;
                                          }}
-          // TODO: ($1==entero || $1==real) && $1==entero <-- absorción; revisar la lógica
+          // TODO: ($1.tipo==entero || $1.tipo==real) && $1.tipo==entero <-- absorción; revisar la lógica
           | expresion PROD_DIV_MOD expresion {
                                         if(strcmp($2,"/")==0) {
-                                             if (($1==entero || $1==real) && $1==$3){
-                                                  $$ = $1;
+                                             if (($1.tipo==entero || $1.tipo==real) && $1.tipo==$3.tipo){
+                                                  $$.tipo = $1.tipo;
                                              }
-                                             else if (($1==listareal) && $3==real) {
-                                                  $$ = $1;
+                                             else if (($1.tipo==listareal) && $3.tipo==real) {
+                                                  $$.tipo = $1.tipo;
                                              }
                                              else{
-                                                 semprintf("Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", tipoStr($1),tipoStr($3),$2);
-                                                 $$ = desconocido;
+                                                 semprintf("Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
+                                                 $$.tipo = desconocido;
                                               }
                                         }
                                         if(strcmp($2,"*")==0) {
-                                             if (($1==entero || $1==real) && ($1==$3)){
-                                                  $$ = $1;
+                                             if (($1.tipo==entero || $1.tipo==real) && ($1.tipo==$3.tipo)){
+                                                  $$.tipo = $1.tipo;
                                              }
-                                             else if (($1==listareal) && $3==real) {
-                                                  $$ = $1;
+                                             else if (($1.tipo==listareal) && $3.tipo==real) {
+                                                  $$.tipo = $1.tipo;
                                              }
-                                             else if (($3==listareal) && $1==real) {
-                                                  $$ = $1;
+                                             else if (($3.tipo==listareal) && $1.tipo==real) {
+                                                  $$.tipo = $1.tipo;
                                              }
-                                             else if (($1==listaentero) && $3==entero) {
-                                                  $$ = $1;
+                                             else if (($1.tipo==listaentero) && $3.tipo==entero) {
+                                                  $$.tipo = $1.tipo;
                                              }
-                                             else if (($3==listaentero) && $1==entero) {
-                                                  $$ = $1;
+                                             else if (($3.tipo==listaentero) && $1.tipo==entero) {
+                                                  $$.tipo = $1.tipo;
                                              }
                                              else{
-                                                 semprintf("Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", tipoStr($1),tipoStr($3),$2);
-                                                 $$ = desconocido;
+                                                 semprintf("Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
+                                                 $$.tipo = desconocido;
                                               }
                                         }
                                         if(strcmp($2,"%")==0) {
-                                             if (($1==entero) && ($1==$3)){
-                                                  $$ = $1;
+                                             if (($1.tipo==entero) && ($1.tipo==$3.tipo)){
+                                                  $$.tipo = $1.tipo;
                                              }
-                                             else if (($1==listaentero) && ($3==entero)){
-                                                  $$ = $1;
+                                             else if (($1.tipo==listaentero) && ($3.tipo==entero)){
+                                                  $$.tipo = $1.tipo;
                                              }
                                              else{
-                                                 semprintf("Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", tipoStr($1),tipoStr($3),$2);
-                                                 $$ = desconocido;
+                                                 semprintf("Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
+                                                 $$.tipo = desconocido;
                                               }
                                         }
                                   }
-          | expresion EXP expresion { if ($1 == entero || $1 == real) {
-                                      if ($3 == entero)
-                                        $$=$1;
+          | expresion EXP expresion { if ($1.tipo == entero || $1.tipo == real) {
+                                      if ($3.tipo == entero)
+                                        $$.tipo=$1.tipo;
                                       else
-                                        semprintf("%s debe entero y %s debe ser entero o real para aplicar %s\n", tipoStr($3),tipoStr($1),$2);
-                                      } else if ($1==$3 && ($1==listaentero || $1==listachar || $1==listabool || $1==listareal))
-                                        $$=$1;
+                                        semprintf("%s debe entero y %s debe ser entero o real para aplicar %s\n", tipoStr($3.tipo),tipoStr($1.tipo),$2);
+                                      } else if ($1.tipo==$3.tipo && ($1.tipo==listaentero || $1.tipo==listachar || $1.tipo==listabool || $1.tipo==listareal))
+                                        $$.tipo=$1.tipo;
                                       else
-                                        semprintf("Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", tipoStr($1),tipoStr($3),$2);
+                                        semprintf("Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
                                     }
 
-          | expresion ARROBA expresion {if(($1==listaentero || $1==listareal || $1==listabool || $1==listachar) && $3==entero)
-                                          $$=$1;
+          | expresion ARROBA expresion {if(($1.tipo==listaentero || $1.tipo==listareal || $1.tipo==listabool || $1.tipo==listachar) && $3.tipo==entero)
+                                          $$.tipo=$1.tipo;
                                        else {
-                                         semprintf("%s no es una lista o %s no es entero para aplicar %s\n", tipoStr($1),tipoStr($3),$2);
-                                         $$ = desconocido;
+                                         semprintf("%s no es una lista o %s no es entero para aplicar %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
+                                         $$.tipo = desconocido;
                                        }}
-          | expresion DECR expresion {if(($1==listaentero || $1==listareal || $1==listabool || $1==listachar) && $3==entero)
-                                        $$=$1;
+          | expresion DECR expresion {if(($1.tipo==listaentero || $1.tipo==listareal || $1.tipo==listabool || $1.tipo==listachar) && $3.tipo==entero)
+                                        $$.tipo=$1.tipo;
                                       else{
-                                        semprintf("%s no es una lista o %s no es entero para aplicar %s\n", tipoStr($1),tipoStr($3),$2);
-                                        $$ = desconocido;}
+                                        semprintf("%s no es una lista o %s no es entero para aplicar %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
+                                        $$.tipo = desconocido;}
                                        }
-          | ID {$$ = tipoTS($1);}
-          | LITERAL {$$ = getTipoLiteral($1);}
-          | lista {$$=$1;}
-          | error {$$ = desconocido;}
+          | ID {$$.tipo = tipoTS($1);}
+          | LITERAL {$$.tipo = getTipoLiteral($1);}
+          | lista {$$.tipo=$1;}
+          | error {$$.tipo = desconocido;}
 ;
 
 expresion_o_cadena : expresion | CADENA
@@ -283,20 +283,20 @@ fin_de_bloque : LLADER {salBloqueTS();}
 inicio_de_bloque : LLAIZQ {entraBloqueTS();}
 ;
 
-lista : CORIZQ elementos CORDER {for(int i=0;i<$2.tope_elem-1;++i)
-                                                                    if($2.tipos[i]!=$2.tipos[i+1]){
-                                                                      semprintf("lista con elementos de distinto tipo: %s y %s\n", tipoStr($2.tipos[i]),tipoStr($2.tipos[i+1]));
+lista : CORIZQ elementos CORDER {for(int i=0;i<$2.el.tope_elem-1;++i)
+                                                                    if($2.el.tipos[i]!=$2.el.tipos[i+1]){
+                                                                      semprintf("lista con elementos de distinto tipo: %s y %s\n", tipoStr($2.el.tipos[i]),tipoStr($2.el.tipos[i+1]));
                                                                       break;
                                                                     }
 
                                                                     if ($$!=desconocido) {
-                                                                      if($2.tipos[0]==entero)
+                                                                      if($2.el.tipos[0]==entero)
                                                                         $$=listaentero;
-                                                                      else if($2.tipos[0]==real)
+                                                                      else if($2.el.tipos[0]==real)
                                                                         $$=listareal;
-                                                                      else if($2.tipos[0]==caracter)
+                                                                      else if($2.el.tipos[0]==caracter)
                                                                         $$=listachar;
-                                                                      else if($2.tipos[0]==booleano)
+                                                                      else if($2.el.tipos[0]==booleano)
                                                                         $$=listabool;
                                                                       }
                                                                     }
@@ -306,7 +306,7 @@ lista_expresiones_o_cadenas : lista_expresiones_o_cadenas COMA expresion_o_caden
                             | expresion_o_cadena
 ;
 
-lista_identificadores : ID {$$.lista_ids[$$.tope_id] = $1;$$.tope_id+=1;} | lista_identificadores COMA ID {$$.lista_ids[$$.tope_id] = $3;$$.tope_id+=1;}
+lista_identificadores : ID {$$.lid.lista_ids[$$.lid.tope_id] = $1;$$.lid.tope_id+=1;} | lista_identificadores COMA ID {$$.lid.lista_ids[$$.lid.tope_id] = $3;$$.lid.tope_id+=1;}
 ;
 
 lista_parametros : parametro
@@ -316,7 +316,7 @@ lista_parametros : parametro
 lista_variables : lista_identificadores
 ;
 
-llamada_proced : ID PARIZQ elementos PARDER PYC { compruebaLlamada(&$3, $1); }
+llamada_proced : ID PARIZQ elementos PARDER PYC { compruebaLlamada(&$3.el, $1); }
                | ID PARIZQ PARDER PYC { compruebaLlamada(NULL, $1); }
 ;
 
@@ -344,9 +344,9 @@ sentencia : bloque
 ;
 
 sentencia_asignacion :  ID ASIGN expresion PYC {
-  if(tipoTS($1) != desconocido && tipoTS($1) != $3){
+  if(tipoTS($1) != desconocido && tipoTS($1) != $3.tipo){
     semprintf("Asignación de '%s' a variable '%s' de tipo '%s'\n",
-           tipoStr($3), $1, tipoStr(tipoTS($1)));
+           tipoStr($3.tipo), $1, tipoStr(tipoTS($1)));
    }
  }
 ;
@@ -357,16 +357,16 @@ sentencia_else :| ELSE sentencia
 sentencia_entrada : READ lista_variables PYC
 ;
 
-sentencia_if : IF PARIZQ expresion PARDER {compruebaCondicion("if", $3);} sentencia sentencia_else
+sentencia_if : IF PARIZQ expresion PARDER {compruebaCondicion("if", $3.tipo);} sentencia sentencia_else
 ;
 
-sentencia_repeat_until : REPEAT sentencia UNTIL expresion PYC {compruebaCondicion("repeat-until", $4);}
+sentencia_repeat_until : REPEAT sentencia UNTIL expresion PYC {compruebaCondicion("repeat-until", $4.tipo);}
 ;
 
 sentencia_salida : WRITE lista_expresiones_o_cadenas PYC
 ;
 
-sentencia_while : WHILE PARIZQ expresion PARDER {compruebaCondicion("while", $3);} sentencia
+sentencia_while : WHILE PARIZQ expresion PARDER {compruebaCondicion("while", $3.tipo);} sentencia
 ;
 
 sentencias : sentencias sentencia
