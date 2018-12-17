@@ -3,6 +3,70 @@
 
 #include <string.h>
 #include "error.h"
+#include <stdarg.h>
+
+// Une todos los parámetros que se le pasan
+char* uneCadenas(const char* primero, ...) {
+    if( primero == NULL ) {
+        return NULL;
+    }
+
+    va_list argumentos;
+    int i;
+    const char *actual;
+
+    // 1. Figure out how many arguments there are.
+    va_start(argumentos, primero);
+    size_t num_argumentos = 0;
+    for(
+        actual = primero;
+        actual != NULL;
+        actual = va_arg(argumentos, char *)
+    ) {
+        num_argumentos++;
+    }
+    va_end(argumentos);
+
+    //   * Allocate an array to hold their lengths.
+    size_t tam_str[num_argumentos];
+
+    // 2. Store the string lengths and their total length.
+    size_t res_tam = 0;
+    va_start(argumentos, primero);
+    for(
+        i = 0, actual = primero;
+        actual != NULL;
+        i++, actual = va_arg(argumentos, char *)
+    ) {
+        tam_str[i] = strlen(actual);
+        res_tam += tam_str[i];
+    }
+    va_end(argumentos);
+
+    //     * Allocate the resination.
+    char *res = malloc(res_tam + 1);
+    if( res == NULL ) {
+        return NULL;
+    }
+
+    // 3. Copy the strings.
+    char *res_pos = res;
+    va_start(argumentos, primero);
+    for(
+        i = 0, actual = primero;
+        actual != NULL;
+        i++, actual = va_arg(argumentos, char *)
+    ) {
+        memcpy( res_pos, actual, tam_str[i] );
+        res_pos += tam_str[i];
+    }
+    va_end(argumentos);
+
+    // Add the final null byte
+    res_pos[0] = '\0';
+
+    return res;
+}
 
 /* Obtiene el tipo de un literal */
 // TODO: ¿esto no debería hacerlo el analizador léxico?
