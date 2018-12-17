@@ -5,7 +5,6 @@
 #include "error.h"
 
 /* Obtiene el tipo de un literal */
-// TODO: probar
 // TODO: ¿esto no debería hacerlo el analizador léxico?
 TipoDato getTipoLiteral(char * literal){
   switch(literal[0]) {
@@ -52,6 +51,36 @@ void compruebaLlamada(Elem * elems, char * proced) {
       semprintf("El parámetro número %d con el que se ha llamado a '%s' no tiene el tipo esperado: se esperaba %s y se ha recibido %s\n", i+1, proced, tipoStr(tipo_esperado), tipoStr(tipo_usado));
     }
   }
+}
+
+TipoDato getTipoElemento(TipoDato tipoLista){
+  switch (tipoLista) {
+  case listaentero:
+    return entero;
+  case listareal:
+    return real;
+  case listabool:
+    return booleano;
+  case listachar:
+    return caracter;
+  default:
+    return desconocido;
+  }
+}
+
+/* Comprueba si un elemento es del tipo de una lista. */
+int esTipoElemento(TipoDato elemento, TipoDato tipoLista){
+  return elemento == getTipoElemento(tipoLista);
+}
+
+/* Comprueba si un tipo es lista. */
+int esLista(TipoDato tipo){
+  return tipo==listaentero || tipo==listareal ||
+    tipo==listabool || tipo==listachar;
+}
+
+int esNumero(TipoDato tipo){
+  return tipo == entero || tipo == real;
 }
 
 
