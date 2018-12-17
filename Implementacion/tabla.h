@@ -80,5 +80,6 @@ void insertaParametro(char * identificador, char * nombre_dato);
 TipoDato tipoTS(char * identificador);
 char* tipoStr(TipoDato tipo);
 int findTS(char * identificador);
+char* devuelveTF(char * tipo);        // Devuelve tipo formateado correspodiente en C.
 
 #endif

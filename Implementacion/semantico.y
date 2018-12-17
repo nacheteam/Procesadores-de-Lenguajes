@@ -115,13 +115,13 @@ elementos : expresion { $$.el.tipos[$$.el.tope_elem] = $1.tipo; $$.el.tope_elem+
 
 expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                     $$.lexema = temporal();
-                                    printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                                    printf("  %s = %s ;",$$.lexema,uneCadenas("(",$2.lexema,")"));}
+                                    printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                                    printf("  %s = %s ;\n",$$.lexema,uneCadenas("(",$2.lexema,")"));}
 | expresion INCR expresion ARROBARROBA expresion {if(esTipoElemento($3.tipo,$1.tipo) && $5.tipo==entero){
                                                     $$.tipo = $1.tipo;
                                                     $$.lexema = temporal();
-                                                    printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                                                    printf("  %s = %s ;",$$.lexema,uneCadenas($1.lexema," ++ ",$3.lexema, " @ ", $5.lexema));
+                                                    printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                                                    printf("  %s = %s ;\n",$$.lexema,uneCadenas($1.lexema," ++ ",$3.lexema, " @ ", $5.lexema));
                                                   }
                                                   else{
                                                     semprintf("Los tipos %s y %s no son compatibles o %s no es entero para aplicar el operador ternario %s y %s\n", tipoStr($1.tipo),tipoStr($3.tipo),tipoStr($5.tipo),$2,$4);
@@ -129,8 +129,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
           | INCR expresion {if($2.tipo==entero || $2.tipo==real){
                               $$.tipo = $2.tipo;
                               $$.lexema = temporal();
-                              printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                              printf("  %s = %s ;",$$.lexema,uneCadenas("++",$2.lexema));
+                              printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                              printf("  %s = %s ;\n",$$.lexema,uneCadenas("++",$2.lexema));
                            }
                            else{
                              semprintf("El tipo %s no es ni entero ni real para aplicar el operador unario %s\n", tipoStr($2.tipo),$1);
@@ -139,8 +139,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
           | DECR expresion {if($2.tipo==entero || $2.tipo==real){
                               $$.tipo = $2.tipo;
                               $$.lexema = temporal();
-                              printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                              printf("  %s = %s ;",$$.lexema,uneCadenas("--",$2.lexema));
+                              printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                              printf("  %s = %s ;\n",$$.lexema,uneCadenas("--",$2.lexema));
                             }
                             else{
                               semprintf("El tipo %s no es ni entero ni real para aplicar el operador unario %s\n", tipoStr($2.tipo),$1);
@@ -159,14 +159,14 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                 }
                               if($$.tipo!=desconocido){
                                 $$.lexema = temporal();
-                                printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                                printf("  %s = %s ;",$$.lexema,uneCadenas($1,$2.lexema));
+                                printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                                printf("  %s = %s ;\n",$$.lexema,uneCadenas($1,$2.lexema));
                                 }}
            | expresion UNARIODER {if(esLista($1.tipo)){
                                     $$.tipo = $1.tipo;
                                     $$.lexema = temporal();
-                                    printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                                    printf("  %s = %s ;",$$.lexema,uneCadenas($1.lexema,$2));
+                                    printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                                    printf("  %s = %s ;\n",$$.lexema,uneCadenas($1.lexema,$2));
                                 }
                                 else{
                                   semprintf("El tipo %s no es una lista para aplicar %s\n", tipoStr($1.tipo),$2);
@@ -175,8 +175,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
            | SIGNO expresion  {if(esNumero($2.tipo)){
                                 $$.tipo = $2.tipo;
                                 $$.lexema = temporal();
-                                printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                                printf("  %s = %s ;",$$.lexema,uneCadenas($1,$2.lexema));
+                                printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                                printf("  %s = %s ;\n",$$.lexema,uneCadenas($1,$2.lexema));
                               }
                               else
                                 { semprintf("El tipo %s no es compatible con el operador unario %s\n", tipoStr($2.tipo),$1);
@@ -184,8 +184,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
           | expresion SIGNO expresion {if(($1.tipo==$3.tipo && esLista($1.tipo)) || (esNumero($1.tipo) && esNumero($3.tipo))){
                                         $$.tipo = $1.tipo;
                                         $$.lexema = temporal();
-                                        printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                                        printf("  %s = %s ;",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
+                                        printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                                        printf("  %s = %s ;\n",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
                                       }
                                       else{
                                         semprintf("Los tipos %s y %s no son iguales o no son un entero, real o lista para aplicar %s.\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
@@ -193,8 +193,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
           | expresion OR expresion {if($1.tipo==booleano && $3.tipo==booleano){
                                       $$.tipo=$1.tipo;
                                       $$.lexema = temporal();
-                                      printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                                      printf("  %s = %s ;",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
+                                      printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                                      printf("  %s = %s ;\n",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
                                     }
                                    else{
                                    semprintf("Los tipos %s y %s no son booleanos para aplicar %s.\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
@@ -203,8 +203,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
           | expresion AND expresion {if($1.tipo==booleano && $3.tipo==booleano){
                                       $$.tipo=$1.tipo;
                                       $$.lexema = temporal();
-                                      printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                                      printf("  %s = %s ;",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
+                                      printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                                      printf("  %s = %s ;\n",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
                                     }
                                     else{
                                       semprintf("Los tipos %s y %s no son booleanos para aplicar %s.\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
@@ -213,8 +213,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
           | expresion XOR expresion {if($1.tipo==booleano && $3.tipo==booleano){
                                       $$.tipo=$1.tipo;
                                       $$.lexema = temporal();
-                                      printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                                      printf("  %s = %s ;",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
+                                      printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                                      printf("  %s = %s ;\n",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
                                     }
                                     else{
                                       semprintf("Los tipos %s y %s no son booleanos para aplicar %s.\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
@@ -222,8 +222,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
           | expresion COMP_IG expresion {if($1.tipo==$3.tipo){
                                           $$.tipo=booleano;
                                           $$.lexema = temporal();
-                                          printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                                          printf("  %s = %s ;",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
+                                          printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                                          printf("  %s = %s ;\n",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
                                         }
                                         else{
                                           semprintf("Los tipos %s y %s no coinciden para aplicar %s.\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
@@ -232,8 +232,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
           | expresion COMP_MM expresion {if($1.tipo==$3.tipo && esNumero($1.tipo)){
                                           $$.tipo=booleano;
                                           $$.lexema = temporal();
-                                          printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                                          printf("  %s = %s ;",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
+                                          printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                                          printf("  %s = %s ;\n",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
                                         }
                                          else{
                                              semprintf("Los tipos %s y %s no coinciden o no son enteros o reales para aplicar %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
@@ -282,8 +282,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                         }
                                         if($$.tipo!=desconocido){
                                           $$.lexema = temporal();
-                                          printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                                          printf("  %s = %s ;",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
+                                          printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                                          printf("  %s = %s ;\n",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
                                         }
                                   }
            | expresion EXP expresion { if (esNumero($1.tipo)) {
@@ -297,16 +297,16 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                         semprintf("Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
                                       if($$.tipo!=desconocido){
                                         $$.lexema = temporal();
-                                        printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                                        printf("  %s = %s ;",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
+                                        printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                                        printf("  %s = %s ;\n",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
                                       }
                                     }
 
            | expresion ARROBA expresion {if(esLista($1.tipo) && $3.tipo==entero){
                                           $$.tipo=$1.tipo;
                                           $$.lexema = temporal();
-                                          printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                                          printf("  %s = %s ;",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
+                                          printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                                          printf("  %s = %s ;\n",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
                                         }
                                        else {
                                          semprintf("%s no es una lista o %s no es entero para aplicar %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
@@ -315,8 +315,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
           | expresion DECR expresion {if(esLista($1.tipo) && $3.tipo==entero){
                                         $$.tipo=$1.tipo;
                                         $$.lexema = temporal();
-                                        printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                                        printf("  %s = %s ;",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
+                                        printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                                        printf("  %s = %s ;\n",$$.lexema,uneCadenas($1.lexema,$2,$3.lexema));
                                       }
                                       else{
                                         semprintf("%s no es una lista o %s no es entero para aplicar %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
@@ -324,16 +324,16 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                        }
           | ID {$$.tipo = tipoTS($1);
                 $$.lexema = temporal();
-                printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                printf("  %s = %s ;",$$.lexema,$1);}
+                printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                printf("  %s = %s ;\n",$$.lexema,$1);}
           | LITERAL {$$.tipo = getTipoLiteral($1);
                     $$.lexema = temporal();
-                    printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                    printf("  %s = %s ;",$$.lexema,$1);}
+                    printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                    printf("  %s = %s ;\n",$$.lexema,$1);}
           | lista {$$.tipo=$1;
                    $$.lexema = temporal();
-                   printf("  %s %s ;",tipoStr($$.tipo),$$.lexema);
-                   printf("  %s = %s ;",$$.lexema,$1);}
+                   printf("  %s %s ;\n",devuelveTF(tipoStr($$.tipo)),$$.lexema);
+                   printf("  %s = %s ;\n",$$.lexema,$1);}
           | error {$$.tipo = desconocido;}
 ;
 

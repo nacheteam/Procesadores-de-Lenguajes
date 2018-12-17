@@ -32,6 +32,32 @@ int subProg = 0;
 /********************/
 
 /*
+ * Devuelve una cadena con el tipo que corresponda en C.
+ */
+char* devuelveTF(char* tipo){
+  if(strcmp(tipo,"entero")==0)
+    return("int");
+  else if(strcmp(tipo,"real")==0)
+    return("double");
+  else if(strcmp(tipo,"booleano")==0)
+    return("bool");
+  else if(strcmp(tipo,"caracter")==0)
+    return("char");
+  else if(strcmp(tipo,"listaentero")==0)
+    return("list of int");
+  else if(strcmp(tipo,"listareal")==0)
+    return("list of double");
+  else if(strcmp(tipo,"listabool")==0)
+    return("list of bool");
+  else if(strcmp(tipo,"listachar")==0)
+    return("list of char");
+  else if(strcmp(tipo,"desconocido")==0)
+    return("unknown_type");
+  else
+    return("error");
+}
+
+/*
  * Devuelve una cadena con el tipo del parámetro.
  */
 char* tipoStr(TipoDato tipo){
