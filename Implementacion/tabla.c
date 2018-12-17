@@ -225,7 +225,8 @@ void insertaVarTipo(char * identificador, TipoDato tipo_dato){
     variable,
     strdup(identificador),
     tipo_dato,
-    0
+    0,
+    {NULL, NULL}
   };
 
   insertaTS(entrada);
@@ -254,7 +255,8 @@ void insertaProcedimiento(char * identificador){
     procedimiento,
     strdup(identificador),
     desconocido,
-    0 // Inicialmente hay 0 parámetros
+    0, // Inicialmente hay 0 parámetros
+    {NULL, NULL}
   };
 
   insertaTS(entrada);
@@ -282,11 +284,76 @@ void insertaParametro(char * identificador, char * nombre_tipo){
     parametroFormal,
     strdup(identificador),
     tipo_dato,
-    0 // Inicialmente hay 0 parámetros
+    0, // Inicialmente hay 0 parámetros
+    {NULL, NULL}
   };
 
   insertaTS(entrada);
   TS[ultimoProcedimiento].parametros += 1;
+}
+
+/*
+ * Inserta el descriptor de una instrucción de control if/else
+ */
+void insertaIf(char * etiqueta_salida, char * etiqueta_else) {
+  if(DEBUG){
+    printf("[insertaIf] etiqueta de salida '%s'", etiqueta_salida);
+    if (etiqueta_else != NULL)
+      printf(" y etiqueta de else '%s'", etiqueta_else);
+
+    printf(" en línea %d\n", linea);
+    fflush(stdout);
+  }
+
+  entrada_ts entrada = {
+    instrControl,
+    "",
+    desconocido,
+    0,
+    {etiqueta_salida, etiqueta_else}
+  };
+
+  insertaTS(entrada);
+}
+
+/*
+ * Inserta el descriptor de una instrucción de control while
+ */
+void insertaWhile(char * etiqueta_entrada, char * etiqueta_salida) {
+  if(DEBUG){
+    printf("[insertaWhile] etiqueta de entrada '%s' y etiqueta de salida '%s' en línea %d\n", etiqueta_entrada, etiqueta_salida, linea);
+    fflush(stdout);
+  }
+
+  entrada_ts entrada = {
+    instrControl,
+    "",
+    desconocido,
+    0,
+    {etiqueta_salida, etiqueta_entrada}
+  };
+
+  insertaTS(entrada);
+}
+
+/*
+ * Inserta el descriptor de una instrucción de control repeat/until
+ */
+void insertaRepeatUntil(char * etiqueta_entrada) {
+  if(DEBUG){
+    printf("[insertaRepeatUntil] etiqueta de entrada '%s' en línea %d\n", etiqueta_entrada, linea);
+    fflush(stdout);
+  }
+
+  entrada_ts entrada = {
+    instrControl,
+    "",
+    desconocido,
+    0,
+    {NULL, etiqueta_entrada}
+  };
+
+  insertaTS(entrada);
 }
 
 
@@ -308,7 +375,7 @@ void entraBloqueTS(){
     printf("Estoy entrando en un bloque.\n");
     fflush(stdout);
   }
-  const entrada_ts MARCA_BLOQUE = {marca, "[MARCA]", desconocido, 0};
+  const entrada_ts MARCA_BLOQUE = {marca, "[MARCA]", desconocido, 0, {NULL, NULL}};
   insertaTS(MARCA_BLOQUE);
 
   if(subProg){
@@ -322,7 +389,7 @@ void entraBloqueTS(){
  */
 void salBloqueTS(){
   if(DEBUG){
-    printf("Estoy saliendo en un bloque.\n");
+    printf("Estoy saliendo de un bloque.\n");
     fflush(stdout);
   }
 
@@ -337,4 +404,51 @@ void salBloqueTS(){
   }
 
   printf("[Linea %d] Error de implementación, se intentó salir de un bloque cuando no hay\n", linea);
+}
+
+
+/* Sale de bloque y elimina de la tabla de símbolos todos los símbolos
+ * hasta el último descriptor de una instrucción de control
+ */
+void salEstructuraControl(){
+  if(DEBUG){
+    printf("Estoy saliendo de una estructura de control.\n");
+    fflush(stdout);
+  }
+
+  if(IMPRIME)
+    imprimeTS();
+
+  for(int j = tope - 1; j >= 0; j--){
+    if(TS[j].tipo_entrada == instrControl){
+      tope = j;
+      free(TS[j].etiquetasControl.EtiquetaSalida);
+      free(TS[j].etiquetasControl.EtiquetaElse);
+      return;
+    }
+  }
+
+  printf("[Linea %d] Error de implementación, se intentó salir de una estructura de control cuando no hay\n", linea);
+}
+
+/* Encuentra el nombre de la etiqueta de salida de la estructura de control actual
+ */
+char * findGotoSalida(){
+  for (int j = tope - 1; j >= 0; j--)
+    if (TS[j].tipo_entrada == instrControl)
+      return TS[j].etiquetasControl.EtiquetaSalida;
+
+  printf("[Linea %d] Error de implementación, se intentó encontrar la etiqueta de salida de la estructura de control actual cuando no la hay\n", linea);
+  return NULL;
+}
+
+/* Encuentra el nombre de la etiqueta de else de la estructura de control actual
+ */
+char * findGotoElse(){
+  for (int j = tope - 1; j >= 0; j--)
+    if (TS[j].tipo_entrada == instrControl)
+      return TS[j].etiquetasControl.EtiquetaElse;
+
+  printf("[Linea %d] Error de implementación, se intentó encontrar la etiqueta de else de la estructura de control actual cuando no la hay\n", linea);
+  return NULL;
 }

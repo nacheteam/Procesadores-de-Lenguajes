@@ -5,10 +5,11 @@
  (diapositiva 75)*/
 
 typedef enum {
-  marca, // Indica que la entrada es una marca de principio de bloque
+  marca,            // Indica que la entrada es una marca de principio de bloque
   procedimiento,
-  variable, // variable local
-  parametroFormal  // parámetro de un procedimiento situado en una entrada anterior de la tabla
+  variable,         // variable local
+  parametroFormal,  // parámetro de un procedimiento situado en una entrada anterior de la tabla
+  instrControl      // etiquetas utilizadas en una instrucción de control
 } TipoEntrada;
 
 
@@ -41,6 +42,12 @@ typedef struct Elem{
   int tope_elem;
 } Elem;
 
+typedef struct {
+  char * EtiquetaSalida;
+  char * EtiquetaElse;
+  #define EtiquetaEntrada EtiquetaElse
+} DescriptorDeInstrControl;
+
 #define INIT_IDS(X) IDS X = {.tope_id = 0}
 #define INIT_Elem(X) Elem X = {.tope_elem = 0}
 
@@ -62,9 +69,10 @@ typedef struct atributos{
 
 typedef struct entrada_ts {
   TipoEntrada tipo_entrada; // Tipo de entrada
-  char * nombre; // nombre del identificador
+  char * nombre;      // nombre del identificador
   TipoDato tipo_dato; // Tipo del identificador
-  int parametros; // Número de parámetros
+  int parametros;     // Número de parámetros
+  DescriptorDeInstrControl etiquetasControl;  // Etiquetas para instrucciones de control
 } entrada_ts;
 
 struct entrada_ts TS[MAX_TS];
@@ -76,8 +84,15 @@ void salBloqueTS();
 void insertaVar(char* identificador, char * nombre_dato);
 void insertaProcedimiento(char * identificador);
 void insertaParametro(char * identificador, char * nombre_dato);
+void insertaIf(char * etiqueta_salida, char * etiqueta_else);
+void insertaRepeatUntil(char * etiqueta_entrada);
+void insertaWhile(char * etiqueta_entrada, char * etiqueta_salida);
+void salEstructuraControl();
 TipoDato tipoTS(char * identificador);
 char* tipoStr(TipoDato tipo);
 int findTS(char * identificador);
+char * findGotoSalida();
+char * findGotoElse();
+#define findGotoEntrada findGotoElse
 
 #endif
