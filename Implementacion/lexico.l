@@ -52,7 +52,7 @@ com_linea   (\/\/[^\n]*\n)
 "write"     return WRITE;
 "begin"     return VARBEGIN;
 "end"       return VAREND;
-{cadena}    return CADENA;
+{cadena}    {SET_LEXEMA; return CADENA;}
 {literal}   {SET_LEXEMA; return LITERAL;}
 "list of"   {SET_LEXEMA; return LISTOF;}
 {tbase}     {SET_LEXEMA; return TIPOBASE;}

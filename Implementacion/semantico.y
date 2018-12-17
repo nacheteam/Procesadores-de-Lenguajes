@@ -32,7 +32,7 @@
 %token ASIGN
 %token IF ELSE WHILE REPEAT UNTIL
 %token READ WRITE
-%token CADENA
+%token <lexema> CADENA
 %token <lexema> LITERAL
 %token <lexema> LISTOF
 %token <lexema> TIPOBASE
@@ -258,7 +258,31 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;}
           | error {$$.tipo = desconocido;}
 ;
 
-expresion_o_cadena : expresion | CADENA
+expresion_o_cadena : expresion {
+                     char char_tipo;
+                     char * extra_bool = "";
+                     switch($1.tipo) {
+                       case entero:
+                         char_tipo = 'd';
+                         break;
+                       case real:
+                         char_tipo = 'f';
+                         break;
+                       case booleano: // Se imprimirá la cadena True o False
+                         char_tipo = 's';
+                         extra_bool = " ? \"True\" : \"False\"";
+                         break;
+                       case caracter:
+                         char_tipo = 'c';
+                         break;
+                       default:
+                         char_tipo = 'd'; // TODO: lista o tipo desconocido; imprimir correctamente o provocar mensaje de error de algún tipo
+                     }
+                     printf("  printf(\"%%%c\", %s%s);\n", char_tipo, $1.lexema, extra_bool);  // TODO: comprobar que el operador ternario del tipo booleano escrito funciona en C
+                   }
+                   | CADENA {
+                     printf("  printf(\"%%s\", %s);\n", $1);
+                   }
 ;
 
 fin_de_bloque : LLADER {salBloqueTS();}
@@ -324,25 +348,63 @@ sentencia_asignacion :  ID ASIGN expresion PYC {
     semprintf("Asignación de '%s' a variable '%s' de tipo '%s'\n",
            tipoStr($3.tipo), $1, tipoStr(tipoTS($1)));
    }
+   printf("  %s = %s;\n", $1, $3.lexema);
  }
 ;
 
 sentencia_else :| ELSE sentencia
 ;
 
-sentencia_entrada : READ lista_variables PYC
+sentencia_entrada : READ lista_variables PYC {
+  // TODO: gestión de entrada. Probablemente no deba ser aquí donde se realicen las acciones
+ }
 ;
 
-sentencia_if : IF PARIZQ expresion PARDER {compruebaCondicion("if", $3.tipo);} sentencia sentencia_else
+sentencia_if : IF {
+  char * e_salida = etiqueta();
+  char * e_else   = etiqueta();
+  insertaIf(e_salida, e_else);
+ } PARIZQ expresion PARDER {
+  compruebaCondicion("if", $4.tipo);
+  printf("  if (!%s) goto %s;\n", $4.lexema, findGotoElse());
+ } sentencia {
+  printf("  goto %s;\n", findGotoSalida());
+  printf("%s:\n", findGotoElse());
+ } sentencia_else {
+   printf("%s:\n", findGotoSalida());
+   salEstructuraControl();
+ }
 ;
 
-sentencia_repeat_until : REPEAT sentencia UNTIL expresion PYC {compruebaCondicion("repeat-until", $4.tipo);}
+sentencia_repeat_until : REPEAT {
+  char * e_entrada = etiqueta();
+  insertaRepeatUntil(e_entrada);
+  printf("%s:\n", e_entrada);
+ } sentencia UNTIL expresion PYC {
+   compruebaCondicion("repeat-until", $5.tipo);
+   printf("  if (!%s) goto %s;\n", $5.lexema, findGotoEntrada());
+   salEstructuraControl();
+ }
 ;
 
-sentencia_salida : WRITE lista_expresiones_o_cadenas PYC
+sentencia_salida : WRITE lista_expresiones_o_cadenas PYC {
+  printf("  printf(\"\\n\");\n"); // Imprime un salto de línea al final de la lista // TODO: ¿incluir este salto de línea? ¿Hacer fflush de stdout? ¿Separar cada par de elementos con un espacio?
+ }
 ;
 
-sentencia_while : WHILE PARIZQ expresion PARDER {compruebaCondicion("while", $3.tipo);} sentencia
+sentencia_while : WHILE {
+  char * e_entrada = etiqueta();
+  char * e_salida  = etiqueta();
+  insertaWhile(e_entrada, e_salida);
+  printf("%s:\n", e_entrada);
+ } PARIZQ expresion PARDER {
+   compruebaCondicion("while", $4.tipo);
+   printf("  if (!%s) goto %s;\n", $4.lexema, findGotoSalida());
+ } sentencia {
+   printf("  goto %s;\n", findGotoEntrada());
+   printf("%s:\n", findGotoSalida());
+   salEstructuraControl();
+ }
 ;
 
 sentencias : sentencias sentencia
