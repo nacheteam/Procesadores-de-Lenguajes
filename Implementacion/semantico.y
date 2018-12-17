@@ -190,7 +190,7 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;}
           // TODO: ($1.tipo==entero || $1.tipo==real) && $1.tipo==entero <-- absorción; revisar la lógica
           | expresion PROD_DIV_MOD expresion {
                                         if(strcmp($2,"/")==0) {
-                                             if (($1.tipo==entero || $1.tipo==real) && $1.tipo==$3.tipo){
+                                             if (esNumero($1.tipo) && $1.tipo==$3.tipo){
                                                   $$.tipo = $1.tipo;
                                              }
                                              else if (($1.tipo==listareal) && $3.tipo==real) {
@@ -202,19 +202,13 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;}
                                               }
                                         }
                                         if(strcmp($2,"*")==0) {
-                                             if (($1.tipo==entero || $1.tipo==real) && ($1.tipo==$3.tipo)){
+                                             if (esNumero($1.tipo) && ($1.tipo==$3.tipo)){
                                                   $$.tipo = $1.tipo;
                                              }
-                                             else if (($1.tipo==listareal) && $3.tipo==real) {
+                                             else if (esNumero($3.tipo) && esTipoElemento($3.tipo, $1.tipo)) {
                                                   $$.tipo = $1.tipo;
                                              }
-                                             else if (($3.tipo==listareal) && $1.tipo==real) {
-                                                  $$.tipo = $1.tipo;
-                                             }
-                                             else if (($1.tipo==listaentero) && $3.tipo==entero) {
-                                                  $$.tipo = $1.tipo;
-                                             }
-                                             else if (($3.tipo==listaentero) && $1.tipo==entero) {
+                                             else if (esNumero($1.tipo) && esTipoElemento($1.tipo, $3.tipo)) {
                                                   $$.tipo = $1.tipo;
                                              }
                                              else{
@@ -235,7 +229,7 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;}
                                               }
                                         }
                                   }
-          | expresion EXP expresion { if ($1.tipo == entero || $1.tipo == real) {
+           | expresion EXP expresion { if (esNumero($1.tipo)) {
                                       if ($3.tipo == entero)
                                         $$.tipo=$1.tipo;
                                       else
@@ -246,13 +240,13 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;}
                                         semprintf("Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
                                     }
 
-          | expresion ARROBA expresion {if(($1.tipo==listaentero || $1.tipo==listareal || $1.tipo==listabool || $1.tipo==listachar) && $3.tipo==entero)
+           | expresion ARROBA expresion {if(esLista($1.tipo) && $3.tipo==entero)
                                           $$.tipo=$1.tipo;
                                        else {
                                          semprintf("%s no es una lista o %s no es entero para aplicar %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
                                          $$.tipo = desconocido;
                                        }}
-          | expresion DECR expresion {if(($1.tipo==listaentero || $1.tipo==listareal || $1.tipo==listabool || $1.tipo==listachar) && $3.tipo==entero)
+          | expresion DECR expresion {if(esLista($1.tipo) && $3.tipo==entero)
                                         $$.tipo=$1.tipo;
                                       else{
                                         semprintf("%s no es una lista o %s no es entero para aplicar %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
@@ -279,16 +273,8 @@ lista : CORIZQ elementos CORDER {for(int i=0;i<$2.el.tope_elem-1;++i)
                                                                       break;
                                                                     }
 
-                                                                    if ($$!=desconocido) {
-                                                                      if($2.el.tipos[0]==entero)
-                                                                        $$=listaentero;
-                                                                      else if($2.el.tipos[0]==real)
-                                                                        $$=listareal;
-                                                                      else if($2.el.tipos[0]==caracter)
-                                                                        $$=listachar;
-                                                                      else if($2.el.tipos[0]==booleano)
-                                                                        $$=listabool;
-                                                                      }
+                                                                    if ($$!=desconocido)
+                                                                      $$ = getTipoLista($2.el.tipos[0]);
                                                                     }
 ;
 

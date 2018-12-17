@@ -53,6 +53,7 @@ void compruebaLlamada(Elem * elems, char * proced) {
   }
 }
 
+/* Obten tipo de elemento dado tipo de lista. */
 TipoDato getTipoElemento(TipoDato tipoLista){
   switch (tipoLista) {
   case listaentero:
@@ -63,6 +64,22 @@ TipoDato getTipoElemento(TipoDato tipoLista){
     return booleano;
   case listachar:
     return caracter;
+  default:
+    return desconocido;
+  }
+}
+
+/* Obten tipo de lista dado tipo de elemento. */
+TipoDato getTipoLista(TipoDato tipoElemento){
+  switch (tipoElemento) {
+  case entero:
+    return listaentero;
+  case real:
+    return listareal;
+  case booleano:
+    return listabool;
+  case caracter:
+    return listachar;
   default:
     return desconocido;
   }
@@ -79,6 +96,7 @@ int esLista(TipoDato tipo){
     tipo==listabool || tipo==listachar;
 }
 
+/* Comprueba si es número */
 int esNumero(TipoDato tipo){
   return tipo == entero || tipo == real;
 }
