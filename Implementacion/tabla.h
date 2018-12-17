@@ -49,6 +49,7 @@ typedef struct atributos{
   int token; // Código del token
   TipoDato tipo; // tipo del token
   char * lexema; // Nombre del token
+  char* codigo;
   IDS lid;
   Elem el;
 } atributos;
