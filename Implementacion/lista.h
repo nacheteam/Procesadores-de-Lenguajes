@@ -12,9 +12,15 @@ typedef struct List{
   bool * lista_bool;
   TipoDato tipo;        //Tipo de la lista
   int tope;             //Siguiente posición disponible de la lista
-  int cabezal;          //Posición actual del cabezal
+  int cursor;          //Posición actual del cabezal
 } List;
 
+// Rellena los elementos de la lista en función del tipo.
+void declaraLista(char* elementos, TipoDato tipo);
 
+//Operaciones sobre el cursor
+void avanzaCursor(Lista l);     //Operador >>
+void retrocedeCursor(Lista l);  //Operador <<
+void reiniciaCursor(Lista l);   //Operador $
 
 #endif
