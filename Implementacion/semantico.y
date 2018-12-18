@@ -57,7 +57,7 @@
 %type <atrib> lista_identificadores
 %type <atrib> expresion
 %type <atrib> elementos
-%type <tipo> lista
+%type <atrib> lista
 
 // Precedencias
 
@@ -400,7 +400,7 @@ lista : CORIZQ elementos CORDER {for(int i=0;i<$2.el.tope_elem-1;++i)
                                                                     }
 
                                                                     if ($$!=desconocido)
-                                                                      $$ = getTipoLista($2.el.tipos[0]);
+                                                                      $$.tipo = getTipoLista($2.el.tipos[0]);
                                                                     }
 ;
 
