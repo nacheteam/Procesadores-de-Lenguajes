@@ -133,3 +133,57 @@ char devuelvePosicionChar(Lista l, int pos){
     exit(1);
   }
 }
+
+/*
+ * Devuelve un elemento de tipo lista con el elemento en la posición pos quitado
+ */
+Lista eliminaElemento(Lista l, int pos){
+  Lista res;
+  int contador = 0;
+  //Ajustamos los valores del tope, cursor y tipo.
+  res.tope = l.tope-1;
+  if(l.cursor==tope-1)
+    res.cursor = l.cursor-1;
+  else
+    res.cursor = l.cursor;
+  res.tipo = l.tipo;
+
+  //En función del tipo rellenamos una lista u otra.
+  if(res.tipo==listaentero){
+    res.lista_entero = (int *) malloc(res.tope * sizeof(int));
+    for(int i = 0; i < l.tope; ++i){
+      if(i!=pos){
+        res.lista_entero[contador] = l.lista_entero[i];
+        contador++;
+      }
+    }
+  }
+  else if(res.tipo==listareal){
+    res.lista_real = (double *) malloc(res.tope * sizeof(double));
+    for(int i = 0; i < l.tope; ++i){
+      if(i!=pos){
+        res.lista_entero[contador] = l.lista_entero[i];
+        contador++;
+      }
+    }
+  }
+  else if(res.tipo==listachar){
+    res.lista_char = (char *) malloc(res.tope * sizeof(char));
+    for(int i = 0; i < l.tope; ++i){
+      if(i!=pos){
+        res.lista_entero[contador] = l.lista_entero[i];
+        contador++;
+      }
+    }
+  }
+  else if(res.tipo==listabool){
+    res.lista_bool = (bool *) malloc(res.tope * sizeof(bool));
+    for(int i = 0; i < l.tope; ++i){
+      if(i!=pos){
+        res.lista_entero[contador] = l.lista_entero[i];
+        contador++;
+      }
+    }
+  }
+  return(res);
+}
