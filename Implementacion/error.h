@@ -9,7 +9,7 @@ extern FILE* yyout;
 #define semprintf(f_, ...) {error++; linea_error(); fprintf(stderr, "Error semántico: "); fprintf(stderr, (f_), ##__VA_ARGS__); fflush(stderr); }
 
 
-#define genprintf(f_, ...) { if(!error){fprintf(yyout, (f_), ##__VA_ARGS__); fflush(stdout);} }
+#define genprintf(f_, ...) { if(!error){fprintf(yyout, (f_), ##__VA_ARGS__); fflush(yyout);} }
 
 void linea_error();
 void lerror(const char * msg);
