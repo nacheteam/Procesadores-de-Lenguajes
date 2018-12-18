@@ -187,3 +187,44 @@ Lista eliminaElemento(Lista l, int pos){
   }
   return(res);
 }
+
+/*
+ * Devuelve una lista quitando los elementos a partir de la posición pos.
+ */
+Lista eliminaFinal(Lista l, int pos){
+  Lista res;
+  //Ajustamos los valores del tope, cursor y tipo.
+  res.tope = pos+1;
+  if(l.cursor>=pos+1)
+    res.cursor = pos;
+  else
+    res.cursor = l.cursor;
+  res.tipo = l.tipo;
+
+  //En función del tipo rellenamos una lista u otra.
+  if(res.tipo==listaentero){
+    res.lista_entero = (int *) malloc(res.tope * sizeof(int));
+    for(int i = 0; i < l.tope && i<=pos; ++i){
+      res.lista_entero[i] = l.lista_entero[i];
+    }
+  }
+  else if(res.tipo==listareal){
+    res.lista_real = (double *) malloc(res.tope * sizeof(double));
+    for(int i = 0; i < l.tope && i<=pos; ++i){
+      res.lista_entero[o] = l.lista_entero[i];
+    }
+  }
+  else if(res.tipo==listachar){
+    res.lista_char = (char *) malloc(res.tope * sizeof(char));
+    for(int i = 0; i < l.tope && i<=pos; ++i){
+      res.lista_entero[o] = l.lista_entero[i];
+    }
+  }
+  else if(res.tipo==listabool){
+    res.lista_bool = (bool *) malloc(res.tope * sizeof(bool));
+    for(int i = 0; i < l.tope && i<=pos; ++i){
+      res.lista_entero[o] = l.lista_entero[i];
+    }
+  }
+  return(res);
+}
