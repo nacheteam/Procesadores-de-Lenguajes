@@ -240,6 +240,7 @@ Lista concatenaListas(Lista l1, Lista l2){
   res.cursor = 0;      //Lo pongo a 0 por ponerlo a algo
   res.tipo = l1.tipo;
 
+  //En función del tipo de la lista la generas en orden
   if(res.tipo==listaentero){
     res.lista_entero = (int *) malloc(res.tope * sizeof(int));
     for(int i = 0; i < l1.tope; ++i){
@@ -285,4 +286,20 @@ Lista concatenaListas(Lista l1, Lista l2){
     }
   }
   return(res);
+}
+
+/*
+ * Suma x a los elementos de la lista
+ */
+void sumaValorInt(Lista& l, int x){
+  for(int i = 0; i < l.tope; ++i)
+    l.lista_entero[i]+=x;
+}
+
+/*
+ * Suma x a los elementos de la lista
+ */
+void sumaValorDouble(Lista& l, double x){
+  for(int i = 0; i < l.tope; ++i)
+    l.lista_real[i]+=x;
 }

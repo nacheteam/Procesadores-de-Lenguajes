@@ -38,6 +38,8 @@ char devuelvePosicionChar(Lista l,int pos);    //Operador l@x
 Lista eliminaElemento(Lista l,int pos);       //Operador l--x
 Lista eliminaFinal(Lista l, int pos);         //Operador l%x
 Lista concatenaListas(Lista l1, Lista l2);    //Operador l1**l2
+void sumaValorInt(Lista& l, int x);            //Operador l+x ó x+l
+void sumaValorDouble(Lista& l, double x);            //Operador l+x ó x+l
 
 //Operadores ternarios sobre la lista
 
