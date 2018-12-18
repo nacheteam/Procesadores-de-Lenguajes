@@ -3,6 +3,8 @@
 //Si es 0 se desactiva el print, cualquier otro valor hace print.
 #define DBUG 1
 
+//TODO: generar la lista
+
 /******************************************************************************/
 /*                    Operadores sobre el cursor                              */
 /******************************************************************************/
