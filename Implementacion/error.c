@@ -148,6 +148,7 @@ void lerror(const char * msg) {
 // It only does errors and not warnings.
 void yyerror(const char *msg)
 {
+  error++;
   char *space;
   char *strs[100];
   int numstrs;

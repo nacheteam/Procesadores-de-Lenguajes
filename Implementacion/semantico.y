@@ -8,9 +8,7 @@
   #include "tabla.h"
   #include "comprobaciones.h"
   #include "string.h"
-
-  #define yyprintf(f_, ...) { fprintf(yyout, (f_), ##__VA_ARGS__); }
-
+  #include "file_io.h"
   void yyerror(const char * msg);
   int yylex();
   FILE * yyout;
@@ -61,7 +59,7 @@
 %type <atrib> lista_identificadores
 %type <atrib> expresion
 %type <atrib> elementos
-%type <tipo> lista
+%type <atrib> lista
 
 // Precedencias
 
@@ -94,7 +92,7 @@ bloque : inicio_de_bloque
          fin_de_bloque
 ;
 
-cabecera_subprograma : PROCED ID PARIZQ {insertaProcedimiento($2);} lista_parametros PARDER
+cabecera_subprograma : PROCED ID PARIZQ {insertaProcedimiento($2); entraProced();} lista_parametros PARDER
    | PROCED ID PARIZQ PARDER {insertaProcedimiento($2);}
 ;
 
@@ -110,17 +108,19 @@ declar_de_variables_locales : |  marca_ini_declar_variables
                                  marca_fin_declar_variables
 ;
 
-declar_subprog : cabecera_subprograma bloque
+declar_subprog : cabecera_subprograma bloque {salProced();}
 ;
 
-elementos : expresion { $$.el.tipos[$$.el.tope_elem] = $1.tipo; $$.el.tope_elem++; }
-          | elementos COMA expresion { $$.el.tipos[$$.el.tope_elem] = $3.tipo; $$.el.tope_elem++; }
+elementos : expresion { $$.el.tipos[$$.el.tope_elem] = $1.tipo;
+                        $$.el.tope_elem++; }
+          | elementos COMA expresion { $$.el.tipos[$$.el.tope_elem] = $3.tipo;
+                                       $$.el.tope_elem++; }
 ;
 
 expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                     $$.lexema = temporal(); // TODO: ¿hace falta una nueva variable para esto?
-                                    yyprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                                    yyprintf("  %s = %s ;\n", $$.lexema, $2.lexema);
+                                    genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                                    genprintf("  %s = %s ;\n", $$.lexema, $2.lexema);
                                   }
 | expresion INCR expresion ARROBARROBA expresion {if(esTipoElemento($3.tipo,$1.tipo) && $5.tipo==entero){
                                                     $$.tipo = $1.tipo;
@@ -132,8 +132,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
           | INCR expresion {if($2.tipo==entero || $2.tipo==real){
                               $$.tipo = $2.tipo;
                               $$.lexema = temporal();
-                              yyprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                              yyprintf("  %s = ++%s ;\n", $$.lexema, $2.lexema);
+                              genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                              genprintf("  %s = ++%s ;\n", $$.lexema, $2.lexema);
                            }
                            else{
                              semprintf("El tipo %s no es ni entero ni real para aplicar el operador unario %s\n", tipoStr($2.tipo),$1);
@@ -142,8 +142,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
           | DECR expresion {if($2.tipo==entero || $2.tipo==real){
                               $$.tipo = $2.tipo;
                               $$.lexema = temporal();
-                              yyprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                              yyprintf("  %s = --%s ;\n", $$.lexema, $2.lexema);
+                              genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                              genprintf("  %s = --%s ;\n", $$.lexema, $2.lexema);
                             }
                             else{
                               semprintf("El tipo %s no es ni entero ni real para aplicar el operador unario %s\n", tipoStr($2.tipo),$1);
@@ -163,8 +163,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                               if($$.tipo!=desconocido){
                                 // TODO: lo siguiente sirve cuando el operador es ! (es decir, cuando $$.tipo es booleano), pero no si es un operador de listas, en cuyo caso requiere implementación de listas
                                 $$.lexema = temporal();
-                                yyprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                                yyprintf("  %s = %s %s ;\n", $$.lexema, $1, $2.lexema);
+                                genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                                genprintf("  %s = %s %s ;\n", $$.lexema, $1, $2.lexema);
                                 }}
            | expresion UNARIODER {if(esLista($1.tipo)){
                                     $$.tipo = $1.tipo;
@@ -177,8 +177,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
            | SIGNO expresion  {if(esNumero($2.tipo)){
                                 $$.tipo = $2.tipo;
                                 $$.lexema = temporal();
-                                yyprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                                yyprintf("  %s = %s %s ;\n", $$.lexema, $1, $2.lexema);
+                                genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                                genprintf("  %s = %s %s ;\n", $$.lexema, $1, $2.lexema);
                               }
                               else
                                 { semprintf("El tipo %s no es compatible con el operador unario %s\n", tipoStr($2.tipo),$1);
@@ -186,8 +186,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
           | expresion SIGNO expresion {if(($1.tipo==$3.tipo && esLista($1.tipo)) || (esNumero($1.tipo) && esNumero($3.tipo))){
                                         $$.tipo = $1.tipo;
                                         $$.lexema = temporal();
-                                        yyprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                                        yyprintf("  %s = %s %s %s ;\n", $$.lexema, $1.lexema, $2, $3.lexema);
+                                        genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                                        genprintf("  %s = %s %s %s ;\n", $$.lexema, $1.lexema, $2, $3.lexema);
                                       }
                                       else{
                                         semprintf("Los tipos %s y %s no son iguales o no son un entero, real o lista para aplicar %s.\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
@@ -195,8 +195,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
           | expresion OR expresion {if($1.tipo==booleano && $3.tipo==booleano){
                                       $$.tipo=$1.tipo;
                                       $$.lexema = temporal();
-                                      yyprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                                      yyprintf("  %s = %s %s %s ;\n", $$.lexema, $1.lexema, $2, $3.lexema);
+                                      genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                                      genprintf("  %s = %s %s %s ;\n", $$.lexema, $1.lexema, $2, $3.lexema);
                                     }
                                    else{
                                    semprintf("Los tipos %s y %s no son booleanos para aplicar %s.\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
@@ -205,8 +205,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
           | expresion AND expresion {if($1.tipo==booleano && $3.tipo==booleano){
                                       $$.tipo=$1.tipo;
                                       $$.lexema = temporal();
-                                      yyprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                                      yyprintf("  %s = %s %s %s ;\n", $$.lexema, $1.lexema, $2, $3.lexema);
+                                      genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                                      genprintf("  %s = %s %s %s ;\n", $$.lexema, $1.lexema, $2, $3.lexema);
                                     }
                                     else{
                                       semprintf("Los tipos %s y %s no son booleanos para aplicar %s.\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
@@ -215,8 +215,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
           | expresion XOR expresion {if($1.tipo==booleano && $3.tipo==booleano){
                                       $$.tipo=$1.tipo;
                                       $$.lexema = temporal();
-                                      yyprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                                      yyprintf("  %s = %s %s %s ;\n", $$.lexema, $1.lexema, $2, $3.lexema);
+                                      genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                                      genprintf("  %s = %s %s %s ;\n", $$.lexema, $1.lexema, $2, $3.lexema);
                                     }
                                     else{
                                       semprintf("Los tipos %s y %s no son booleanos para aplicar %s.\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
@@ -224,8 +224,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
           | expresion COMP_IG expresion {if($1.tipo==$3.tipo){
                                           $$.tipo=booleano;
                                           $$.lexema = temporal();
-                                          yyprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                                          yyprintf("  %s = %s %s %s ;\n", $$.lexema, $1.lexema, $2, $3.lexema);
+                                          genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                                          genprintf("  %s = %s %s %s ;\n", $$.lexema, $1.lexema, $2, $3.lexema);
                                         }
                                         else{
                                           semprintf("Los tipos %s y %s no coinciden para aplicar %s.\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
@@ -234,8 +234,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
           | expresion COMP_MM expresion {if($1.tipo==$3.tipo && esNumero($1.tipo)){
                                           $$.tipo=booleano;
                                           $$.lexema = temporal();
-                                          yyprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                                          yyprintf("  %s = %s %s %s ;\n", $$.lexema, $1.lexema, $2, $3.lexema);
+                                          genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                                          genprintf("  %s = %s %s %s ;\n", $$.lexema, $1.lexema, $2, $3.lexema);
                                         }
                                          else{
                                              semprintf("Los tipos %s y %s no coinciden o no son enteros o reales para aplicar %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
@@ -285,8 +285,8 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                           // TODO: comprobar que las operaciones división y módulo de C son las mismas que las que se especifican en nuestro lenguaje
                                           // TODO: lo siguiente es aplicable si el operador es de números, pero no si es de listas, en cuyo caso requiere implementación de listas
                                           $$.lexema = temporal();
-                                          yyprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                                          yyprintf("  %s = %s %s %s ;\n", $$.lexema, $1.lexema, $2, $3.lexema);
+                                          genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                                          genprintf("  %s = %s %s %s ;\n", $$.lexema, $1.lexema, $2, $3.lexema);
                                         }
                                   }
            | expresion EXP expresion { if (esNumero($1.tipo)) {
@@ -304,31 +304,31 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                           // TODO: ¿mover a otro lugar del código?
                                           // TODO: probar
                                           $$.lexema = temporal();
-                                          yyprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                                          yyprintf("  %s = 1 ;\n", $$.lexema);
+                                          genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                                          genprintf("  %s = 1 ;\n", $$.lexema);
                                           char * base = temporal();
-                                          yyprintf("  %s %s ;\n", tipoCStr($$.tipo), base);
-                                          yyprintf("  %s = %s ;\n", base, $1.lexema);
+                                          genprintf("  %s %s ;\n", tipoCStr($$.tipo), base);
+                                          genprintf("  %s = %s ;\n", base, $1.lexema);
                                           char * exponente = temporal();
-                                          yyprintf("  int %s ;\n", exponente);
-                                          yyprintf("  %s = %s ;\n", exponente, $3.lexema);
+                                          genprintf("  int %s ;\n", exponente);
+                                          genprintf("  %s = %s ;\n", exponente, $3.lexema);
                                           char * etiqueta_exp = etiqueta();
                                           char * etiqueta_fin = etiqueta();
                                           char * etiqueta_par = etiqueta();
                                           char * impar = temporal();
-                                          yyprintf("  int %s ;\n", impar);
-                                          yyprintf("  if (%s < 0) goto %s ;\n", exponente, etiqueta_exp);
-                                          yyprintf("  %s = 1.0 / %s ;\n  %s = -%s ;\n", base, base, exponente, exponente);
-                                          yyprintf("%s:\n", etiqueta_exp);
-                                          yyprintf("  if (%s == 0) goto %s ;\n", exponente, etiqueta_fin);
-                                          yyprintf("  %s = (1 & %s) ;\n", impar, exponente);
-                                          yyprintf("  %s = %s / 2 ;\n", exponente, exponente);
-                                          yyprintf("  if (!%s) goto %s ;\n", impar, etiqueta_par);
-                                          yyprintf("  %s = %s * %s ;\n", $$.lexema, $$.lexema, base);
-                                          yyprintf("%s:\n", etiqueta_par);
-                                          yyprintf("  %s = %s * %s ;\n", base, base, base);
-                                          yyprintf("  goto %s ;\n", etiqueta_exp);
-                                          yyprintf("%s:\n", etiqueta_fin);
+                                          genprintf("  int %s ;\n", impar);
+                                          genprintf("  if (%s < 0) goto %s ;\n", exponente, etiqueta_exp);
+                                          genprintf("  %s = 1.0 / %s ;\n  %s = -%s ;\n", base, base, exponente, exponente);
+                                          genprintf("%s:\n", etiqueta_exp);
+                                          genprintf("  if (%s == 0) goto %s ;\n", exponente, etiqueta_fin);
+                                          genprintf("  %s = (1 & %s) ;\n", impar, exponente);
+                                          genprintf("  %s = %s / 2 ;\n", exponente, exponente);
+                                          genprintf("  if (!%s) goto %s ;\n", impar, etiqueta_par);
+                                          genprintf("  %s = %s * %s ;\n", $$.lexema, $$.lexema, base);
+                                          genprintf("%s:\n", etiqueta_par);
+                                          genprintf("  %s = %s * %s ;\n", base, base, base);
+                                          genprintf("  goto %s ;\n", etiqueta_exp);
+                                          genprintf("%s:\n", etiqueta_fin);
                                       }
                                     }
 
@@ -350,17 +350,17 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                        }
           | ID {$$.tipo = tipoTS($1);
                 $$.lexema = temporal();
-                yyprintf("  %s %s ;\n", tipoCStr($$.tipo),$$.lexema);
-                yyprintf("  %s = %s ;\n", $$.lexema, $1);}
+                genprintf("  %s %s ;\n", tipoCStr($$.tipo),$$.lexema);
+                genprintf("  %s = %s ;\n", $$.lexema, $1);}
           | LITERAL {$$.tipo = getTipoLiteral($1);
                     $$.lexema = temporal();
-                    yyprintf("  %s %s ;\n",  tipoCStr($$.tipo), $$.lexema);
+                    genprintf("  %s %s ;\n",  tipoCStr($$.tipo), $$.lexema);
                     // TODO: lo siguiente puede no dar resultado si el literal usado no existe o no significa lo mismo en C (ejemplos que se me ocurren: True, False)
-                    yyprintf("  %s = %s ;\n",$$.lexema, $1);}
-          | lista {$$.tipo=$1; // TODO: listas pendientes de la implementación en C de una estructura de listas
-                   $$.lexema = temporal();
-                   yyprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                   yyprintf("  %s = %s ;\n",$$.lexema, $1);}
+                    genprintf("  %s = %s ;\n",$$.lexema, $1);}
+          | lista {$$.tipo=$1.tipo; // TODO: listas pendientes de la implementación en C de una estructura de listas
+                   /*$$.lexema = temporal();
+                   genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                 genprintf("  %s = %s ;\n",$$.lexema, $1.lexema);*/}
           | error {$$.tipo = desconocido;}
 ;
 
@@ -384,10 +384,10 @@ expresion_o_cadena : expresion {
                        default:
                          char_tipo = 'd'; // TODO: lista o tipo desconocido; imprimir correctamente o provocar mensaje de error de algún tipo
                      }
-                     yyprintf("  printf(\"%%%c\", %s%s);\n", char_tipo, $1.lexema, extra_bool);  // TODO: comprobar que el operador ternario del tipo booleano escrito funciona en C
+                     genprintf("  printf(\"%%%c\", %s%s);\n", char_tipo, $1.lexema, extra_bool);  // TODO: comprobar que el operador ternario del tipo booleano escrito funciona en C
                    }
                    | CADENA {
-                     yyprintf("  printf(\"%%s\", %s);\n", $1);
+                     genprintf("  printf(\"%%s\", %s);\n", $1);
                    }
 ;
 
@@ -403,9 +403,9 @@ lista : CORIZQ elementos CORDER {for(int i=0;i<$2.el.tope_elem-1;++i)
                                                                       break;
                                                                     }
 
-                                                                    if ($$!=desconocido)
-                                                                      $$ = getTipoLista($2.el.tipos[0]);
-                                                                    }
+                                                                    if ($$.tipo!=desconocido){
+                                                                      $$.tipo = getTipoLista($2.el.tipos[0]);
+                                                                    }}
 ;
 
 lista_expresiones_o_cadenas : lista_expresiones_o_cadenas COMA expresion_o_cadena
@@ -446,12 +446,12 @@ sentencia : bloque
           | llamada_proced
 ;
 
-sentencia_asignacion : ID ASIGN { yyprintf("{\n"); } expresion PYC {
+sentencia_asignacion : ID ASIGN { genprintf("{\n"); } expresion PYC {
   if(tipoTS($1) != desconocido && tipoTS($1) != $4.tipo){
     semprintf("Asignación de '%s' a variable '%s' de tipo '%s'\n",
            tipoStr($4.tipo), $1, tipoStr(tipoTS($1)));
    }
-   yyprintf("  %s = %s;\n}\n", $1, $4.lexema);
+   genprintf("  %s = %s;\n}\n", $1, $4.lexema);
  }
 ;
 
@@ -478,7 +478,7 @@ sentencia_entrada : READ lista_identificadores PYC {
       default:
         char_tipo = 'i'; // TODO: lista o tipo desconocido; imprimir correctamente o provocar mensaje de error de algún tipo
     }
-    yyprintf("  scanf(\"%%%c\", &%s);\n", char_tipo, id);
+    genprintf("  scanf(\"%%%c\", &%s);\n", char_tipo, id);
   }
  }
 ;
@@ -489,12 +489,12 @@ sentencia_if : IF {
   insertaIf(e_salida, e_else);
  } PARIZQ expresion PARDER {
   compruebaCondicion("if", $4.tipo);
-  yyprintf("{\n  if (!%s) goto %s;\n", $4.lexema, findGotoElse());
+  genprintf("{\n  if (!%s) goto %s;\n", $4.lexema, findGotoElse());
  } sentencia {
-  yyprintf("  goto %s;\n", findGotoSalida());
-  yyprintf("%s:\n", findGotoElse());
+  genprintf("  goto %s;\n", findGotoSalida());
+  genprintf("%s:\n", findGotoElse());
  } sentencia_else {
-   yyprintf("%s:\n}\n", findGotoSalida());
+   genprintf("%s:\n}\n", findGotoSalida());
    salEstructuraControl();
  }
 ;
@@ -502,16 +502,16 @@ sentencia_if : IF {
 sentencia_repeat_until : REPEAT {
   char * e_entrada = etiqueta();
   insertaRepeatUntil(e_entrada);
-  yyprintf("{\n%s:\n", e_entrada);
+  genprintf("{\n%s:\n", e_entrada);
  } sentencia UNTIL expresion PYC {
    compruebaCondicion("repeat-until", $5.tipo);
-   yyprintf("  if (!%s) goto %s;\n}\n", $5.lexema, findGotoEntrada());
+   genprintf("  if (!%s) goto %s;\n}\n", $5.lexema, findGotoEntrada());
    salEstructuraControl();
  }
 ;
 
-sentencia_salida : WRITE { yyprintf("{\n"); } lista_expresiones_o_cadenas PYC {
-  yyprintf("  printf(\"\\n\");\n}\n"); // Imprime un salto de línea al final de la lista // TODO: ¿incluir este salto de línea? ¿Hacer fflush de stdout? ¿Separar cada par de elementos con un espacio?
+sentencia_salida : WRITE { genprintf("{\n"); } lista_expresiones_o_cadenas PYC {
+  genprintf("  printf(\"\\n\");\n}\n"); // Imprime un salto de línea al final de la lista // TODO: ¿incluir este salto de línea? ¿Hacer fflush de stdout? ¿Separar cada par de elementos con un espacio?
  }
 ;
 
@@ -519,13 +519,13 @@ sentencia_while : WHILE {
   char * e_entrada = etiqueta();
   char * e_salida  = etiqueta();
   insertaWhile(e_entrada, e_salida);
-  yyprintf("{\n%s:\n", e_entrada);
+  genprintf("{\n%s:\n", e_entrada);
  } PARIZQ expresion PARDER {
    compruebaCondicion("while", $4.tipo);
-   yyprintf("  if (!%s) goto %s;\n", $4.lexema, findGotoSalida());
+   genprintf("  if (!%s) goto %s;\n", $4.lexema, findGotoSalida());
  } sentencia {
-   yyprintf("  goto %s;\n", findGotoEntrada());
-   yyprintf("%s:\n}\n", findGotoSalida());
+   genprintf("  goto %s;\n", findGotoEntrada());
+   genprintf("%s:\n}\n", findGotoSalida());
    salEstructuraControl();
  }
 ;

@@ -3,8 +3,14 @@
 
 #include <stdio.h>
 
+extern int error;
+#define genprintf(f_, ...) { if(!error){fprintf(yyout, (f_), ##__VA_ARGS__); fflush(yyout);} }
+
 FILE * abrir_entrada(int argc, char* argv[]);
 FILE * abrir_salida (int argc, char* argv[]);
-void cerrar_salida (FILE * f);
+char * nombre_salida(int argc, char* argv[]);
+
+void entraProced();
+void salProced();
 
 #endif

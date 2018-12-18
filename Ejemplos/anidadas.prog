@@ -1,0 +1,44 @@
+void main(){
+     begin
+        int n;
+     end
+
+     begin
+     void factoriza(int n){
+          begin
+               int curr;
+          end
+
+          curr = 2;
+
+          void compruebaFactor(int n, int m){
+               begin
+                    int d;
+               end
+               
+               void cociente(int n, int m, int q){
+                    q = n/m;
+               }
+               
+               cociente(n, m, d);
+
+               if (d*m == n){
+                    write "*", m;
+                    n = n/m;
+               }
+               else {
+                    m = m+1;
+               }
+               write "\n"
+          }
+
+          while (curr <= n){
+                compruebaFactor(n, m)
+          }
+     }
+
+     write "introduce un numero : ";
+     read n;
+     write n, " == ";
+     factoriza(n);
+}

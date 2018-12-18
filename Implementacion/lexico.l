@@ -75,14 +75,14 @@ com_linea   (\/\/[^\n]*\n)
 "@@"        {SET_LEXEMA; return ARROBARROBA;}
 "{"         return LLAIZQ;
 "}"         return LLADER;
-"["         return CORIZQ;
-"]"         return CORDER;
+"["         {return CORIZQ;}
+"]"         {return CORDER;}
 ";"         return PYC;
 ","         return COMA;
 [ \t]+      ;        // Se ignoran los espacios en blanco
 {com_linea} ++linea; // Se ignoran los comentarios al final de línea
 \n          ++linea;
-.           error = 1; snprintf(buffer_error, LONGITUD_ERROR, "'%s' no se identifica con ningún token conocido\n", yytext); lerror(buffer_error);
+.           error++; snprintf(buffer_error, LONGITUD_ERROR, "'%s' no se identifica con ningún token conocido\n", yytext); lerror(buffer_error);
 
 %%
 
