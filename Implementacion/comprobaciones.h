@@ -7,7 +7,8 @@
 #include <stdlib.h>
 
 // Une todos los parámetros que se le pasan
-char* uneCadenas(const char* primero, ...) {
+char* uneCadenas(const char* primero, ...)
+{
     if( primero == NULL ) {
         return NULL;
     }

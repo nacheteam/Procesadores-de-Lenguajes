@@ -8,6 +8,7 @@
   #include "tabla.h"
   #include "comprobaciones.h"
   #include "string.h"
+  #include "file_io.h"
   void yyerror(const char * msg);
   int yylex();
 
@@ -384,10 +385,10 @@ expresion_o_cadena : expresion {
                        default:
                          char_tipo = 'd'; // TODO: lista o tipo desconocido; imprimir correctamente o provocar mensaje de error de algún tipo
                      }
-                     genprintf("  genprintf(\"%%%c\", %s%s);\n", char_tipo, $1.lexema, extra_bool);  // TODO: comprobar que el operador ternario del tipo booleano escrito funciona en C
+                     genprintf("  printf(\"%%%c\", %s%s);\n", char_tipo, $1.lexema, extra_bool);  // TODO: comprobar que el operador ternario del tipo booleano escrito funciona en C
                    }
                    | CADENA {
-                     genprintf("  genprintf(\"%%s\", %s);\n", $1);
+                     genprintf("  printf(\"%%s\", %s);\n", $1);
                    }
 ;
 
@@ -512,7 +513,7 @@ sentencia_repeat_until : REPEAT {
 ;
 
 sentencia_salida : WRITE { genprintf("{\n"); } lista_expresiones_o_cadenas PYC {
-  genprintf("  genprintf(\"\\n\");\n}\n"); // Imprime un salto de línea al final de la lista // TODO: ¿incluir este salto de línea? ¿Hacer fflush de stdout? ¿Separar cada par de elementos con un espacio?
+  genprintf("  printf(\"\\n\");\n}\n"); // Imprime un salto de línea al final de la lista // TODO: ¿incluir este salto de línea? ¿Hacer fflush de stdout? ¿Separar cada par de elementos con un espacio?
  }
 ;
 
