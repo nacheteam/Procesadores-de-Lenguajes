@@ -237,7 +237,6 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                              semprintf("Los tipos %s y %s no coinciden o no son enteros o reales para aplicar %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
                                              $$.tipo = desconocido;
                                          }}
-          // TODO: ($1.tipo==entero || $1.tipo==real) && $1.tipo==entero <-- absorción; revisar la lógica
           | expresion PROD_DIV_MOD expresion {
                                         if(strcmp($2,"/")==0) {
                                              if (esNumero($1.tipo) && $1.tipo==$3.tipo){
@@ -297,7 +296,35 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                         semprintf("Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
 
                                       if($$.tipo!=desconocido) {
-                                        // TODO: el operador de exponenciación no existe en C; implementar
+                                          // Implementación de la exponenciación mediante un procedimiento binario
+                                          // TODO: ¿mover a otro lugar del código?
+                                          // TODO: probar
+                                          $$.lexema = temporal();
+                                          printf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                                          printf("  %s = 1 ;\n", $$.lexema);
+                                          char * base = temporal();
+                                          printf("  %s %s ;\n", tipoCStr($$.tipo), base);
+                                          printf("  %s = %s ;\n", base, $1.lexema);
+                                          char * exponente = temporal();
+                                          printf("  int %s ;\n", exponente);
+                                          printf("  %s = %s ;\n", exponente, $3.lexema);
+                                          char * etiqueta_exp = etiqueta();
+                                          char * etiqueta_fin = etiqueta();
+                                          char * etiqueta_par = etiqueta();
+                                          char * impar = temporal();
+                                          printf("  int %s ;\n", impar);
+                                          printf("  if (%s < 0) goto %s ;\n", exponente, etiqueta_exp);
+                                          printf("  %s = 1.0 / %s ;\n  %s = -%s ;\n", base, base, exponente, exponente);
+                                          printf("%s:\n", etiqueta_exp);
+                                          printf("  if (%s == 0) goto %s ;\n", exponente, etiqueta_fin);
+                                          printf("  %s = (1 & %s) ;\n", impar, exponente);
+                                          printf("  %s = %s / 2 ;\n", exponente, exponente);
+                                          printf("  if (!%s) goto %s ;\n", impar, etiqueta_par);
+                                          printf("  %s = %s * %s ;\n", $$.lexema, $$.lexema, base);
+                                          printf("%s:\n", etiqueta_par);
+                                          printf("  %s = %s * %s ;\n", base, base, base);
+                                          printf("  goto %s ;\n", etiqueta_exp);
+                                          printf("%s:\n", etiqueta_fin);
                                       }
                                     }
 
