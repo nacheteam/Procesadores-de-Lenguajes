@@ -31,6 +31,37 @@ void reiniciaCursor(Lista l){
   l.cursor=0;
 }
 
+/*
+ * Devuelve el número de elementos de la lista que es el tope de la misma.
+ */
 int numeroElementos(Lista l){
   return(l.tope);
+}
+
+/*
+ * Devuelve el elemento en la posición del cursor de la lista de enteros
+ */
+int devuelveActualInt(Lista l){
+  return(lista_entero[cursor]);
+}
+
+/*
+ * Devuelve el elemento en la posición del cursor de la lista de reales
+ */
+double devuelveActualDouble(Lista l){
+  return(lista_real[cursor]);
+}
+
+/*
+ * Devuelve el elemento en la posición del cursor de la lista de bools
+ */
+bool devuelveActualBool(Lista l){
+  return(lista_bool[cursor]);
+}
+
+/*
+ * Devuelve el elemento en la posición del cursor de la lista de chars
+ */
+char devuelveActualChar(Lista l){
+  return(lista_entero[cursor]);
 }

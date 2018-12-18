@@ -25,6 +25,9 @@ void reiniciaCursor(Lista l);   //Operador $l
 
 //Operadores unarios sobre la lista
 int numeroElementos(Lista l);      //Operador #l
-
+int devuelveActualInt(Lista l);    //Operador ?l
+double devuelveActualDouble(Lista l);    //Operador ?l
+bool devuelveActualBool(Lista l);    //Operador ?l
+char devuelveActualChar(Lista l);    //Operador ?l
 
 #endif
