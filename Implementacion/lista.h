@@ -30,4 +30,12 @@ double devuelveActualDouble(Lista l);    //Operador ?l
 bool devuelveActualBool(Lista l);    //Operador ?l
 char devuelveActualChar(Lista l);    //Operador ?l
 
+//Operadores binarios sobre la lista
+int devuelvePosicionInt(Lista l,int pos);    //Operador l@x
+double devuelvePosicionDouble(Lista l,int pos);    //Operador l@x
+bool devuelvePosicionBool(Lista l,int pos);    //Operador l@x
+char devuelvePosicionChar(Lista l,int pos);    //Operador l@x
+
+//Operadores ternarios sobre la lista
+
 #endif
