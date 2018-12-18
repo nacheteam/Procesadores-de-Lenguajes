@@ -9,3 +9,11 @@ void avanzaCursor(Lista l){
     cursor++;
   }
 }
+
+void retrocedeCursor(Lista l){
+  if(l.cursor-1<0 && DBUG!=0)
+    printf("No se puede retroceder el cursor a menos de 0\n");
+  else{
+    cursor--;
+  }
+}
