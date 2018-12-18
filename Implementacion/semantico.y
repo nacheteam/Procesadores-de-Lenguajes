@@ -50,7 +50,7 @@
 %token <lexema> ARROBA
 %token <lexema> ARROBARROBA
 %token LLAIZQ LLADER
-%token CORIZQ CORDER
+%token <lexema> CORIZQ CORDER
 %token PYC COMA
 
 %type <lexema> tipo
@@ -109,8 +109,12 @@ declar_de_variables_locales : |  marca_ini_declar_variables
 declar_subprog : cabecera_subprograma bloque
 ;
 
-elementos : expresion { $$.el.tipos[$$.el.tope_elem] = $1.tipo; $$.el.tope_elem++; }
-          | elementos COMA expresion { $$.el.tipos[$$.el.tope_elem] = $3.tipo; $$.el.tope_elem++; }
+elementos : expresion { $$.el.tipos[$$.el.tope_elem] = $1.tipo;
+                        $$.el.tope_elem++;
+                        $$.lexema = uneCadenas($$.lexema,$1); }
+          | elementos COMA expresion { $$.el.tipos[$$.el.tope_elem] = $3.tipo;
+                                       $$.el.tope_elem++;
+                                       $$.lexema = uneCadenas($$.lexema,$3); }
 ;
 
 expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
@@ -353,10 +357,10 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                     printf("  %s %s ;\n",  tipoCStr($$.tipo), $$.lexema);
                     // TODO: lo siguiente puede no dar resultado si el literal usado no existe o no significa lo mismo en C (ejemplos que se me ocurren: True, False)
                     printf("  %s = %s ;\n",$$.lexema, $1);}
-          | lista {$$.tipo=$1; // TODO: listas pendientes de la implementación en C de una estructura de listas
+          | lista {$$.tipo=$1.tipo; // TODO: listas pendientes de la implementación en C de una estructura de listas
                    $$.lexema = temporal();
                    printf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                   printf("  %s = %s ;\n",$$.lexema, $1);}
+                   printf("  %s = %s ;\n",$$.lexema, $1.lexema);}
           | error {$$.tipo = desconocido;}
 ;
 
@@ -399,9 +403,10 @@ lista : CORIZQ elementos CORDER {for(int i=0;i<$2.el.tope_elem-1;++i)
                                                                       break;
                                                                     }
 
-                                                                    if ($$!=desconocido)
+                                                                    if ($$.tipo!=desconocido){
                                                                       $$.tipo = getTipoLista($2.el.tipos[0]);
-                                                                    }
+                                                                      $$.lexema = uneCadenas($1,$2.lexema,$3);
+                                                                    }}
 ;
 
 lista_expresiones_o_cadenas : lista_expresiones_o_cadenas COMA expresion_o_cadena

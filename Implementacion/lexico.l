@@ -75,8 +75,8 @@ com_linea   (\/\/[^\n]*\n)
 "@@"        {SET_LEXEMA; return ARROBARROBA;}
 "{"         return LLAIZQ;
 "}"         return LLADER;
-"["         return CORIZQ;
-"]"         return CORDER;
+"["         {SET_LEXEMA; return CORIZQ;}
+"]"         {SET_LEXEMA; return CORDER;}
 ";"         return PYC;
 ","         return COMA;
 [ \t]+      ;        // Se ignoran los espacios en blanco
