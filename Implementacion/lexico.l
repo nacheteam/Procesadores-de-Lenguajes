@@ -26,8 +26,8 @@
  // Definiciones
 
 natural     [0-9]+
-exponente   E[+-]?{natural}
-hex         0x[0-9a-f]+
+exponente   [Ee][+-]?{natural}
+hex         0x[0-9a-fA-F]+
 numero      {natural}(\.{natural})?{exponente}?|{hex}
 ascii       [^\"'\\]|\\[\"'nt]
 cadena      \"{ascii}*\"

@@ -368,8 +368,12 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
           | LITERAL {$$.tipo = getTipoLiteral($1);
                     $$.lexema = temporal();
                     genprintf("  %s %s ;\n",  tipoCStr($$.tipo), $$.lexema);
+                    char * literal_c = $1;
+                    char literales_booleanos[4] = {'0', 0, '1', 0};
+                    if ($$.tipo == booleano)
+                      literal_c = literales_booleanos + 2*(!strcmp("True", $1)); // "1" si True, "0" si False
                     // TODO: lo siguiente puede no dar resultado si el literal usado no existe o no significa lo mismo en C (ejemplos que se me ocurren: True, False)
-                    genprintf("  %s = %s ;\n",$$.lexema, $1);}
+                    genprintf("  %s = %s ;\n",$$.lexema, literal_c);}
           | lista {$$.tipo=$1.tipo; // TODO: listas pendientes de la implementación en C de una estructura de listas
                    /*$$.lexema = temporal();
                    genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
