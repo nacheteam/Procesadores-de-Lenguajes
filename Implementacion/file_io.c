@@ -72,3 +72,8 @@ void salProced(){
   if(profundidad == 0)
     yyout = main_file;
 }
+
+/* Indica si es main */
+int esMain(){
+  return profundidad == 0;
+}
