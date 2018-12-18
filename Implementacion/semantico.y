@@ -335,7 +335,7 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
 
 expresion_o_cadena : expresion {
                      char char_tipo;
-                     char * extra_bool = "";
+                     char * extra_bool = ""; // Cadena adicional para gestionar la salida de un booleano
                      switch($1.tipo) {
                        case entero:
                          char_tipo = 'd';
@@ -388,9 +388,6 @@ lista_parametros : parametro
                  | lista_parametros COMA parametro
 ;
 
-lista_variables : lista_identificadores
-;
-
 llamada_proced : ID PARIZQ elementos PARDER PYC { compruebaLlamada(&$3.el, $1); }
                | ID PARIZQ PARDER PYC { compruebaLlamada(NULL, $1); }
 ;
@@ -430,8 +427,28 @@ sentencia_asignacion :  ID ASIGN expresion PYC {
 sentencia_else :| ELSE sentencia
 ;
 
-sentencia_entrada : READ lista_variables PYC {
-  // TODO: gestión de entrada. Probablemente no deba ser aquí donde se realicen las acciones
+sentencia_entrada : READ lista_identificadores PYC {
+  for(int i=0; i < $2.lid.tope_id; ++i) {
+    char * id = $2.lid.lista_ids[i];
+    TipoDato tipo = tipoTS(id);
+    char char_tipo;
+    switch(tipo) {
+      case booleano: // Los booleanos se leerán como 0 o 1 // TODO: ¿hacer que se lea como True o False?
+        // TODO: un valor booleano distinto puede provocar errores tras hacer operaciones lógicas con él, ¿gestionar?
+      case entero:
+        char_tipo = 'i'; // Podrá leer enteros con signo en formato decimal (por defecto) o hexadecimal (si empieza por 0x)
+        break;
+      case real:
+        char_tipo = 'f';
+        break;
+      case caracter:
+        char_tipo = 'c';
+        break;
+      default:
+        char_tipo = 'i'; // TODO: lista o tipo desconocido; imprimir correctamente o provocar mensaje de error de algún tipo
+    }
+    printf("  scanf(\"%%%c\", &%s);\n", char_tipo, id);
+  }
  }
 ;
 
