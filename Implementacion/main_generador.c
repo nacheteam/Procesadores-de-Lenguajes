@@ -4,6 +4,7 @@
 ***********************************************************/
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <assert.h>
 #include "file_io.h"
 #include "tabla.h"
@@ -43,5 +44,11 @@ int main(int argc, char * argv[]) {
       fprintf(stderr, "Se han detectado %d errores, compilación abortada.\n", error);
     remove(nombre);
     remove("dec_dat");
+  } else{
+    char llamada[100];
+    sprintf(llamada, "gcc %s -o programa.out", nombre);
+    //TODO: Descomentar cuando esté completo
+    //printf("Compilando programa\n");
+    //system(llamada);
   }
 }
