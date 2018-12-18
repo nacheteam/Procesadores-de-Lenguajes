@@ -4,8 +4,11 @@
 
 FILE * abrir_entrada(int argc, char* argv[]) {
   FILE *f = NULL;
-  if (argc > 1) {
-    f = fopen(argv[1], "r");
+  int pos_archivo = 1;
+  while (pos_archivo < argc && strcmp("-o", argv[pos_archivo]) == 0)
+    pos_archivo += 2;
+  if (pos_archivo < argc) {
+    f = fopen(argv[pos_archivo], "r");
     if (f == NULL) {
       fprintf(stderr, "No se ha podido abrir el fichero %s", argv[1]);
       exit(1);
@@ -18,7 +21,7 @@ FILE * abrir_entrada(int argc, char* argv[]) {
 
 
 FILE * abrir_salida(int argc, char* argv[]) {
-  FILE *f = (FILE*) 1;
+  FILE *f = (FILE*) stdout;
   int pos_archivo = 1;
   while (pos_archivo < argc-1 && strcmp("-o", argv[pos_archivo]) != 0)
     pos_archivo++;
@@ -35,4 +38,8 @@ FILE * abrir_salida(int argc, char* argv[]) {
   }
 
   return f;
+}
+
+void cerrar_salida(FILE * f) {
+  fclose(f);
 }

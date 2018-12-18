@@ -33,5 +33,7 @@ char * temporal() {
 int main(int argc, char * argv[]) {
   yyin = abrir_entrada(argc, argv);
   yyout = abrir_salida(argc, argv); // TODO: ¿escribir código inicial aquí o en el .y?
-  return yyparse();
+  int resultado = yyparse();
+  cerrar_salida(yyout);
+  return resultado;
 }
