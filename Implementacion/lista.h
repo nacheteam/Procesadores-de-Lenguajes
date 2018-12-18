@@ -40,6 +40,8 @@ Lista eliminaFinal(Lista l, int pos);         //Operador l%x
 Lista concatenaListas(Lista l1, Lista l2);    //Operador l1**l2
 void sumaValorInt(Lista& l, int x);            //Operador l+x ó x+l
 void sumaValorDouble(Lista& l, double x);            //Operador l+x ó x+l
+void restaValorInt(Lista& l, int x);            //Operador l-x
+void restaValorDouble(Lista& l, double x);            //Operador l-x
 
 //Operadores ternarios sobre la lista
 

@@ -303,3 +303,19 @@ void sumaValorDouble(Lista& l, double x){
   for(int i = 0; i < l.tope; ++i)
     l.lista_real[i]+=x;
 }
+
+/*
+ * Resta x a los elementos de la lista
+ */
+void sumaValorInt(Lista& l, int x){
+  for(int i = 0; i < l.tope; ++i)
+    l.lista_entero[i]-=x;
+}
+
+/*
+ * Resta x a los elementos de la lista
+ */
+void sumaValorDouble(Lista& l, double x){
+  for(int i = 0; i < l.tope; ++i)
+    l.lista_real[i]-=x;
+}
