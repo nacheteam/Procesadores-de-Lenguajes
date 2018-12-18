@@ -3,6 +3,8 @@
 //Si es 0 se desactiva el print, cualquier otro valor hace print.
 #define DBUG 1
 
+//TODO: generar la lista
+
 /******************************************************************************/
 /*                    Operadores sobre el cursor                              */
 /******************************************************************************/
@@ -132,4 +134,306 @@ char devuelvePosicionChar(Lista l, int pos){
       printf("No se puede acceder a una posición de la lista fuera del rango\n");
     exit(1);
   }
+}
+
+/*
+ * Devuelve un elemento de tipo lista con el elemento en la posición pos quitado
+ */
+Lista eliminaElemento(Lista l, int pos){
+  Lista res;
+  int contador = 0;
+  //Ajustamos los valores del tope, cursor y tipo.
+  res.tope = l.tope-1;
+  if(l.cursor==tope-1)
+    res.cursor = l.cursor-1;
+  else
+    res.cursor = l.cursor;
+  res.tipo = l.tipo;
+
+  //En función del tipo rellenamos una lista u otra.
+  if(res.tipo==listaentero){
+    res.lista_entero = (int *) malloc(res.tope * sizeof(int));
+    for(int i = 0; i < l.tope; ++i){
+      if(i!=pos){
+        res.lista_entero[contador] = l.lista_entero[i];
+        contador++;
+      }
+    }
+  }
+  else if(res.tipo==listareal){
+    res.lista_real = (double *) malloc(res.tope * sizeof(double));
+    for(int i = 0; i < l.tope; ++i){
+      if(i!=pos){
+        res.lista_entero[contador] = l.lista_entero[i];
+        contador++;
+      }
+    }
+  }
+  else if(res.tipo==listachar){
+    res.lista_char = (char *) malloc(res.tope * sizeof(char));
+    for(int i = 0; i < l.tope; ++i){
+      if(i!=pos){
+        res.lista_entero[contador] = l.lista_entero[i];
+        contador++;
+      }
+    }
+  }
+  else if(res.tipo==listabool){
+    res.lista_bool = (bool *) malloc(res.tope * sizeof(bool));
+    for(int i = 0; i < l.tope; ++i){
+      if(i!=pos){
+        res.lista_entero[contador] = l.lista_entero[i];
+        contador++;
+      }
+    }
+  }
+  return(res);
+}
+
+/*
+ * Devuelve una lista quitando los elementos a partir de la posición pos.
+ */
+Lista eliminaFinal(Lista l, int pos){
+  Lista res;
+  //Ajustamos los valores del tope, cursor y tipo.
+  res.tope = pos+1;
+  if(l.cursor>=pos+1)
+    res.cursor = pos;
+  else
+    res.cursor = l.cursor;
+  res.tipo = l.tipo;
+
+  //En función del tipo rellenamos una lista u otra.
+  if(res.tipo==listaentero){
+    res.lista_entero = (int *) malloc(res.tope * sizeof(int));
+    for(int i = 0; i < l.tope && i<=pos; ++i){
+      res.lista_entero[i] = l.lista_entero[i];
+    }
+  }
+  else if(res.tipo==listareal){
+    res.lista_real = (double *) malloc(res.tope * sizeof(double));
+    for(int i = 0; i < l.tope && i<=pos; ++i){
+      res.lista_entero[o] = l.lista_entero[i];
+    }
+  }
+  else if(res.tipo==listachar){
+    res.lista_char = (char *) malloc(res.tope * sizeof(char));
+    for(int i = 0; i < l.tope && i<=pos; ++i){
+      res.lista_entero[o] = l.lista_entero[i];
+    }
+  }
+  else if(res.tipo==listabool){
+    res.lista_bool = (bool *) malloc(res.tope * sizeof(bool));
+    for(int i = 0; i < l.tope && i<=pos; ++i){
+      res.lista_entero[o] = l.lista_entero[i];
+    }
+  }
+  return(res);
+}
+
+/*
+ * Concatena dos listas y devuelve una copia
+ */
+Lista concatenaListas(Lista l1, Lista l2){
+  Lista res;
+  int contador = 0;
+  //Actualiza tope, cursor y tipo de forma adecuada
+  res.tope = l1.tope+l2.tope;
+  res.cursor = 0;      //Lo pongo a 0 por ponerlo a algo
+  res.tipo = l1.tipo;
+
+  //En función del tipo de la lista la generas en orden
+  if(res.tipo==listaentero){
+    res.lista_entero = (int *) malloc(res.tope * sizeof(int));
+    for(int i = 0; i < l1.tope; ++i){
+      res.lista_entero[contador] = l1.lista_entero[i];
+      contador++;
+    }
+    for(int i = 0; i < l2.tope; ++i){
+      res.lista_entero[contador] = l2.lista_entero[i];
+      contador++;
+    }
+  }
+  else if(res.tipo==listareal){
+    res.lista_real = (double *) malloc(res.tope * sizeof(double));
+    for(int i = 0; i < l1.tope; ++i){
+      res.lista_real[contador] = l1.lista_real[i];
+      contador++;
+    }
+    for(int i = 0; i < l2.tope; ++i){
+      res.lista_real[contador] = l2.lista_real[i];
+      contador++;
+    }
+  }
+  else if(res.tipo==listabool){
+    res.lista_bool = (bool *) malloc(res.tope * sizeof(bool));
+    for(int i = 0; i < l1.tope; ++i){
+      res.lista_bool[contador] = l1.lista_bool[i];
+      contador++;
+    }
+    for(int i = 0; i < l2.tope; ++i){
+      res.lista_bool[contador] = l2.lista_bool[i];
+      contador++;
+    }
+  }
+  else if(res.tipo==listachar){
+    res.lista_char = (char *) malloc(res.tope * sizeof(char));
+    for(int i = 0; i < l1.tope; ++i){
+      res.lista_char[contador] = l1.lista_char[i];
+      contador++;
+    }
+    for(int i = 0; i < l2.tope; ++i){
+      res.lista_char[contador] = l2.lista_char[i];
+      contador++;
+    }
+  }
+  return(res);
+}
+
+/*
+ * Suma x a los elementos de la lista
+ */
+void sumaValorInt(Lista& l, int x){
+  for(int i = 0; i < l.tope; ++i)
+    l.lista_entero[i]+=x;
+}
+
+/*
+ * Suma x a los elementos de la lista
+ */
+void sumaValorDouble(Lista& l, double x){
+  for(int i = 0; i < l.tope; ++i)
+    l.lista_real[i]+=x;
+}
+
+/*
+ * Resta x a los elementos de la lista
+ */
+void restaValorInt(Lista& l, int x){
+  for(int i = 0; i < l.tope; ++i)
+    l.lista_entero[i]-=x;
+}
+
+/*
+ * Resta x a los elementos de la lista
+ */
+void restaValorDouble(Lista& l, double x){
+  for(int i = 0; i < l.tope; ++i)
+    l.lista_real[i]-=x;
+}
+
+/*
+ * Multiplica x a los elementos de la lista
+ */
+void productoValorInt(Lista& l, int x){
+  for(int i = 0; i < l.tope; ++i)
+    l.lista_entero[i]*=x;
+}
+
+/*
+ * Multiplica x a los elementos de la lista
+ */
+void productoValorDouble(Lista& l, double x){
+  for(int i = 0; i < l.tope; ++i)
+    l.lista_real[i]*=x;
+}
+
+/*
+ * Divide por x a los elementos de la lista
+ */
+void divideValorDouble(Lista& l, double x){
+  for(int i = 0; i < l.tope; ++i)
+    l.lista_real[i]/=x;
+}
+
+/******************************************************************************/
+/*               Operadores ternarios sobre la lista                          */
+/******************************************************************************/
+
+/*
+ * Añade el elemento elem en la posición pos devolviendo una copia
+ */
+Lista anadeElementoInt(Lista l, int pos, int elem){
+  Lista res;
+  int contador = 0;
+  res.tope = l.tope+1;
+  res.cursor = l.cursor;
+  res.tipo = l.tipo;
+
+  res.lista_entero = (int *) malloc(res.tope * sizeof(int));
+  for(int i = 0; i < res.tope; ++i){
+    if(i==pos)
+      res.lista_entero[i] = elem;
+    else{
+      res.lista_entero[i] = l.lista_entero[contador];
+      contador++;
+    }
+  }
+  return(res);
+}
+
+/*
+ * Añade el elemento elem en la posición pos devolviendo una copia
+ */
+Lista anadeElementoDouble(Lista l, int pos, double elem){
+  Lista res;
+  int contador = 0;
+  res.tope = l.tope+1;
+  res.cursor = l.cursor;
+  res.tipo = l.tipo;
+
+  res.lista_real = (double *) malloc(res.tope * sizeof(double));
+  for(int i = 0; i < res.tope; ++i){
+    if(i==pos)
+      res.lista_real[i] = elem;
+    else{
+      res.lista_real[i] = l.lista_real[contador];
+      contador++;
+    }
+  }
+  return(res);
+}
+
+/*
+ * Añade el elemento elem en la posición pos devolviendo una copia
+ */
+Lista anadeElementoChar(Lista l, int pos, char elem){
+  Lista res;
+  int contador = 0;
+  res.tope = l.tope+1;
+  res.cursor = l.cursor;
+  res.tipo = l.tipo;
+
+  res.lista_char = (char *) malloc(res.tope * sizeof(char));
+  for(int i = 0; i < res.tope; ++i){
+    if(i==pos)
+      res.lista_char[i] = elem;
+    else{
+      res.lista_char[i] = l.lista_char[contador];
+      contador++;
+    }
+  }
+  return(res);
+}
+
+/*
+ * Añade el elemento elem en la posición pos devolviendo una copia
+ */
+Lista anadeElementoBool(Lista l, int pos, bool elem){
+  Lista res;
+  int contador = 0;
+  res.tope = l.tope+1;
+  res.cursor = l.cursor;
+  res.tipo = l.tipo;
+
+  res.lista_bool = (bool *) malloc(res.tope * sizeof(bool));
+  for(int i = 0; i < res.tope; ++i){
+    if(i==pos)
+      res.lista_bool[i] = elem;
+    else{
+      res.lista_bool[i] = l.lista_bool[contador];
+      contador++;
+    }
+  }
+  return(res);
 }
