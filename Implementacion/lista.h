@@ -37,6 +37,7 @@ bool devuelvePosicionBool(Lista l,int pos);    //Operador l@x
 char devuelvePosicionChar(Lista l,int pos);    //Operador l@x
 Lista eliminaElemento(Lista l,int pos);       //Operador l--x
 Lista eliminaFinal(Lista l, int pos);         //Operador l%x
+Lista concatenaListas(Lista l1, Lista l2);    //Operador l1**l2
 
 //Operadores ternarios sobre la lista
 

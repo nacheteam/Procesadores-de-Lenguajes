@@ -228,3 +228,66 @@ Lista eliminaFinal(Lista l, int pos){
   }
   return(res);
 }
+
+/*
+ * Concatena dos listas y devuelve una copia
+ */
+Lista concatenaListas(Lista l1, Lista l2){
+  Lista res;
+  int contador = 0;
+  res.tope = l1.tope+l2.tope;
+  res.cursor = 0;      //Lo pongo a 0 por ponerlo a algo
+  if(l1.tipo!=l2.tipo){
+    if(DBUG!=0)
+      printf("Los tipos de las listas que se quieren concatenar no son iguales.\n");
+    exit(1);
+  }
+  else
+    res.tipo = l1.tipo;
+
+  if(res.tipo==listaentero){
+    res.lista_entero = (int *) malloc(res.tope * sizeof(int));
+    for(int i = 0; i < l1.tope; ++i){
+      res.lista_entero[contador] = l1.lista_entero[i];
+      contador++;
+    }
+    for(int i = 0; i < l2.tope; ++i){
+      res.lista_entero[contador] = l2.lista_entero[i];
+      contador++;
+    }
+  }
+  else if(res.tipo==listareal){
+    res.lista_real = (double *) malloc(res.tope * sizeof(double));
+    for(int i = 0; i < l1.tope; ++i){
+      res.lista_real[contador] = l1.lista_real[i];
+      contador++;
+    }
+    for(int i = 0; i < l2.tope; ++i){
+      res.lista_real[contador] = l2.lista_real[i];
+      contador++;
+    }
+  }
+  else if(res.tipo==listabool){
+    res.lista_bool = (bool *) malloc(res.tope * sizeof(bool));
+    for(int i = 0; i < l1.tope; ++i){
+      res.lista_bool[contador] = l1.lista_bool[i];
+      contador++;
+    }
+    for(int i = 0; i < l2.tope; ++i){
+      res.lista_bool[contador] = l2.lista_bool[i];
+      contador++;
+    }
+  }
+  else if(res.tipo==listachar){
+    res.lista_char = (char *) malloc(res.tope * sizeof(char));
+    for(int i = 0; i < l1.tope; ++i){
+      res.lista_char[contador] = l1.lista_char[i];
+      contador++;
+    }
+    for(int i = 0; i < l2.tope; ++i){
+      res.lista_char[contador] = l2.lista_char[i];
+      contador++;
+    }
+  }
+  return(res);
+}
