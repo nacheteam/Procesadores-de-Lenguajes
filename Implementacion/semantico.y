@@ -91,7 +91,7 @@ bloque : inicio_de_bloque
          fin_de_bloque
 ;
 
-cabecera_subprograma : PROCED ID PARIZQ {insertaProcedimiento($2);} lista_parametros PARDER
+cabecera_subprograma : PROCED ID PARIZQ {insertaProcedimiento($2); entraProced();} lista_parametros PARDER
    | PROCED ID PARIZQ PARDER {insertaProcedimiento($2);}
 ;
 
@@ -107,7 +107,7 @@ declar_de_variables_locales : |  marca_ini_declar_variables
                                  marca_fin_declar_variables
 ;
 
-declar_subprog : cabecera_subprograma bloque
+declar_subprog : cabecera_subprograma bloque {salProced();}
 ;
 
 elementos : expresion { $$.el.tipos[$$.el.tope_elem] = $1.tipo;
