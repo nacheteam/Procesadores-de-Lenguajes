@@ -235,15 +235,10 @@ Lista eliminaFinal(Lista l, int pos){
 Lista concatenaListas(Lista l1, Lista l2){
   Lista res;
   int contador = 0;
+  //Actualiza tope, cursor y tipo de forma adecuada
   res.tope = l1.tope+l2.tope;
   res.cursor = 0;      //Lo pongo a 0 por ponerlo a algo
-  if(l1.tipo!=l2.tipo){
-    if(DBUG!=0)
-      printf("Los tipos de las listas que se quieren concatenar no son iguales.\n");
-    exit(1);
-  }
-  else
-    res.tipo = l1.tipo;
+  res.tipo = l1.tipo;
 
   if(res.tipo==listaentero){
     res.lista_entero = (int *) malloc(res.tope * sizeof(int));
