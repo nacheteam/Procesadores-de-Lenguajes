@@ -87,16 +87,29 @@
 
 bloque : inicio_de_bloque
          declar_de_variables_locales
-         declar_de_subprogs {if(esMain()) genprintf("int main(){\n");}
+         declar_de_subprogs {if(esMain()) genprintf("\nint main(){\n");}
          sentencias
          fin_de_bloque
 ;
 
-cabecera_subprograma : PROCED ID PARIZQ {insertaProcedimiento($2); entraProced();} lista_parametros PARDER
-   | PROCED ID PARIZQ PARDER {insertaProcedimiento($2);}
+cabecera_subprograma : PROCED ID PARIZQ {
+  insertaProcedimiento($2);
+  entraProced();
+  genprintf("void %s(", $2);
+ } lista_parametros PARDER { genprintf(")\n"); }
+   | PROCED ID PARIZQ PARDER {
+     insertaProcedimiento($2);
+     entraProced();
+     genprintf("void %s()\n", $2);
+ }
 ;
 
-cuerpo_declar_variables : tipo lista_identificadores {for(int i=0; i<$2.lid.tope_id;++i){insertaVar($2.lid.lista_ids[i],$1);};} PYC
+cuerpo_declar_variables : tipo lista_identificadores {
+  for(int i=0; i<$2.lid.tope_id;++i) {
+    insertaVar($2.lid.lista_ids[i],$1);
+    genprintf("%s %s;\n", tipoCStr(leeTipoDato($1)), $2.lid.lista_ids[i]);
+  };
+ } PYC
                         | error
 ;
 
@@ -108,7 +121,7 @@ declar_de_variables_locales : |  marca_ini_declar_variables
                                  marca_fin_declar_variables
 ;
 
-declar_subprog : cabecera_subprograma bloque {salProced();}
+declar_subprog : cabecera_subprograma { genprintf("{\n"); } bloque { genprintf("}\n"); salProced(); }
 ;
 
 elementos : expresion { $$.el.tipos[$$.el.tope_elem] = $1.tipo;
@@ -416,11 +429,17 @@ lista_identificadores : ID {$$.lid.lista_ids[$$.lid.tope_id] = $1;$$.lid.tope_id
 ;
 
 lista_parametros : parametro
-                 | lista_parametros COMA parametro
+                 | lista_parametros COMA { genprintf(", "); } parametro 
 ;
 
-llamada_proced : ID PARIZQ elementos PARDER PYC { compruebaLlamada(&$3.el, $1); }
-               | ID PARIZQ PARDER PYC { compruebaLlamada(NULL, $1); }
+llamada_proced : ID PARIZQ elementos PARDER PYC {
+  compruebaLlamada(&$3.el, $1);
+  // TODO: escribir la llamada
+ }
+               | ID PARIZQ PARDER PYC {
+  compruebaLlamada(NULL, $1);
+  // TODO: escribir la llamada
+ }
 ;
 
 marca_ini_declar_variables : VARBEGIN
@@ -429,7 +448,10 @@ marca_ini_declar_variables : VARBEGIN
 marca_fin_declar_variables : VAREND
 ;
 
-parametro : tipo ID {insertaParametro($2, $1);}
+parametro : tipo ID {
+  insertaParametro($2, $1);
+  genprintf("%s %s", tipoCStr(leeTipoDato($1)), $2);
+ }
           | error
 ;
 
