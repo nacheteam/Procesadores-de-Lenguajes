@@ -4,6 +4,7 @@
 #include <string.h>
 #include "error.h"
 #include <stdarg.h>
+#include <stdlib.h>
 
 // Une todos los parámetros que se le pasan
 char* uneCadenas(const char* primero, ...) {

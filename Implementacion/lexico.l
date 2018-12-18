@@ -82,7 +82,7 @@ com_linea   (\/\/[^\n]*\n)
 [ \t]+      ;        // Se ignoran los espacios en blanco
 {com_linea} ++linea; // Se ignoran los comentarios al final de línea
 \n          ++linea;
-.           error = 1; snprintf(buffer_error, LONGITUD_ERROR, "'%s' no se identifica con ningún token conocido\n", yytext); lerror(buffer_error);
+.           error++; snprintf(buffer_error, LONGITUD_ERROR, "'%s' no se identifica con ningún token conocido\n", yytext); lerror(buffer_error);
 
 %%
 

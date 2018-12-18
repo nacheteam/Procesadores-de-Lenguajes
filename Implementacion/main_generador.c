@@ -10,6 +10,7 @@
 
 extern FILE *yyin;
 extern FILE *yyout;
+extern int error;
 int     yyparse();
 
 
@@ -29,9 +30,17 @@ char * temporal() {
   return buffer; // TODO: free
 }
 
-// TODO: debería no imprimir nada si hubo errores
+
 int main(int argc, char * argv[]) {
   yyin = abrir_entrada(argc, argv);
   yyout = abrir_salida(argc, argv); // TODO: ¿escribir código inicial aquí o en el .y?
-  return yyparse();
+  char* nombre = nombre_salida(argc, argv);
+  int result =  yyparse();
+  if(error){
+    if(error == 1)
+      fprintf(stderr, "Se ha detectado 1 error, compilación abortada.\n");
+    else
+      fprintf(stderr, "Se han detectado %d errores, compilación abortada.\n", error);
+    remove(nombre);
+  }
 }
