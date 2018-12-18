@@ -86,12 +86,12 @@
 
 bloque : inicio_de_bloque
          declar_de_variables_locales
-         declar_de_subprogs
+         declar_de_subprogs {if(esMain()) genprintf("int main(){\n");}
          sentencias
          fin_de_bloque
 ;
 
-cabecera_subprograma : PROCED ID PARIZQ {insertaProcedimiento($2);} lista_parametros PARDER
+cabecera_subprograma : PROCED ID PARIZQ {insertaProcedimiento($2); entraProced();} lista_parametros PARDER
    | PROCED ID PARIZQ PARDER {insertaProcedimiento($2);}
 ;
 
@@ -107,7 +107,7 @@ declar_de_variables_locales : |  marca_ini_declar_variables
                                  marca_fin_declar_variables
 ;
 
-declar_subprog : cabecera_subprograma bloque
+declar_subprog : cabecera_subprograma bloque {salProced();}
 ;
 
 elementos : expresion { $$.el.tipos[$$.el.tope_elem] = $1.tipo;
@@ -435,7 +435,7 @@ parametro : tipo ID {insertaParametro($2, $1);}
           | error
 ;
 
-programa : PROCED MAIN bloque
+programa : {genprintf("#include <stdio.h>\n#include \"dec_dat\"\n#include \"lista.h\"\n\n");} PROCED MAIN bloque {genprintf("}\n");}
 ;
 
 sentencia : bloque

@@ -10,4 +10,8 @@ FILE * abrir_entrada(int argc, char* argv[]);
 FILE * abrir_salida (int argc, char* argv[]);
 char * nombre_salida(int argc, char* argv[]);
 
+void entraProced();
+void salProced();
+int esMain();
+
 #endif

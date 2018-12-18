@@ -2,21 +2,35 @@
 #include "string.h"
 #include "file_io.h"
 
+char DEFAULT_MAIN[] = "salida.c";
+FILE * main_file = NULL;
+
+char DEFAULT_PROC[] = "dec_dat";
+FILE * proced_file = NULL;
+
+/* Abre fichero y comprueba */
+FILE * abrir(char * nombre, char* modo){
+  FILE * f;
+  f = fopen(nombre, modo);
+
+  if (f == NULL) {
+    fprintf(stderr, "No se ha podido abrir el fichero %s", nombre);
+    exit(1);
+  }
+
+  return f;
+}
+
 FILE * abrir_entrada(int argc, char* argv[]) {
   FILE *f = NULL;
   if (argc > 1) {
-    f = fopen(argv[1], "r");
-    if (f == NULL) {
-      fprintf(stderr, "No se ha podido abrir el fichero %s", argv[1]);
-      exit(1);
-    }
+    f = abrir(argv[1], "r");
   } else
     printf("Leyendo código a través de entrada estándar...\n");
 
   return f;
 }
 
-char DEFAULT[9] = "salida.c";
 
 char * nombre_salida(int argc, char* argv[]){
   int pos_archivo = 1;
@@ -26,18 +40,35 @@ char * nombre_salida(int argc, char* argv[]){
   if (pos_archivo < argc-1)
     return argv[pos_archivo];
   else
-    return DEFAULT;
+    return DEFAULT_MAIN;
 }
 
 FILE * abrir_salida(int argc, char* argv[]) {
-  FILE * f;
-  char * nombre = nombre_salida(argc, argv);
-  f = fopen(nombre, "w");
+  main_file = abrir(nombre_salida(argc, argv), "w");
+  return main_file;
+}
 
-  if (f == NULL) {
-    fprintf(stderr, "No se ha podido abrir el fichero %s", nombre);
-    exit(1);
-  }
 
-  return f;
+
+int profundidad = 0;
+extern int yyout;
+
+/* Entra en un procedimiento */
+void entraProced(){
+  profundidad++;
+  if(!proced_file)
+    proced_file = abrir(DEFAULT_PROC, "w");
+  yyout = proced_file;
+}
+
+/* Sal de un procedimiento */
+void salProced(){
+  profundidad--;
+  if(profundidad == 0)
+    yyout = main_file;
+}
+
+/* Indica si es main */
+int esMain(){
+  return profundidad == 0;
 }

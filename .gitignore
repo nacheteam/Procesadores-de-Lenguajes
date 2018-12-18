@@ -2,7 +2,9 @@ Implementacion/lexico
 Implementacion/sintactico
 Implementacion/semantico
 Implementacion/generador
+
 salida.c
+dec_dat
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
