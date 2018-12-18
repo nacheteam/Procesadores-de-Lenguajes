@@ -31,7 +31,7 @@ void main(){
 
           curr = 2;
           while (curr <= n){
-                compruebaFactor(n, m);
+                compruebaFactor(n, curr);
           }
      }
 
