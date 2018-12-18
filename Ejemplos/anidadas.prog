@@ -1,5 +1,9 @@
 void main(){
      begin
+        int n;
+     end
+
+     begin
      void factoriza(int n){
           begin
                int curr;
@@ -32,4 +36,9 @@ void main(){
                 compruebaFactor(n, m)
           }
      }
+
+     write "introduce un numero : ";
+     read n;
+     write n, " == ";
+     factoriza(n);
 }
