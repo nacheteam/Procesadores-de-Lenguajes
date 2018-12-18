@@ -33,10 +33,14 @@ char * temporal() {
 
 
 int main(int argc, char * argv[]) {
+  char* nombre = nombre_salida(argc, argv);
+  remove(nombre);
+  remove("dec_dat");
+
   yyin = abrir_entrada(argc, argv);
   yyout = abrir_salida(argc, argv); // TODO: ¿escribir código inicial aquí o en el .y?
-  char* nombre = nombre_salida(argc, argv);
   int result =  yyparse();
+
   if(error){
     if(error == 1)
       fprintf(stderr, "Se ha detectado un error, compilación abortada.\n");

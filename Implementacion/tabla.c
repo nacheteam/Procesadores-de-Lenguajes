@@ -27,6 +27,9 @@ long int ultimoProcedimiento = -1;
 int subProg = 0;
 
 
+// Número de bloques anidados
+int prof = 0;
+
 /********************/
 /* ACCIONES BÁSICAS */
 /********************/
@@ -393,6 +396,8 @@ void entraBloqueTS(){
     printf("Estoy entrando en un bloque.\n");
     fflush(stdout);
   }
+
+  prof++;
   const entrada_ts MARCA_BLOQUE = {marca, "[MARCA]", desconocido, 0, {NULL, NULL}};
   insertaTS(MARCA_BLOQUE);
 
@@ -414,6 +419,7 @@ void salBloqueTS(){
   if(IMPRIME)
     imprimeTS();
 
+  prof--;
   for(int j = tope - 1; j >= 0; j--){
     if(TS[j].tipo_entrada == marca){
       tope = j;
@@ -469,4 +475,10 @@ char * findGotoElse(){
 
   printf("[Linea %d] Error de implementación, se intentó encontrar la etiqueta de else de la estructura de control actual cuando no la hay\n", linea);
   return NULL;
+}
+
+
+/* Indica si es main */
+int esMain(){
+  return prof == 1;
 }

@@ -14,7 +14,7 @@ FILE * abrir(char * nombre, char* modo){
   f = fopen(nombre, modo);
 
   if (f == NULL) {
-    fprintf(stderr, "No se ha podido abrir el fichero %s", nombre);
+    fprintf(stderr, "No se ha podido abrir el fichero %s\n", nombre);
     exit(1);
   }
 
@@ -49,7 +49,8 @@ char * nombre_salida(int argc, char* argv[]){
 }
 
 FILE * abrir_salida(int argc, char* argv[]) {
-  main_file = abrir(nombre_salida(argc, argv), "w");
+  char * nombre = nombre_salida(argc, argv);
+  main_file = abrir(nombre, "a");
   return main_file;
 }
 
@@ -62,7 +63,7 @@ extern FILE * yyout;
 void entraProced(){
   profundidad++;
   if(!proced_file)
-    proced_file = abrir(DEFAULT_PROC, "w");
+    proced_file = abrir(DEFAULT_PROC, "a");
   yyout = proced_file;
 }
 
@@ -71,9 +72,4 @@ void salProced(){
   profundidad--;
   if(profundidad == 0)
     yyout = main_file;
-}
-
-/* Indica si es main */
-int esMain(){
-  return profundidad == 0;
 }

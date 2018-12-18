@@ -3,23 +3,20 @@ void main(){
         int n;
      end
 
-     begin
      void factoriza(int n){
           begin
                int curr;
           end
 
-          curr = 2;
-
           void compruebaFactor(int n, int m){
                begin
                     int d;
                end
-               
+
                void cociente(int n, int m, int q){
                     q = n/m;
                }
-               
+
                cociente(n, m, d);
 
                if (d*m == n){
@@ -29,11 +26,12 @@ void main(){
                else {
                     m = m+1;
                }
-               write "\n"
+               write "\n";
           }
 
+          curr = 2;
           while (curr <= n){
-                compruebaFactor(n, m)
+                compruebaFactor(n, m);
           }
      }
 

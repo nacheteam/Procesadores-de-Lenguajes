@@ -1,7 +1,6 @@
 void main(){
 begin
 int a;
-bool a;
 end
 
 void f(int e){

@@ -12,6 +12,5 @@ char * nombre_salida(int argc, char* argv[]);
 
 void entraProced();
 void salProced();
-int esMain();
 
 #endif

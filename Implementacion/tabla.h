@@ -96,4 +96,6 @@ char * findGotoSalida();
 char * findGotoElse();
 #define findGotoEntrada findGotoElse
 
+int esMain();
+
 #endif
