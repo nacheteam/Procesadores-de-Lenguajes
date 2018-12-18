@@ -343,3 +343,95 @@ void divideValorDouble(Lista& l, double x){
   for(int i = 0; i < l.tope; ++i)
     l.lista_real[i]/=x;
 }
+
+/******************************************************************************/
+/*               Operadores ternarios sobre la lista                          */
+/******************************************************************************/
+
+/*
+ * Añade el elemento elem en la posición pos devolviendo una copia
+ */
+Lista anadeElementoInt(Lista l, int pos, int elem){
+  Lista res;
+  int contador = 0;
+  res.tope = l.tope+1;
+  res.cursor = l.cursor;
+  res.tipo = l.tipo;
+
+  res.lista_entero = (int *) malloc(res.tope * sizeof(int));
+  for(int i = 0; i < res.tope; ++i){
+    if(i==pos)
+      res.lista_entero[i] = elem;
+    else{
+      res.lista_entero[i] = l.lista_entero[contador];
+      contador++;
+    }
+  }
+  return(res);
+}
+
+/*
+ * Añade el elemento elem en la posición pos devolviendo una copia
+ */
+Lista anadeElementoDouble(Lista l, int pos, double elem){
+  Lista res;
+  int contador = 0;
+  res.tope = l.tope+1;
+  res.cursor = l.cursor;
+  res.tipo = l.tipo;
+
+  res.lista_real = (double *) malloc(res.tope * sizeof(double));
+  for(int i = 0; i < res.tope; ++i){
+    if(i==pos)
+      res.lista_real[i] = elem;
+    else{
+      res.lista_real[i] = l.lista_real[contador];
+      contador++;
+    }
+  }
+  return(res);
+}
+
+/*
+ * Añade el elemento elem en la posición pos devolviendo una copia
+ */
+Lista anadeElementoChar(Lista l, int pos, char elem){
+  Lista res;
+  int contador = 0;
+  res.tope = l.tope+1;
+  res.cursor = l.cursor;
+  res.tipo = l.tipo;
+
+  res.lista_char = (char *) malloc(res.tope * sizeof(char));
+  for(int i = 0; i < res.tope; ++i){
+    if(i==pos)
+      res.lista_char[i] = elem;
+    else{
+      res.lista_char[i] = l.lista_char[contador];
+      contador++;
+    }
+  }
+  return(res);
+}
+
+/*
+ * Añade el elemento elem en la posición pos devolviendo una copia
+ */
+Lista anadeElementoBool(Lista l, int pos, bool elem){
+  Lista res;
+  int contador = 0;
+  res.tope = l.tope+1;
+  res.cursor = l.cursor;
+  res.tipo = l.tipo;
+
+  res.lista_bool = (bool *) malloc(res.tope * sizeof(bool));
+  for(int i = 0; i < res.tope; ++i){
+    if(i==pos)
+      res.lista_bool[i] = elem;
+    else{
+      res.lista_bool[i] = l.lista_bool[contador];
+      contador++;
+    }
+  }
+  return(res);
+}

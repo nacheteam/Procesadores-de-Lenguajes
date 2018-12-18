@@ -47,5 +47,9 @@ void productoValorDouble(Lista& l, double x);            //Operador l*x ó x*l
 void divideValorDouble(Lista& l, double x);            //Operador l/x
 
 //Operadores ternarios sobre la lista
+Lista anadeElementoInt(Lista l, int pos, int elem);        //Operador l++x@z
+Lista anadeElementoDouble(Lista l, int pos, double elem);        //Operador l++x@z
+Lista anadeElementoChar(Lista l, int pos, char elem);        //Operador l++x@z
+Lista anadeElementoBool(Lista l, int pos, bool elem);        //Operador l++x@z
 
 #endif
