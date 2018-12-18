@@ -86,7 +86,7 @@
 
 bloque : inicio_de_bloque
          declar_de_variables_locales
-         declar_de_subprogs
+         declar_de_subprogs {if(esMain()) genprintf("int main(){\n");}
          sentencias
          fin_de_bloque
 ;
@@ -435,7 +435,7 @@ parametro : tipo ID {insertaParametro($2, $1);}
           | error
 ;
 
-programa : PROCED MAIN bloque
+programa : {genprintf("#include <stdio.h>\n#include \"dec_dat\"\n#include \"lista.h\"\n\n");} PROCED MAIN bloque {genprintf("}\n");}
 ;
 
 sentencia : bloque

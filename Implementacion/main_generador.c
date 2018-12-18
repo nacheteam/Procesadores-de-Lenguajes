@@ -42,5 +42,6 @@ int main(int argc, char * argv[]) {
     else
       fprintf(stderr, "Se han detectado %d errores, compilación abortada.\n", error);
     remove(nombre);
+    remove("dec_dat");
   }
 }
