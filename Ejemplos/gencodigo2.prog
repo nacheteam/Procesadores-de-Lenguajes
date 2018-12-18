@@ -1,6 +1,6 @@
 void main(){
   begin
-    int n, curr, ultim, cuenta, primero;
+    int n, d, curr, ultim, cuenta, primero;
   end
   
   curr = 2;
@@ -8,7 +8,7 @@ void main(){
   cuenta = 0;
   primero = 1;
   
-  write "introduce un numero : "
+  write "introduce un numero : ";
   read n;
   write n, " == ";
 
