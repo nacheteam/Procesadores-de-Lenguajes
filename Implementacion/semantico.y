@@ -196,8 +196,9 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                               else
                                 { semprintf("El tipo %s no es compatible con el operador unario %s\n", tipoStr($2.tipo),$1);
                                   $$.tipo = desconocido;}} %prec UNARIOIZQ
-          | expresion SIGNO expresion {if(($1.tipo==$3.tipo && esLista($1.tipo)) || (esNumero($1.tipo) && esNumero($3.tipo))){
+          | expresion SIGNO expresion {if(esTipoElemento($3.tipo, $1.tipo) || (esNumero($1.tipo) && $1.tipo == $3.tipo)){
                                         $$.tipo = $1.tipo;
+                                        // TODO: lo siguiente funciona con números. Escribir el operador de lista cuando sea pertinente
                                         $$.lexema = temporal();
                                         genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
                                         genprintf("  %s = %s %s %s ;\n", $$.lexema, $1.lexema, $2, $3.lexema);
