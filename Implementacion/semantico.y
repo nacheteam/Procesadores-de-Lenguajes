@@ -415,12 +415,12 @@ sentencia : bloque
           | llamada_proced
 ;
 
-sentencia_asignacion :  ID ASIGN expresion PYC {
-  if(tipoTS($1) != desconocido && tipoTS($1) != $3.tipo){
+sentencia_asignacion : ID ASIGN { printf("{\n"); } expresion PYC {
+  if(tipoTS($1) != desconocido && tipoTS($1) != $4.tipo){
     semprintf("Asignación de '%s' a variable '%s' de tipo '%s'\n",
-           tipoStr($3.tipo), $1, tipoStr(tipoTS($1)));
+           tipoStr($4.tipo), $1, tipoStr(tipoTS($1)));
    }
-   printf("  %s = %s;\n", $1, $3.lexema);
+   printf("  %s = %s;\n}\n", $1, $4.lexema);
  }
 ;
 
@@ -458,12 +458,12 @@ sentencia_if : IF {
   insertaIf(e_salida, e_else);
  } PARIZQ expresion PARDER {
   compruebaCondicion("if", $4.tipo);
-  printf("  if (!%s) goto %s;\n", $4.lexema, findGotoElse());
+  printf("{\n  if (!%s) goto %s;\n", $4.lexema, findGotoElse());
  } sentencia {
   printf("  goto %s;\n", findGotoSalida());
   printf("%s:\n", findGotoElse());
  } sentencia_else {
-   printf("%s:\n", findGotoSalida());
+   printf("%s:\n}\n", findGotoSalida());
    salEstructuraControl();
  }
 ;
@@ -471,16 +471,16 @@ sentencia_if : IF {
 sentencia_repeat_until : REPEAT {
   char * e_entrada = etiqueta();
   insertaRepeatUntil(e_entrada);
-  printf("%s:\n", e_entrada);
+  printf("{\n%s:\n", e_entrada);
  } sentencia UNTIL expresion PYC {
    compruebaCondicion("repeat-until", $5.tipo);
-   printf("  if (!%s) goto %s;\n", $5.lexema, findGotoEntrada());
+   printf("  if (!%s) goto %s;\n}\n", $5.lexema, findGotoEntrada());
    salEstructuraControl();
  }
 ;
 
-sentencia_salida : WRITE lista_expresiones_o_cadenas PYC {
-  printf("  printf(\"\\n\");\n"); // Imprime un salto de línea al final de la lista // TODO: ¿incluir este salto de línea? ¿Hacer fflush de stdout? ¿Separar cada par de elementos con un espacio?
+sentencia_salida : WRITE { printf("{\n"); } lista_expresiones_o_cadenas PYC {
+  printf("  printf(\"\\n\");\n}\n"); // Imprime un salto de línea al final de la lista // TODO: ¿incluir este salto de línea? ¿Hacer fflush de stdout? ¿Separar cada par de elementos con un espacio?
  }
 ;
 
@@ -488,13 +488,13 @@ sentencia_while : WHILE {
   char * e_entrada = etiqueta();
   char * e_salida  = etiqueta();
   insertaWhile(e_entrada, e_salida);
-  printf("%s:\n", e_entrada);
+  printf("{\n%s:\n", e_entrada);
  } PARIZQ expresion PARDER {
    compruebaCondicion("while", $4.tipo);
    printf("  if (!%s) goto %s;\n", $4.lexema, findGotoSalida());
  } sentencia {
    printf("  goto %s;\n", findGotoEntrada());
-   printf("%s:\n", findGotoSalida());
+   printf("%s:\n}\n", findGotoSalida());
    salEstructuraControl();
  }
 ;
