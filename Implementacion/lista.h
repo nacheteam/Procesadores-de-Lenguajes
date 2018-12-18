@@ -19,8 +19,12 @@ typedef struct List{
 void declaraLista(char* elementos, TipoDato tipo);
 
 //Operaciones sobre el cursor
-void avanzaCursor(Lista l);     //Operador >>
-void retrocedeCursor(Lista l);  //Operador <<
-void reiniciaCursor(Lista l);   //Operador $
+void avanzaCursor(Lista l);     //Operador l>>
+void retrocedeCursor(Lista l);  //Operador l<<
+void reiniciaCursor(Lista l);   //Operador $l
+
+//Operadores unarios sobre la lista
+int numeroElementos(Lista l);      //Operador #l
+
 
 #endif
