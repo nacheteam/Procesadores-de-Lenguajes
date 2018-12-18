@@ -42,6 +42,9 @@ void sumaValorInt(Lista& l, int x);            //Operador l+x ó x+l
 void sumaValorDouble(Lista& l, double x);            //Operador l+x ó x+l
 void restaValorInt(Lista& l, int x);            //Operador l-x
 void restaValorDouble(Lista& l, double x);            //Operador l-x
+void productoValorInt(Lista& l, int x);            //Operador l*x ó x*l
+void productoValorDouble(Lista& l, double x);            //Operador l*x ó x*l
+void divideValorDouble(Lista& l, double x);            //Operador l/x
 
 //Operadores ternarios sobre la lista
 

@@ -307,7 +307,7 @@ void sumaValorDouble(Lista& l, double x){
 /*
  * Resta x a los elementos de la lista
  */
-void sumaValorInt(Lista& l, int x){
+void restaValorInt(Lista& l, int x){
   for(int i = 0; i < l.tope; ++i)
     l.lista_entero[i]-=x;
 }
@@ -315,7 +315,31 @@ void sumaValorInt(Lista& l, int x){
 /*
  * Resta x a los elementos de la lista
  */
-void sumaValorDouble(Lista& l, double x){
+void restaValorDouble(Lista& l, double x){
   for(int i = 0; i < l.tope; ++i)
     l.lista_real[i]-=x;
+}
+
+/*
+ * Multiplica x a los elementos de la lista
+ */
+void productoValorInt(Lista& l, int x){
+  for(int i = 0; i < l.tope; ++i)
+    l.lista_entero[i]*=x;
+}
+
+/*
+ * Multiplica x a los elementos de la lista
+ */
+void productoValorDouble(Lista& l, double x){
+  for(int i = 0; i < l.tope; ++i)
+    l.lista_real[i]*=x;
+}
+
+/*
+ * Divide por x a los elementos de la lista
+ */
+void divideValorDouble(Lista& l, double x){
+  for(int i = 0; i < l.tope; ++i)
+    l.lista_real[i]/=x;
 }
