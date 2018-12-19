@@ -1,0 +1,24 @@
+void main(){
+  begin
+  list of int fib;
+  int a, b, t, num;
+  end
+
+  write "Introduzca el número de elementos de la serie a imprimir:";
+  read num;
+
+  a = 0;
+  b = 1;
+
+  while(#fib < num){
+    t = a + b;
+    a = b;
+    b = t;
+    fib = fib++a@@#fib;
+  }
+
+ write "Fibonacci: ", fib;
+ write "Fibonacci + 3: ", fib+3;
+ write "Fibonacci * 2", fib*2;
+
+}

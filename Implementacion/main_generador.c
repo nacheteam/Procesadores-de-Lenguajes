@@ -48,10 +48,11 @@ int main(int argc, char * argv[]) {
     remove("dec_fun");
   } else{
     char llamada[100];
-    sprintf(llamada, "gcc %s -o programa.out", nombre);
-    //TODO: Descomentar cuando esté completo
-    //printf("Compilando programa\n");
-    //system(llamada);
+    sprintf(llamada, "gcc -c Implementacion/lista.c -o lista.o");
+    system(llamada);
+    sprintf(llamada, "gcc %s lista.o -o salida.out", nombre);
+    printf("Compilando programa...\n");
+    system(llamada);
   }
   return result;
 }

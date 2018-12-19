@@ -274,9 +274,9 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                               break;
                                           }
                                           if(strcmp($2,"-")==0)
-                                            strcpy(operacion,"suma");
-                                          else
                                             strcpy(operacion,"resta");
+                                          else
+                                            strcpy(operacion,"suma");
 
                                           genprintf("  %sValor%s(&%s,%s);",operacion, tipo, lista, valor);
                                           genprintf("  %s = %s;",$$.lexema,lista);
@@ -628,7 +628,7 @@ parametro : tipo ID {
           | error
 ;
 
-programa : {genprintf("#include <stdio.h>\n#include \"lista.h\"\n\n");} PROCED MAIN bloque {genprintf("}\n");}
+programa : {genprintf("#include <stdio.h>\n#include \"Implementacion/lista.h\"\n\n");} PROCED MAIN bloque {genprintf("}\n");}
 ;
 
 sentencia : bloque
