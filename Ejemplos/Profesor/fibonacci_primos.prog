@@ -16,7 +16,7 @@ void main(){
       m = 2;
       esPrimo = n != 1;
 
-      while(m < n && esPrimo){
+      while(m*m <= n && esPrimo){
         if(n % m == 0)
          esPrimo = False;
         m = m + 1;

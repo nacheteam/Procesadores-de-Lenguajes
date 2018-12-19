@@ -279,9 +279,9 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                               break;
                                           }
                                           if(strcmp($2,"-")==0)
-                                            strcpy(operacion,"suma");
-                                          else
                                             strcpy(operacion,"resta");
+                                          else
+                                            strcpy(operacion,"suma");
 
                                           genprintf("  %sValor%s(&%s,%s);",operacion, tipo, lista, valor);
                                           genprintf("  %s = %s;",$$.lexema,lista);
