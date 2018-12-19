@@ -490,8 +490,26 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                           char * tipo_elemento = tipoCStr(getTipoElemento($$.tipo));
                                           char * sentencia_get[3] = {"devuelvePosicionInt", "devuelvePosicionDouble", "devuelvePosicionChar"};
                                           int s = ($1.tipo == listaentero || $1.tipo == listabool ? 0 : ($1.tipo == listareal ? 1 : 2));
-                                          genprintf("  %s %s;\n", tipo_elemento, $$.lexema);
-                                          genprintf("  %s = %s(&%s, %s);\n", $$.lexema, sentencia_get[s], $1.lexema, $3.lexema);
+                                          if(esLista($1.tipo)){
+                                            switch ($1.tipo) {
+                                              case listaentero:
+                                                genprintf("  %s = devuelvePosicionInt(&%s,%s);",$$.lexema,$1.lexema,$3.lexema);
+                                                break;
+                                              case listareal:
+                                                genprintf("  %s = devuelvePosicionDouble(&%s,%s);",$$.lexema,$1.lexema,$3.lexema);
+                                                break;
+                                              case listachar:
+                                                genprintf("  %s = devuelvePosicionChar(&%s,%s);",$$.lexema,$1.lexema,$3.lexema);
+                                                break;
+                                              case listabool:
+                                                genprintf("  %s = devuelvePosicionInt(&%s,%s);",$$.lexema,$1.lexema,$3.lexema);
+                                                break;
+                                            }
+                                          }
+                                          else{
+                                            genprintf("  %s %s;\n", tipo_elemento, $$.lexema);
+                                            genprintf("  %s = %s(&%s, %s);\n", $$.lexema, sentencia_get[s], $1.lexema, $3.lexema);
+                                          }
                                         }
                                        else {
                                          semprintf("%s no es una lista o %s no es entero para aplicar %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
