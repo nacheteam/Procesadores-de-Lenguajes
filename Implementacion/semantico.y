@@ -212,7 +212,13 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                 }}
            | expresion UNARIODER {if(esLista($1.tipo)){
                                     $$.tipo = $1.tipo;
-                                    // TODO: operadores de lista pendientes de implementar
+                                    genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                                    if(strcmp($1,"<<")==0){
+                                      genprintf("  retrocedeCursor(&%s);",$1.lexema);
+                                    }
+                                    else if(strcmp($1,">>")==0){
+                                      genprintf("  avanzaCursor(&%s);",$1.lexema);
+                                    }
                                     // TODO: ¿estas operaciones no debían ser una sentencia?
                                 }
                                 else{
