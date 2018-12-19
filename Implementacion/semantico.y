@@ -142,14 +142,14 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                                     $$.tipo = $1.tipo;
                                                     $$.lexema = temporal();
                                                     genprintf("  %s %s;",tipoCStr($$.tipo),$$.lexema);
-                                                    if($$.tipo==listaentero)
-                                                      genprintf("  %s = anadeElementoInt(&%s,%s,%s);",$1.lexema,$5.lexema,$3.lexema);
-                                                    else if($$.tipo==listareal)
-                                                      genprintf("  %s = anadeElementoDouble(&%s,%s,%s);",$1.lexema,$5.lexema,$3.lexema);
-                                                    else if($$.tipo==listachar)
-                                                      genprintf("  %s = anadeElementoChar(&%s,%s,%s);",$1.lexema,$5.lexema,$3.lexema);
-                                                    else if($$.tipo==listabool)
-                                                      genprintf("  %s = anadeElementoInt(&%s,%s,%s);",$1.lexema,$5.lexema,$3.lexema);
+                                                    /* if($$.tipo==listaentero) */
+                                                    /*   genprintf("  %s = anadeElementoInt(&%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema); */
+                                                    /* else if($$.tipo==listareal) */
+                                                    /*   genprintf("  %s = anadeElementoDouble(&%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema); */
+                                                    /* else if($$.tipo==listachar) */
+                                                    /*   genprintf("  %s = anadeElementoChar(&%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema); */
+                                                    /* else if($$.tipo==listabool) */
+                                                    /*   genprintf("  %s = anadeElementoInt(&%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema); */
                                                   }
                                                   else{
                                                     semprintf("Los tipos %s y %s no son compatibles o %s no es entero para aplicar el operador ternario %s y %s\n", tipoStr($1.tipo),tipoStr($3.tipo),tipoStr($5.tipo),$2,$4);
@@ -193,30 +193,30 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                 // TODO: ¿$lista no debería ser una sentencia?
                                 $$.lexema = temporal();
                                 genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                                if(strcmp($1,"#")==0)
-                                  genprintf("  %s = numeroElementos(&%s);",$$.lexema,$2.lexema);
-                                else if(strcmp($1,"?")==0){
-                                  if($$.tipo==listaentero)
-                                    genprintf("  %s = devuelveActualInt($$.lexema,&%s);",$2.lexema);
-                                  else if($$.tipo==listareal)
-                                    genprintf("  %s = devuelveActualDouble($$.lexema,&%s);",$2.lexema);
-                                  else if($$.tipo==listachar)
-                                    genprintf("  %s = devuelveActualChar($$.lexema,&%s);",$2.lexema);
-                                  else if($$.tipo==listabool)
-                                    genprintf("  %s = devuelveActualInt($$.lexema,&%s);",$2.lexema);
-                                }
-                                else if(strcmp($1,"$")==0)
-                                  genprintf("  reiniciaCursor(&%s);",$2.lexema);
-                                else
-                                  genprintf("  %s = %s %s ;\n", $$.lexema, $1, $2.lexema);
-                                }}
+                                /* if(strcmp($1,"#")==0) */
+                                /*   genprintf("  %s = numeroElementos(&%s);",$$.lexema,$2.lexema); */
+                                /* else if(strcmp($1,"?")==0){ */
+                                /*   if($$.tipo==listaentero) */
+                                /*     genprintf("  %s = devuelveActualInt($$.lexema,&%s);",$2.lexema); */
+                                /*   else if($$.tipo==listareal) */
+                                /*     genprintf("  %s = devuelveActualDouble($$.lexema,&%s);",$2.lexema); */
+                                /*   else if($$.tipo==listachar) */
+                                /*     genprintf("  %s = devuelveActualChar($$.lexema,&%s);",$2.lexema); */
+                                /*   else if($$.tipo==listabool) */
+                                /*     genprintf("  %s = devuelveActualInt($$.lexema,&%s);",$2.lexema); */
+                                /* } */
+                                /* else if(strcmp($1,"$")==0) */
+                                /*   genprintf("  reiniciaCursor(&%s);",$2.lexema); */
+                                /* else */
+                                /*   genprintf("  %s = %s %s ;\n", $$.lexema, $1, $2.lexema); */
+                              }}
            | expresion UNARIODER {if(esLista($1.tipo)){
                                     $$.tipo = $1.tipo;
                                     genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                                    if(strcmp($1,"<<")==0){
+                                    if(strcmp($2,"<<")==0){
                                       genprintf("  retrocedeCursor(&%s);",$1.lexema);
                                     }
-                                    else if(strcmp($1,">>")==0){
+                                    else if(strcmp($2,">>")==0){
                                       genprintf("  avanzaCursor(&%s);",$1.lexema);
                                     }
                                     // TODO: ¿estas operaciones no debían ser una sentencia?
