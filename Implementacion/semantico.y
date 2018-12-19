@@ -485,9 +485,9 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                     }
 
            | expresion ARROBA expresion {if(esLista($1.tipo) && $3.tipo==entero){
-                                          $$.tipo=$1.tipo;
                                           $$.lexema = temporal();
-                                          char * tipo_elemento = tipoCStr(getTipoElemento($$.tipo));
+                                          $$.tipo= getTipoElemento($$.tipo);
+                                          char * tipo_elemento = tipoCStr($1.tipo);
                                           char * sentencia_get[3] = {"devuelvePosicionInt", "devuelvePosicionDouble", "devuelvePosicionChar"};
                                           int s = ($1.tipo == listaentero || $1.tipo == listabool ? 0 : ($1.tipo == listareal ? 1 : 2));
                                           genprintf("  %s %s;\n", tipo_elemento, $$.lexema);
@@ -533,6 +533,7 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
 
 expresion_o_cadena : expresion {
                      char char_tipo;
+                     int es_lista = 0;
                      char * extra_bool = ""; // Cadena adicional para gestionar la salida de un booleano
                      switch($1.tipo) {
                        case entero:
@@ -548,10 +549,27 @@ expresion_o_cadena : expresion {
                        case caracter:
                          char_tipo = 'c';
                          break;
+                       case listaentero:
+                         es_lista = 1;
+                         genprintf("  imprimeListaInt(&%s);",$1.lexema);
+                         break;
+                       case listareal:
+                         es_lista = 1;
+                         genprintf("  imprimeListaDouble(&%s);",$1.lexema);
+                         break;
+                       case listachar:
+                         es_lista = 1;
+                         genprintf("  imprimeListaChar(&%s);",$1.lexema);
+                         break;
+                       case listabool:
+                         es_lista = 1;
+                         genprintf("  imprimeListaBool(&%s);",$1.lexema);
+                         break;
                        default:
                          char_tipo = 'd'; // TODO: lista o tipo desconocido; imprimir correctamente o provocar mensaje de error de algún tipo
                      }
-                     genprintf("  printf(\"%%%c\", %s%s);\n", char_tipo, $1.lexema, extra_bool);
+                     if(!es_lista)
+                       genprintf("  printf(\"%%%c\", %s%s);\n", char_tipo, $1.lexema, extra_bool);
                    }
                    | CADENA {
                      genprintf("  printf(\"%%s\", %s);\n", $1);

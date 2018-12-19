@@ -1,0 +1,21 @@
+void main(){
+begin
+list of int l;
+end
+
+l = [3];
+write "La longitud de la lista es:", #l;
+write "El elemento actual es:", ?l;
+write "Esto debería dar 3:", l@(3-2-1*1);
+l = l++4@@0;
+write "La lista es ", l;
+l = l--0;
+l = l--1;
+write "Lista vacía", l;
+
+l = [0]**l**[1,2,3];
+write l;
+write l+1;
+write l*2;
+write l-1;
+}
