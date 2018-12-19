@@ -192,7 +192,22 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                 // TODO: lo siguiente sirve cuando el operador es ! (es decir, cuando $$.tipo es booleano), pero no si es un operador de listas, en cuyo caso requiere implementación de listas
                                 $$.lexema = temporal();
                                 genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                                genprintf("  %s = %s %s ;\n", $$.lexema, $1, $2.lexema);
+                                if(strcmp($1,"#")==0)
+                                  genprintf("  %s = numeroElementos(&%s);",$$.lexema,$2.lexema);
+                                else if(strcmp($1,"?")==0){
+                                  if($$.tipo==listaentero)
+                                    genprintf("  %s = devuelveActualInt($$.lexema,&%s);",$2.lexema);
+                                  else if($$.tipo==listareal)
+                                    genprintf("  %s = devuelveActualDouble($$.lexema,&%s);",$2.lexema);
+                                  else if($$.tipo==listachar)
+                                    genprintf("  %s = devuelveActualChar($$.lexema,&%s);",$2.lexema);
+                                  else if($$.tipo==listabool)
+                                    genprintf("  %s = devuelveActualInt($$.lexema,&%s);",$2.lexema);
+                                }
+                                else if(strcmp($1,"$")==0)
+                                  genprintf("  reiniciaCursor(&%s);",$2.lexema);
+                                else
+                                  genprintf("  %s = %s %s ;\n", $$.lexema, $1, $2.lexema);
                                 }}
            | expresion UNARIODER {if(esLista($1.tipo)){
                                     $$.tipo = $1.tipo;
