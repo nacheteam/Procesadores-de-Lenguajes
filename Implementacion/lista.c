@@ -103,7 +103,7 @@ double devuelveActualDouble(Lista * l){
  * Devuelve el elemento en la posición del cursor de la lista de chars
  */
 char devuelveActualChar(Lista * l){
-  return(l->lista_entero[l->cursor]);
+  return(l->lista_char[l->cursor]);
 }
 
 /******************************************************************************/

@@ -142,7 +142,7 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                                     $$.tipo = $1.tipo;
                                                     $$.lexema = temporal();
                                                     genprintf("  %s %s;",tipoCStr($$.tipo),$$.lexema);
-                                                    if($$.tipo==listaentero){
+                                                    if($$.tipo==listaentero || $$.tipo == listabool){
                                                       genprintf("  %s = anadeElementoInt(&%s,%s,%s);",$$.lexema,$1.lexema,$5.lexema,$3.lexema);
                                                     }
                                                     else if($$.tipo==listareal){
@@ -151,14 +151,12 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                                     else if($$.tipo==listachar){
                                                       genprintf("  %s = anadeElementoChar(&%s,%s,%s);",$$.lexema,$1.lexema,$5.lexema,$3.lexema);
                                                     }
-                                                    else if($$.tipo==listabool){
-                                                      genprintf("  %s = anadeElementoInt(&%s,%s,%s);",$$.lexema,$1.lexema,$5.lexema,$3.lexema);
-                                                    }
                                                   }
                                                   else{
                                                     semprintf("Los tipos %s y %s no son compatibles o %s no es entero para aplicar el operador ternario %s y %s\n", tipoStr($1.tipo),tipoStr($3.tipo),tipoStr($5.tipo),$2,$4);
                                                     $$.tipo = desconocido;}}
           | INCR expresion {if(esNumero($2.tipo)){
+                              // TODO: ¿esto debería ser sentencia?
                               $$.tipo = $2.tipo;
                               $$.lexema = temporal();
                               genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
@@ -169,6 +167,7 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                              $$.tipo = desconocido;
                             }}
            | DECR expresion {if(esNumero($2.tipo)){
+                              // TODO: ¿esto debería ser sentencia?
                               $$.tipo = $2.tipo;
                               $$.lexema = temporal();
                               genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
@@ -193,29 +192,25 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                   $$.tipo  = desconocido;
                                 }
                               if($$.tipo!=desconocido){
-                                // TODO: lo siguiente sirve cuando el operador es ! (es decir, cuando $$.tipo es booleano), pero no si es un operador de listas, en cuyo caso requiere implementación de listas
                                 // TODO: ¿$lista no debería ser una sentencia?
                                 $$.lexema = temporal();
                                 genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
                                  if(strcmp($1,"#")==0){
-                                   genprintf("  %s = numeroElementos(&%s);",$$.lexema,$2.lexema);
+                                   genprintf("  %s = numeroElementos(&%s);\n",$$.lexema,$2.lexema);
                                  }
                                  else if(strcmp($1,"?")==0){
-                                   if($$.tipo==listaentero){
-                                     genprintf("  %s = devuelveActualInt($$.lexema,&%s);",$$.lexema,$2.lexema);
+                                   if($$.tipo==entero || $$.tipo==booleano){
+                                     genprintf("  %s = devuelveActualInt(&%s);\n",$$.lexema,$2.lexema);
                                    }
-                                   else if($$.tipo==listareal){
-                                     genprintf("  %s = devuelveActualDouble($$.lexema,&%s);",$$.lexema,$2.lexema);
+                                   else if($$.tipo==real){
+                                     genprintf("  %s = devuelveActualDouble(&%s);\n",$$.lexema,$2.lexema);
                                    }
-                                   else if($$.tipo==listachar){
-                                     genprintf("  %s = devuelveActualChar($$.lexema,&%s);",$$.lexema,$2.lexema);
-                                   }
-                                   else if($$.tipo==listabool){
-                                     genprintf("  %s = devuelveActualInt($$.lexema,&%s);",$$.lexema,$2.lexema);
+                                   else if($$.tipo==caracter){
+                                     genprintf("  %s = devuelveActualChar(&%s);\n",$$.lexema,$2.lexema);
                                    }
                                  }
                                  else if(strcmp($1,"$")==0){
-                                   genprintf("  reiniciaCursor(&%s);",$2.lexema);
+                                   genprintf("  reiniciaCursor(&%s);\n",$2.lexema);
                                  }
                                  else{
                                    genprintf("  %s = %s %s ;\n", $$.lexema, $1, $2.lexema);
@@ -354,7 +349,6 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                                  $$.tipo = desconocido;
                                               }
                                               char tipo[20];
-                                              char operacion[20];
                                               char* lista;
                                               char* valor;
 
@@ -363,9 +357,10 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                                 lista = $1.lexema;
                                                 valor = $3.lexema;
 
-                                                strcpy(operacion,"divide");
-                                                genprintf("  %sValor%s(&%s,%s);",operacion, tipo, lista, valor);
-                                                genprintf("  %s = %s;",$$.lexema,lista);
+                                                $$.lexema = temporal();
+                                                genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                                                genprintf("  divideValor%s(&%s,%s);\n", tipo, lista, valor);
+                                                genprintf("  %s = %s;\n",$$.lexema,lista);
                                               }
 
                                         }
@@ -377,7 +372,7 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                                   $$.tipo = $1.tipo;
                                              }
                                              else if (esNumero($1.tipo) && esTipoElemento($1.tipo, $3.tipo)) {
-                                                  $$.tipo = $1.tipo;
+                                                  $$.tipo = $3.tipo;
                                              }
                                              else{
                                                  semprintf("Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
@@ -385,7 +380,6 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                               }
 
                                               char tipo[20];
-                                              char operacion[20];
                                               char* lista;
                                               char* valor;
                                               if(esLista($1.tipo) || esLista($3.tipo)){
@@ -412,10 +406,10 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                                     break;
                                                 }
 
-                                                strcpy(operacion,"producto");
-
-                                                genprintf("  %sValor%s(&%s,%s);",operacion, tipo, lista, valor);
-                                                genprintf("  %s = %s;",$$.lexema,lista);
+                                                $$.lexema = temporal();
+                                                genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                                                genprintf("  productoValor%s(&%s,%s);\n", tipo, lista, valor);
+                                                genprintf("  %s = %s;\n",$$.lexema,lista);
                                               }
                                         }
                                         if(strcmp($2,"%")==0) {
@@ -429,8 +423,9 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                                  semprintf("Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
                                                  $$.tipo = desconocido;
                                               }
+                                              // TODO: operador de lista
                                         }
-                                        if($$.tipo!=desconocido){
+                                        if(!esLista($$.tipo)){
                                           // TODO: comprobar que las operaciones división y módulo de C son las mismas que las que se especifican en nuestro lenguaje
                                           // TODO: lo siguiente es aplicable si el operador es de números, pero no si es de listas, en cuyo caso requiere implementación de listas
                                           $$.lexema = temporal();
