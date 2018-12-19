@@ -67,13 +67,6 @@ double devuelveActualDouble(Lista l){
 }
 
 /*
- * Devuelve el elemento en la posición del cursor de la lista de bools
- */
-bool devuelveActualBool(Lista l){
-  return(lista_bool[cursor]);
-}
-
-/*
  * Devuelve el elemento en la posición del cursor de la lista de chars
  */
 char devuelveActualChar(Lista l){
@@ -113,19 +106,6 @@ double devuelvePosicionDouble(Lista l, int pos){
 /*
  * Devuelve el elemento en la posición pos si la posición no se sale de los límites.
  */
-bool devuelvePosicionBool(Lista l, int pos){
-  if(pos<l.tope && pos>=0)
-    return(l.lista_bool[pos]);
-  else{
-    if(DBUG!=0)
-      printf("No se puede acceder a una posición de la lista fuera del rango\n");
-    exit(1);
-  }
-}
-
-/*
- * Devuelve el elemento en la posición pos si la posición no se sale de los límites.
- */
 char devuelvePosicionChar(Lista l, int pos){
   if(pos<l.tope && pos>=0)
     return(l.lista_char[pos]);
@@ -151,7 +131,7 @@ Lista eliminaElemento(Lista l, int pos){
   res.tipo = l.tipo;
 
   //En función del tipo rellenamos una lista u otra.
-  if(res.tipo==listaentero){
+  if(res.tipo==listaentero || res.tipo==listabool){
     res.lista_entero = (int *) malloc(res.tope * sizeof(int));
     for(int i = 0; i < l.tope; ++i){
       if(i!=pos){
@@ -171,15 +151,6 @@ Lista eliminaElemento(Lista l, int pos){
   }
   else if(res.tipo==listachar){
     res.lista_char = (char *) malloc(res.tope * sizeof(char));
-    for(int i = 0; i < l.tope; ++i){
-      if(i!=pos){
-        res.lista_entero[contador] = l.lista_entero[i];
-        contador++;
-      }
-    }
-  }
-  else if(res.tipo==listabool){
-    res.lista_bool = (bool *) malloc(res.tope * sizeof(bool));
     for(int i = 0; i < l.tope; ++i){
       if(i!=pos){
         res.lista_entero[contador] = l.lista_entero[i];
@@ -204,7 +175,7 @@ Lista eliminaFinal(Lista l, int pos){
   res.tipo = l.tipo;
 
   //En función del tipo rellenamos una lista u otra.
-  if(res.tipo==listaentero){
+  if(res.tipo==listaentero || res.tipo==listabool){
     res.lista_entero = (int *) malloc(res.tope * sizeof(int));
     for(int i = 0; i < l.tope && i<=pos; ++i){
       res.lista_entero[i] = l.lista_entero[i];
@@ -218,12 +189,6 @@ Lista eliminaFinal(Lista l, int pos){
   }
   else if(res.tipo==listachar){
     res.lista_char = (char *) malloc(res.tope * sizeof(char));
-    for(int i = 0; i < l.tope && i<=pos; ++i){
-      res.lista_entero[o] = l.lista_entero[i];
-    }
-  }
-  else if(res.tipo==listabool){
-    res.lista_bool = (bool *) malloc(res.tope * sizeof(bool));
     for(int i = 0; i < l.tope && i<=pos; ++i){
       res.lista_entero[o] = l.lista_entero[i];
     }
@@ -243,7 +208,7 @@ Lista concatenaListas(Lista l1, Lista l2){
   res.tipo = l1.tipo;
 
   //En función del tipo de la lista la generas en orden
-  if(res.tipo==listaentero){
+  if(res.tipo==listaentero || res.tipo==listabool){
     res.lista_entero = (int *) malloc(res.tope * sizeof(int));
     for(int i = 0; i < l1.tope; ++i){
       res.lista_entero[contador] = l1.lista_entero[i];
@@ -262,17 +227,6 @@ Lista concatenaListas(Lista l1, Lista l2){
     }
     for(int i = 0; i < l2.tope; ++i){
       res.lista_real[contador] = l2.lista_real[i];
-      contador++;
-    }
-  }
-  else if(res.tipo==listabool){
-    res.lista_bool = (bool *) malloc(res.tope * sizeof(bool));
-    for(int i = 0; i < l1.tope; ++i){
-      res.lista_bool[contador] = l1.lista_bool[i];
-      contador++;
-    }
-    for(int i = 0; i < l2.tope; ++i){
-      res.lista_bool[contador] = l2.lista_bool[i];
       contador++;
     }
   }
@@ -410,28 +364,6 @@ Lista anadeElementoChar(Lista l, int pos, char elem){
       res.lista_char[i] = elem;
     else{
       res.lista_char[i] = l.lista_char[contador];
-      contador++;
-    }
-  }
-  return(res);
-}
-
-/*
- * Añade el elemento elem en la posición pos devolviendo una copia
- */
-Lista anadeElementoBool(Lista l, int pos, bool elem){
-  Lista res;
-  int contador = 0;
-  res.tope = l.tope+1;
-  res.cursor = l.cursor;
-  res.tipo = l.tipo;
-
-  res.lista_bool = (bool *) malloc(res.tope * sizeof(bool));
-  for(int i = 0; i < res.tope; ++i){
-    if(i==pos)
-      res.lista_bool[i] = elem;
-    else{
-      res.lista_bool[i] = l.lista_bool[contador];
       contador++;
     }
   }
