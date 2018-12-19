@@ -420,7 +420,7 @@ void imprimeListaInt(Lista * l){
   for(int i = 0; i < l->tope; ++i){
     printf("%d", l->lista_entero[i]);
     if(i != l->tope -1)
-      printf(",");
+      printf(", ");
   }
   printf("]");
 }
@@ -428,9 +428,9 @@ void imprimeListaInt(Lista * l){
 void imprimeListaDouble(Lista * l){
   printf("[");
   for(int i = 0; i < l->tope; ++i){
-    printf("%f", l->lista_real[i]);
+    printf("%lf", l->lista_real[i]);
     if(i != l->tope -1)
-      printf(",");
+      printf(", ");
   }
   printf("]");
 }
@@ -440,7 +440,7 @@ void imprimeListaChar(Lista * l){
   for(int i = 0; i < l->tope; ++i){
     printf("%c", l->lista_char[i]);
     if(i != l->tope -1)
-      printf(",");
+      printf(", ");
   }
   printf("]");
 }
@@ -453,7 +453,7 @@ void imprimeListaBool(Lista * l){
     else
       printf("False");
     if(i != l->tope -1)
-      printf(",");
+      printf(", ");
   }
   printf("]");
 }
