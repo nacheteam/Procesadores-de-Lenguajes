@@ -1,0 +1,38 @@
+void main(){
+begin
+list of int l;
+int n;
+int suma;
+bool fin;
+end
+
+l = [3]--0;
+n = 0;
+fin = False;
+
+while(!fin){
+  begin
+    int entrada;
+  end
+  write "Introduce un entero positivo";
+  read entrada;
+  fin = entrada < 0;
+  if(!fin){
+   l = l++entrada@n;
+   n++;
+  }
+}
+
+write "Se han introducido ", n, "elementos";
+write "La lista es", l;
+
+suma = 0;
+$l;
+while(n > 0){
+  suma = suma + ?l;
+  l>>;
+  n--;
+}
+
+write "Su suma es ", suma;
+}

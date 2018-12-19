@@ -408,3 +408,52 @@ Lista anadeElementoChar(Lista * l, int pos, char elem){
   }
   return(res);
 }
+
+
+/*
+ * Imprime listas
+ *
+*/
+
+void imprimeListaInt(Lista * l){
+  printf("[");
+  for(int i = 0; i < l->tope; ++i){
+    printf("%d", l->lista_entero[i]);
+    if(i != l->tope -1)
+      printf(",");
+  }
+  printf("]");
+}
+
+void imprimeListaDouble(Lista * l){
+  printf("[");
+  for(int i = 0; i < l->tope; ++i){
+    printf("%f", l->lista_real[i]);
+    if(i != l->tope -1)
+      printf(",");
+  }
+  printf("]");
+}
+
+void imprimeListaChar(Lista * l){
+  printf("[");
+  for(int i = 0; i < l->tope; ++i){
+    printf("%c", l->lista_char[i]);
+    if(i != l->tope -1)
+      printf(",");
+  }
+  printf("]");
+}
+
+void imprimeListaBool(Lista * l){
+  printf("[");
+  for(int i = 0; i < l->tope; ++i){
+    if(l->lista_entero[i])
+      printf("True");
+    else
+      printf("False");
+    if(i != l->tope -1)
+      printf(",");
+  }
+  printf("]");
+}

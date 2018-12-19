@@ -1,0 +1,18 @@
+void main(){
+begin
+int a, b;
+end
+
+void f(int c, int d){
+  write "La suma de los dos números es ", c + d;
+}
+
+write "Introduce un número";
+read a;
+
+write "Introduce un segundo número";
+read b;
+
+f(a,b);
+
+}

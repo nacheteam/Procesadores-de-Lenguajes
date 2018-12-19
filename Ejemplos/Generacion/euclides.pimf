@@ -1,0 +1,28 @@
+void main(){
+begin
+int a, b, c;
+end
+
+void gcd(int a, int b){
+  begin
+  int t;
+  end
+  write c;
+  while(b != 0){
+    t = b;
+    b = a % b;
+    a = t;
+  }
+  write "El mcd de los dos números es ", a;
+}
+
+write "Introduce un número";
+read a;
+
+write "Introduce un segundo número";
+read b;
+
+write a,b;
+gcd(a,b);
+write a,b;
+}

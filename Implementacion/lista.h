@@ -58,4 +58,10 @@ Lista anadeElementoInt(Lista * l, int pos, int elem); //Operador l++x@z
 Lista anadeElementoDouble(Lista * l, int pos, double elem); //Operador l++x@z
 Lista anadeElementoChar(Lista * l, int pos, char elem); //Operador l++x@z
 
+
+void imprimeListaInt(Lista * l);
+void imprimeListaDouble(Lista * l);
+void imprimeListaChar(Lista * l);
+void imprimeListaBool(Lista * l);
+
 #endif
