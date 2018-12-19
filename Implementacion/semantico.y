@@ -250,7 +250,44 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                         // TODO: lo siguiente funciona con números. Escribir el operador de lista cuando sea pertinente
                                         $$.lexema = temporal();
                                         genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                                        genprintf("  %s = %s %s %s ;\n", $$.lexema, $1.lexema, $2, $3.lexema);
+                                        char tipo[20];
+                                        char operacion[20];
+                                        char* lista;
+                                        char* valor;
+
+                                        if(esLista($1.tipo) || esLista($3.tipo)){
+                                          switch ($1.tipo) {
+                                            case listaentero:
+                                              strcpy(tipo,"Int");
+                                              lista = $1.lexema;
+                                              valor = $3.lexema;
+                                              break;
+                                            case listareal:
+                                              strcpy(tipo,"Double");
+                                              lista = $1.lexema;
+                                              valor = $3.lexema;
+                                              break;
+                                            case entero:
+                                              strcpy(tipo,"Int");
+                                              lista = $3.lexema;
+                                              valor = $1.lexema;
+                                              break;
+                                            case real:
+                                              strcpy(tipo,"Double");
+                                              lista = $3.lexema;
+                                              valor = $1.lexema;
+                                              break;
+                                          }
+                                          if(strcmp($2,"-")==0)
+                                            strcpy(operacion,"suma");
+                                          else
+                                            strcpy(operacion,"resta");
+
+                                          genprintf("  %sValor%s(&%s,%s);",operacion, tipo, lista, valor);
+                                          genprintf("  %s = %s;",$$.lexema,lista);
+                                        }
+                                        else
+                                          genprintf("  %s = %s %s %s ;\n", $$.lexema, $1.lexema, $2, $3.lexema);
                                       }
                                       else{
                                         semprintf("Los tipos %s y %s no son iguales o no son un entero, real o lista para aplicar %s.\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
