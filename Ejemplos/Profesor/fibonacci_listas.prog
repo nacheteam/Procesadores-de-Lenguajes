@@ -19,6 +19,6 @@ void main(){
 
  write "Fibonacci: ", fib;
  write "Fibonacci + 3: ", fib+3;
- //write "Fibonacci * 2", fib*2;
+ write "Fibonacci * 2", fib*2;
 
 }

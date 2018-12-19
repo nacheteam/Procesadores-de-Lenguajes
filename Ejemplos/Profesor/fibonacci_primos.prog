@@ -40,7 +40,7 @@ void main(){
   }
   }
 
-  write "Introduzca el número de elementos de la serie a imprimir:";
+  write "Introduzca el número de elementos de la serie a imprimir>>>:";
   read num;
   fibonacci(num);
 }
