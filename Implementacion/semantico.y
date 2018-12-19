@@ -141,14 +141,15 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
 | expresion INCR expresion ARROBARROBA expresion {if(esTipoElemento($3.tipo,$1.tipo) && $5.tipo==entero){
                                                     $$.tipo = $1.tipo;
                                                     $$.lexema = temporal();
+                                                    genprintf("  %s %s;",tipoCStr($$.tipo),$$.lexema);
                                                     if($$.tipo==listaentero)
-                                                      genprintf("  anadeElementoInt(%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema);
+                                                      genprintf("  %s = anadeElementoInt($$.lexema,&%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema);
                                                     else if($$.tipo==listareal)
-                                                      genprintf("  anadeElementoDouble%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema);
+                                                      genprintf("  %s = anadeElementoDouble($$.lexema,&%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema);
                                                     else if($$.tipo==listachar)
-                                                      genprintf("  anadeElementoChar(%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema);
+                                                      genprintf("  %s = anadeElementoChar($$.lexema,&%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema);
                                                     else if($$.tipo==listabool)
-                                                      genprintf("  anadeElementoInt(%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema);
+                                                      genprintf("  %s = anadeElementoInt($$.lexema,&%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema);
                                                   }
                                                   else{
                                                     semprintf("Los tipos %s y %s no son compatibles o %s no es entero para aplicar el operador ternario %s y %s\n", tipoStr($1.tipo),tipoStr($3.tipo),tipoStr($5.tipo),$2,$4);
@@ -174,12 +175,15 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                               $$.tipo = desconocido;}}
           | UNARIOIZQ expresion {if((strcmp($1,"!")==0 && $2.tipo==booleano))
                                   $$.tipo  = $2.tipo;
-                                else if(strcmp($1,"#")==0 && esLista($2.tipo))
+                                else if(strcmp($1,"#")==0 && esLista($2.tipo)){
                                   $$.tipo  = entero;
-                                else if(strcmp($1,"?")==0 && esLista($2.tipo))
+                                }
+                                else if(strcmp($1,"?")==0 && esLista($2.tipo)){
                                   $$.tipo  = getTipoElemento($2.tipo);
-                                else if(strcmp($1,"$")==0)
+                                }
+                                else if(strcmp($1,"$")==0){
                                   $$.tipo =$2.tipo;
+                                }
                                 else{
                                   semprintf("El tipo %s no se corresponde con el operador %s\n", tipoStr($2.tipo),$1);
                                   $$.tipo  = desconocido;
