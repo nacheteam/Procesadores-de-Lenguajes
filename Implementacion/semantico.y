@@ -633,7 +633,7 @@ parametro : tipo ID {
           | error
 ;
 
-programa : {genprintf("#include <stdio.h>\n#include \"lista.h\"\n\n");} PROCED MAIN bloque {genprintf("}\n");}
+programa : {genprintf("#include <stdio.h>\n#include \"Implementacion/lista.h\"\n\n");} PROCED MAIN bloque {genprintf("}\n");}
 ;
 
 sentencia : bloque
