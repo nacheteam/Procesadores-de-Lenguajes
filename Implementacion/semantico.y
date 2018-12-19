@@ -108,7 +108,7 @@ cuerpo_declar_variables : tipo lista_identificadores {
   for(int i=0; i<$2.lid.tope_id;++i) {
     insertaVar($2.lid.lista_ids[i],$1);
     genprintf("%s %s;\n", tipoCStr(leeTipoDato($1)), $2.lid.lista_ids[i]);
-  };
+  }
  } PYC
                         | error
 ;
@@ -143,13 +143,13 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                                     $$.lexema = temporal();
                                                     genprintf("  %s %s;",tipoCStr($$.tipo),$$.lexema);
                                                     if($$.tipo==listaentero)
-                                                      genprintf("  %s = anadeElementoInt($$.lexema,&%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema);
+                                                      genprintf("  %s = anadeElementoInt(&%s,%s,%s);",$1.lexema,$5.lexema,$3.lexema);
                                                     else if($$.tipo==listareal)
-                                                      genprintf("  %s = anadeElementoDouble($$.lexema,&%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema);
+                                                      genprintf("  %s = anadeElementoDouble(&%s,%s,%s);",$1.lexema,$5.lexema,$3.lexema);
                                                     else if($$.tipo==listachar)
-                                                      genprintf("  %s = anadeElementoChar($$.lexema,&%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema);
+                                                      genprintf("  %s = anadeElementoChar(&%s,%s,%s);",$1.lexema,$5.lexema,$3.lexema);
                                                     else if($$.tipo==listabool)
-                                                      genprintf("  %s = anadeElementoInt($$.lexema,&%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema);
+                                                      genprintf("  %s = anadeElementoInt(&%s,%s,%s);",$1.lexema,$5.lexema,$3.lexema);
                                                   }
                                                   else{
                                                     semprintf("Los tipos %s y %s no son compatibles o %s no es entero para aplicar el operador ternario %s y %s\n", tipoStr($1.tipo),tipoStr($3.tipo),tipoStr($5.tipo),$2,$4);
