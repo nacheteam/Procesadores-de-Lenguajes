@@ -46,6 +46,11 @@ char * tipoCStr(TipoDato tipo) {
       return "double";
     case caracter:
       return "char";
+    case listaentero:
+    case listabool:
+    case listareal:
+    case listachar:
+      return "Lista";
     default:
       printf("[Línea %d] Error de implementación, %s no está asociado a ningún tipo nativo de C\n", linea, tipoStr(tipo));
       return "error";
