@@ -142,14 +142,18 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                                     $$.tipo = $1.tipo;
                                                     $$.lexema = temporal();
                                                     genprintf("  %s %s;",tipoCStr($$.tipo),$$.lexema);
-                                                    /* if($$.tipo==listaentero) */
-                                                    /*   genprintf("  %s = anadeElementoInt(&%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema); */
-                                                    /* else if($$.tipo==listareal) */
-                                                    /*   genprintf("  %s = anadeElementoDouble(&%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema); */
-                                                    /* else if($$.tipo==listachar) */
-                                                    /*   genprintf("  %s = anadeElementoChar(&%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema); */
-                                                    /* else if($$.tipo==listabool) */
-                                                    /*   genprintf("  %s = anadeElementoInt(&%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema); */
+                                                    if($$.tipo==listaentero){
+                                                      genprintf("  %s = anadeElementoInt(&%s,%s,%s);",$$.lexema,$1.lexema,$5.lexema,$3.lexema);
+                                                    }
+                                                    else if($$.tipo==listareal){
+                                                      genprintf("  %s = anadeElementoDouble(&%s,%s,%s);",$$.lexema,$1.lexema,$5.lexema,$3.lexema);
+                                                    }
+                                                    else if($$.tipo==listachar){
+                                                      genprintf("  %s = anadeElementoChar(&%s,%s,%s);",$$.lexema,$1.lexema,$5.lexema,$3.lexema);
+                                                    }
+                                                    else if($$.tipo==listabool){
+                                                      genprintf("  %s = anadeElementoInt(&%s,%s,%s);",$$.lexema,$1.lexema,$5.lexema,$3.lexema);
+                                                    }
                                                   }
                                                   else{
                                                     semprintf("Los tipos %s y %s no son compatibles o %s no es entero para aplicar el operador ternario %s y %s\n", tipoStr($1.tipo),tipoStr($3.tipo),tipoStr($5.tipo),$2,$4);
