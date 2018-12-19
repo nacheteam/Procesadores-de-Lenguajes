@@ -353,6 +353,21 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                                  semprintf("Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
                                                  $$.tipo = desconocido;
                                               }
+                                              char tipo[20];
+                                              char operacion[20];
+                                              char* lista;
+                                              char* valor;
+
+                                              if(esLista($1.tipo)){
+                                                strcpy(tipo,"Double");
+                                                lista = $1.lexema;
+                                                valor = $3.lexema;
+
+                                                strcpy(operacion,"divide");
+                                                genprintf("  %sValor%s(&%s,%s);",operacion, tipo, lista, valor);
+                                                genprintf("  %s = %s;",$$.lexema,lista);
+                                              }
+
                                         }
                                         if(strcmp($2,"*")==0) {
                                              if (esNumero($1.tipo) && ($1.tipo==$3.tipo)){
@@ -367,6 +382,40 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                              else{
                                                  semprintf("Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
                                                  $$.tipo = desconocido;
+                                              }
+
+                                              char tipo[20];
+                                              char operacion[20];
+                                              char* lista;
+                                              char* valor;
+                                              if(esLista($1.tipo) || esLista($3.tipo)){
+                                                switch ($1.tipo) {
+                                                  case listaentero:
+                                                    strcpy(tipo,"Int");
+                                                    lista = $1.lexema;
+                                                    valor = $3.lexema;
+                                                    break;
+                                                  case listareal:
+                                                    strcpy(tipo,"Double");
+                                                    lista = $1.lexema;
+                                                    valor = $3.lexema;
+                                                    break;
+                                                  case entero:
+                                                    strcpy(tipo,"Int");
+                                                    lista = $3.lexema;
+                                                    valor = $1.lexema;
+                                                    break;
+                                                  case real:
+                                                    strcpy(tipo,"Double");
+                                                    lista = $3.lexema;
+                                                    valor = $1.lexema;
+                                                    break;
+                                                }
+
+                                                strcpy(operacion,"producto");
+
+                                                genprintf("  %sValor%s(&%s,%s);",operacion, tipo, lista, valor);
+                                                genprintf("  %s = %s;",$$.lexema,lista);
                                               }
                                         }
                                         if(strcmp($2,"%")==0) {
