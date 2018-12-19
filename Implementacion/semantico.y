@@ -87,7 +87,7 @@
 
 bloque : inicio_de_bloque
          declar_de_variables_locales
-         declar_de_subprogs {if(esMain()) genprintf("\nint main(){\n");}
+         declar_de_subprogs {if(esMain()) genprintf("#include \"%s\"\n\nint main(){\n", "dec_fun");}
          sentencias
          fin_de_bloque
 ;
@@ -454,7 +454,7 @@ lista_identificadores : ID {$$.lid.lista_ids[$$.lid.tope_id] = $1;$$.lid.tope_id
 ;
 
 lista_parametros : parametro
-                 | lista_parametros COMA { genprintf(", "); } parametro 
+                 | lista_parametros COMA { genprintf(", "); } parametro
 ;
 
 llamada_proced : ID PARIZQ elementos PARDER PYC {
@@ -485,7 +485,7 @@ parametro : tipo ID {
           | error
 ;
 
-programa : {genprintf("#include <stdio.h>\n#include \"dec_dat\"\n#include \"lista.h\"\n\n");} PROCED MAIN bloque {genprintf("}\n");}
+programa : {genprintf("#include <stdio.h>\n#include \"lista.h\"\n\n");} PROCED MAIN bloque {genprintf("}\n");}
 ;
 
 sentencia : bloque
