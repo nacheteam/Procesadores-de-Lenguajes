@@ -31,7 +31,7 @@ void insertaInt(Lista * l, int x) {
 }
 
 /*
- * Inserta un real en la primera posición vacía de la lista
+ * Inserta un real en la prListimera posición vacía de la lista
  * Asume que se dispone de memoria suficiente para ello
  */
 void insertaDouble(Lista * l, double x) {
@@ -46,7 +46,16 @@ void insertaChar(Lista * l, char x) {
   l->lista_char[l->tope++] = x;
 }
 
-
+Lista copiaLista(Lista* l1){
+  Lista res;
+  res.tope = l1.tope;
+  res.cusor = l1.cursor;
+  res.lista_entero = (int*) malloc(res.tope*sizeof(int));
+  for(int i = 0; i < res.tope; ++i){
+    res.lista_entero[i] = l1->lista_entero[i];
+  }
+  return res;
+}
 /******************************************************************************/
 /*                    Operadores sobre el cursor                              */
 /******************************************************************************/

@@ -1,6 +1,6 @@
 void main(){
   begin
-  list of int fib;
+  list of int fib, suma, prod;
   int a, b, t, num;
   end
 
@@ -17,8 +17,12 @@ void main(){
     fib = fib++a@@#fib;
   }
 
- write "Fibonacci: ", fib;
- write "Fibonacci + 3: ", fib+3;
- write "Fibonacci * 2", fib*2;
+ write "Fibonacci:     ", fib;
+
+ suma = fib+3;
+ write "Fibonacci + 3: ", suma;
+
+ prod = fib*2;
+ write "Fibonacci * 2: ", prod;
 
 }
