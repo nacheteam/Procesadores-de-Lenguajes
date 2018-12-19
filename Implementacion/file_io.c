@@ -50,7 +50,8 @@ char * nombre_salida(int argc, char* argv[]){
 
 FILE * abrir_salida(int argc, char* argv[]) {
   char * nombre = nombre_salida(argc, argv);
-  main_file = abrir(nombre, "a");
+  main_file = abrir(nombre, "w");
+  proced_file = abrir(DEFAULT_PROC, "w");
   return main_file;
 }
 
@@ -62,8 +63,6 @@ extern FILE * yyout;
 /* Entra en un procedimiento */
 void entraProced(){
   profundidad++;
-  if(!proced_file)
-    proced_file = abrir(DEFAULT_PROC, "a");
   yyout = proced_file;
 }
 
