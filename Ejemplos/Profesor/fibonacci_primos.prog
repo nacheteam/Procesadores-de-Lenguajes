@@ -1,0 +1,46 @@
+void main(){
+  begin
+  int num;
+  end
+
+  void fibonacci(int num){
+  begin
+  int a, b, t;
+  end
+
+    void imprime(int n){
+      begin
+        bool esPrimo;
+        int m;
+      end
+      m = 2;
+      esPrimo = n != 1;
+
+      while(m < n && esPrimo){
+        if(n % m == 0)
+         esPrimo = False;
+        m = m + 1;
+      }
+
+      if(esPrimo)
+        write "   primo ", n;
+      else
+        write "no primo ", n;
+     }
+
+  a = 0;
+  b = 1;
+
+  while(num > 0){
+    t = a + b;
+    a = b;
+    b = t;
+    imprime(a);
+    num = num - 1;
+  }
+  }
+
+  write "Introduzca el número de elementos de la serie a imprimir:";
+  read num;
+  fibonacci(num);
+}

@@ -3,7 +3,7 @@ void main(){
   int a, b, t, num;
   end
 
-  write "Introduzca el número de elementos de la serie a imprimir";
+  write "Introduzca el número de elementos de la serie a imprimir:>>>";
   read num;
 
   a = 0;
@@ -13,7 +13,7 @@ void main(){
     t = a + b;
     a = b;
     b = t;
-    write a;
+    write "elemento",  a;
     num = num - 1;
   }
 
