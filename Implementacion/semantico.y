@@ -124,10 +124,13 @@ declar_de_variables_locales : |  marca_ini_declar_variables
 declar_subprog : cabecera_subprograma { genprintf("{\n"); } bloque { genprintf("}\n"); salProced(); }
 ;
 
-elementos : expresion { $$.el.tipos[$$.el.tope_elem] = $1.tipo;
-                        $$.el.tope_elem++; }
-          | elementos COMA expresion { $$.el.tipos[$$.el.tope_elem] = $3.tipo;
-                                       $$.el.tope_elem++; }
+elementos : expresion { $$.el.tipos[$$.el.tope_elem++] = $1.tipo;
+                        $$.lid.lista_ids[$$.lid.tope_id++] = $1.lexema;
+                      }
+          | elementos COMA expresion {
+                        $$.el.tipos[$$.el.tope_elem++] = $3.tipo;
+                        $$.lid.lista_ids[$$.lid.tope_id++] = $3.lexema;
+                      }
 ;
 
 expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
@@ -342,7 +345,7 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                           genprintf("%s:\n", etiqueta_par);
                                           genprintf("  %s = %s * %s ;\n", base, base, base);
                                           genprintf("  goto %s ;\n", etiqueta_exp);
-                                          genprintf("%s:\n", etiqueta_fin);
+                                          genprintf("%s:;\n", etiqueta_fin);
                                       }
                                     }
 
@@ -439,11 +442,16 @@ lista_parametros : parametro
 
 llamada_proced : ID PARIZQ elementos PARDER PYC {
   compruebaLlamada(&$3.el, $1);
-  // TODO: escribir la llamada
+  genprintf("  %s(", $1);
+  for(int i=0; i < $3.lid.tope_id; ++i) {
+    char * id = $3.lid.lista_ids[i];
+    genprintf("%s%s", (i == 0 ? "" : ","), id);
+  }
+  genprintf(");\n");
  }
                | ID PARIZQ PARDER PYC {
   compruebaLlamada(NULL, $1);
-  // TODO: escribir la llamada
+  genprintf("  %s();\n", $1);
  }
 ;
 
@@ -519,9 +527,9 @@ sentencia_if : IF {
   genprintf("{\n  if (!%s) goto %s;\n", $4.lexema, findGotoElse());
  } sentencia {
   genprintf("  goto %s;\n", findGotoSalida());
-  genprintf("%s:\n", findGotoElse());
+  genprintf("%s:;\n", findGotoElse());
  } sentencia_else {
-   genprintf("%s:\n}\n", findGotoSalida());
+   genprintf("%s:;\n}\n", findGotoSalida());
    salEstructuraControl();
  }
 ;
@@ -529,7 +537,7 @@ sentencia_if : IF {
 sentencia_repeat_until : REPEAT {
   char * e_entrada = etiqueta();
   insertaRepeatUntil(e_entrada);
-  genprintf("{\n%s:\n", e_entrada);
+  genprintf("{\n%s:;\n", e_entrada);
  } sentencia UNTIL expresion PYC {
    compruebaCondicion("repeat-until", $5.tipo);
    genprintf("  if (!%s) goto %s;\n}\n", $5.lexema, findGotoEntrada());
@@ -546,13 +554,13 @@ sentencia_while : WHILE {
   char * e_entrada = etiqueta();
   char * e_salida  = etiqueta();
   insertaWhile(e_entrada, e_salida);
-  genprintf("{\n%s:\n", e_entrada);
+  genprintf("{\n%s:;\n", e_entrada);
  } PARIZQ expresion PARDER {
    compruebaCondicion("while", $4.tipo);
    genprintf("  if (!%s) goto %s;\n", $4.lexema, findGotoSalida());
  } sentencia {
    genprintf("  goto %s;\n", findGotoEntrada());
-   genprintf("%s:\n}\n", findGotoSalida());
+   genprintf("%s:;\n}\n", findGotoSalida());
    salEstructuraControl();
  }
 ;
