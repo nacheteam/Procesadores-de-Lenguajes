@@ -31,7 +31,7 @@ void insertaInt(Lista * l, int x) {
 }
 
 /*
- * Inserta un real en la prListimera posición vacía de la lista
+ * Inserta un real en la primera posición vacía de la lista
  * Asume que se dispone de memoria suficiente para ello
  */
 void insertaDouble(Lista * l, double x) {
@@ -48,8 +48,8 @@ void insertaChar(Lista * l, char x) {
 
 Lista copiaLista(Lista* l1){
   Lista res;
-  res.tope = l1.tope;
-  res.cusor = l1.cursor;
+  res.tope = l1->tope;
+  res.cursor = l1->cursor;
   res.lista_entero = (int*) malloc(res.tope*sizeof(int));
   for(int i = 0; i < res.tope; ++i){
     res.lista_entero[i] = l1->lista_entero[i];
@@ -289,23 +289,28 @@ Lista concatenaListas(Lista * l1, Lista * l2){
 /*
  * Suma x a los elementos de la lista
  */
-void sumaValorInt(Lista * l, int x){
-  for(int i = 0; i < l->tope; ++i)
-    l->lista_entero[i]+=x;
+Lista sumaValorInt(Lista * l, int x){
+  Lista res = copiaLista(l);
+  for(int i = 0; i < res.tope; ++i)
+    res.lista_entero[i]+=x;
+  return res;
 }
 
 /*
  * Suma x a los elementos de la lista
  */
-void sumaValorDouble(Lista * l, double x){
-  for(int i = 0; i < l->tope; ++i)
-    l->lista_real[i]+=x;
+Lista sumaValorDouble(Lista * l, double x){
+  Lista res = copiaLista(l);
+  for(int i = 0; i < res.tope; ++i)
+    res.lista_real[i]+=x;
+  return res;
 }
 
 /*
  * Resta x a los elementos de la lista
  */
-void restaValorInt(Lista * l, int x){
+Lista restaValorInt(Lista * l, int x){
+  Lista res = copiaLista(l);
   for(int i = 0; i < l->tope; ++i)
     l->lista_entero[i]-=x;
 }
@@ -313,33 +318,41 @@ void restaValorInt(Lista * l, int x){
 /*
  * Resta x a los elementos de la lista
  */
-void restaValorDouble(Lista * l, double x){
-  for(int i = 0; i < l->tope; ++i)
-    l->lista_real[i]-=x;
+Lista restaValorDouble(Lista * l, double x){
+  Lista res = copiaLista(l);
+  for(int i = 0; i < res.tope; ++i)
+    res.lista_real[i]-=x;
+  return res;
 }
 
 /*
  * Multiplica x a los elementos de la lista
  */
-void productoValorInt(Lista * l, int x){
-  for(int i = 0; i < l->tope; ++i)
-    l->lista_entero[i]*=x;
+Lista productoValorInt(Lista * l, int x){
+  Lista res = copiaLista(l);
+  for(int i = 0; i < res.tope; ++i)
+    res.lista_entero[i]*=x;
+  return res;
 }
 
 /*
  * Multiplica x a los elementos de la lista
  */
-void productoValorDouble(Lista * l, double x){
-  for(int i = 0; i < l->tope; ++i)
-    l->lista_real[i]*=x;
+Lista productoValorDouble(Lista * l, double x){
+  Lista res = copiaLista(l);
+  for(int i = 0; i < res.tope; ++i)
+    res.lista_real[i]*=x;
+  return res;
 }
 
 /*
  * Divide por x a los elementos de la lista
  */
-void divideValorDouble(Lista * l, double x){
-  for(int i = 0; i < l->tope; ++i)
-    l->lista_real[i]/=x;
+Lista divideValorDouble(Lista * l, double x){
+  Lista res = copiaLista(l);
+  for(int i = 0; i < res.tope; ++i)
+    res.lista_real[i]/=x;
+  return res;
 }
 
 /******************************************************************************/

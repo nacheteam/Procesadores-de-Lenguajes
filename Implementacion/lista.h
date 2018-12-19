@@ -45,13 +45,13 @@ char devuelvePosicionChar(Lista * l,int pos); //Operador l@x
 Lista eliminaElemento(Lista * l,int pos); //Operador l--x
 Lista eliminaFinal(Lista * l, int pos); //Operador l%x
 Lista concatenaListas(Lista * l1, Lista * l2);  //Operador l1**l2
-void sumaValorInt(Lista * l, int x);  //Operador l+x ó x+l
-void sumaValorDouble(Lista * l, double x);  //Operador l+x ó x+l
-void restaValorInt(Lista * l, int x); //Operador l-x
-void restaValorDouble(Lista * l, double x); //Operador l-x
-void productoValorInt(Lista * l, int x);  //Operador l*x ó x*l
-void productoValorDouble(Lista * l, double x);  //Operador l*x ó x*l
-void divideValorDouble(Lista * l, double x);  //Operador l/x
+Lista sumaValorInt(Lista * l, int x);  //Operador l+x ó x+l
+Lista sumaValorDouble(Lista * l, double x);  //Operador l+x ó x+l
+Lista restaValorInt(Lista * l, int x); //Operador l-x
+Lista restaValorDouble(Lista * l, double x); //Operador l-x
+Lista productoValorInt(Lista * l, int x);  //Operador l*x ó x*l
+Lista productoValorDouble(Lista * l, double x);  //Operador l*x ó x*l
+Lista divideValorDouble(Lista * l, double x);  //Operador l/x
 
 //Operadores ternarios sobre la lista
 Lista anadeElementoInt(Lista * l, int pos, int elem); //Operador l++x@z

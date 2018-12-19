@@ -278,8 +278,9 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                           else
                                             strcpy(operacion,"suma");
 
-                                          genprintf("  %sValor%s(&%s,%s);",operacion, tipo, lista, valor);
-                                          genprintf("  %s = %s;",$$.lexema,lista);
+                                          $$.lexema = temporal();
+                                          genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                                          genprintf("  %s = %sValor%s(&%s,%s);", $$.lexema, operacion, tipo, lista, valor);
                                         }
                                         else
                                           genprintf("  %s = %s %s %s ;\n", $$.lexema, $1.lexema, $2, $3.lexema);
@@ -359,8 +360,7 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
 
                                                 $$.lexema = temporal();
                                                 genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                                                genprintf("  divideValor%s(&%s,%s);\n", tipo, lista, valor);
-                                                genprintf("  %s = %s;\n",$$.lexema,lista);
+                                                genprintf("  %s = divideValor%s(&%s,%s);\n", $$.lexema, tipo, lista, valor);
                                               }
 
                                         }
@@ -408,8 +408,7 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
 
                                                 $$.lexema = temporal();
                                                 genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                                                genprintf("  productoValor%s(&%s,%s);\n", tipo, lista, valor);
-                                                genprintf("  %s = %s;\n",$$.lexema,lista);
+                                                genprintf("  %s = productoValor%s(&%s,%s);\n", $$.lexema, tipo, lista, valor);
                                               }
                                         }
                                         if(strcmp($2,"%")==0) {
