@@ -140,7 +140,15 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                   }
 | expresion INCR expresion ARROBARROBA expresion {if(esTipoElemento($3.tipo,$1.tipo) && $5.tipo==entero){
                                                     $$.tipo = $1.tipo;
-                                                    // TODO: operador ternario de listas pendiente de implementar
+                                                    $$.lexema = temporal();
+                                                    if($$.tipo==listaentero)
+                                                      genprintf("  anadeElementoInt(%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema);
+                                                    else if($$.tipo==listareal)
+                                                      genprintf("  anadeElementoDouble%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema);
+                                                    else if($$.tipo==listachar)
+                                                      genprintf("  anadeElementoChar(%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema);
+                                                    else if($$.tipo==listabool)
+                                                      genprintf("  anadeElementoInt(%s,%s,%s);",$1.lexema,$3.lexema,$2.lexema);
                                                   }
                                                   else{
                                                     semprintf("Los tipos %s y %s no son compatibles o %s no es entero para aplicar el operador ternario %s y %s\n", tipoStr($1.tipo),tipoStr($3.tipo),tipoStr($5.tipo),$2,$4);
@@ -437,7 +445,7 @@ lista_identificadores : ID {$$.lid.lista_ids[$$.lid.tope_id] = $1;$$.lid.tope_id
 ;
 
 lista_parametros : parametro
-                 | lista_parametros COMA { genprintf(", "); } parametro 
+                 | lista_parametros COMA { genprintf(", "); } parametro
 ;
 
 llamada_proced : ID PARIZQ elementos PARDER PYC {
