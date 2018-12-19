@@ -2,11 +2,11 @@
 #include "string.h"
 #include "file_io.h"
 
-char DEFAULT_MAIN[] = "salida.c";
 FILE * main_file = NULL;
-
-char DEFAULT_PROC[] = "dec_dat";
 FILE * proced_file = NULL;
+
+char DEFAULT_MAIN[] = "salida.c";
+char DEFAULT_PROC[] = "dec_fun";
 
 /* Abre fichero y comprueba */
 FILE * abrir(char * nombre, char* modo){

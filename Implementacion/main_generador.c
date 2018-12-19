@@ -35,7 +35,7 @@ char * temporal() {
 int main(int argc, char * argv[]) {
   char* nombre = nombre_salida(argc, argv);
   remove(nombre);
-  remove("dec_dat");
+  remove("dec_fun");
 
   yyin = abrir_entrada(argc, argv);
   yyout = abrir_salida(argc, argv); // TODO: ¿escribir código inicial aquí o en el .y?
@@ -47,7 +47,7 @@ int main(int argc, char * argv[]) {
     else
       fprintf(stderr, "Se han detectado %d errores, compilación abortada.\n", error);
     remove(nombre);
-    remove("dec_dat");
+    remove("dec_fun");
   } else{
     char llamada[100];
     sprintf(llamada, "gcc %s -o programa.out", nombre);
