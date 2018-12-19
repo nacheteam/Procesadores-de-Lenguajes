@@ -14,6 +14,19 @@ typedef struct Lista{
   int cursor;          // Posición actual del cabezal
 } Lista;
 
+// Reserva memoria para almacenar n elementos del tipo de la lista
+void reservaMemoria(Lista * l, int n);
+
+#define INIT_listaentero(X, n)   Lista X = {.tipo=listaentero, .tope = 0, .cursor = 0}; reservaMemoria(&X, n)
+#define INIT_listareal(X, n)     Lista X = {.tipo = listareal, .tope = 0, .cursor = 0}; reservaMemoria(&X, n)
+#define INIT_listacaracter(X, n) Lista X = {.tipo = listachar, .tope = 0, .cursor = 0}; reservaMemoria(&X, n)
+#define INIT_listabooleano(X, n) Lista X = {.tipo = listabool, .tope = 0, .cursor = 0}; reservaMemoria(&X, n)
+
+// Inserta un elemento en una lista asumiendo que hay memoria suficiente
+void insertaInt(Lista * l, int x);
+void insertaDouble(Lista * l, double x);
+void insertaChar(Lista * l, char x);
+
 //Operaciones sobre el cursor
 void avanzaCursor(Lista * l);     //Operador l>>
 void retrocedeCursor(Lista * l);  //Operador l<<

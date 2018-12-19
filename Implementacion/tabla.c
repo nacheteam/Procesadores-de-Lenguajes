@@ -46,9 +46,14 @@ char * tipoCStr(TipoDato tipo) {
       return "double";
     case caracter:
       return "char";
+    case listaentero:
+    case listabool:
+    case listachar:
+    case listareal:
+      return "Lista";
     default:
-      printf("[Línea %d] Error de implementación, %s no está asociado a ningún tipo nativo de C\n", linea, tipoStr(tipo));
-      return "error";
+      printf("[Línea %d] Error de implementación, %s no está asociado a ningún tipo nativo de C ni a una lista\n", linea, tipoStr(tipo));
+      return "error"; // TODO: este error puede aparecer como consecuencia de una variable no declarada, en cuyo caso probablemente no debería mostrarse (ejemplo en el que aparece: b = b sin haber declarado b)
   }
 }
 

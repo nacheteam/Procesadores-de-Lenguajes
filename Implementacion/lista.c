@@ -4,6 +4,49 @@
 //Si es 0 se desactiva el print, cualquier otro valor hace print.
 #define DBUG 1
 
+
+/******************************************************************************/
+/*                   Operadores de inicialización                             */
+/******************************************************************************/
+
+/*
+ * Reserva memoria para almacenar elementos
+ * Asume que la lista está vacía
+ */
+void reservaMemoria(Lista * l, int n) {
+  if(l->tipo==listaentero || l->tipo==listabool)
+    l->lista_entero = (int *) malloc(n * sizeof(int));
+  else if(l->tipo==listareal)
+    l->lista_real = (double *) malloc(n * sizeof(double));
+  else if(l->tipo==listachar)
+    l->lista_char = (char *) malloc(n * sizeof(char));
+}
+
+/*
+ * Inserta un entero en la primera posición vacía de la lista
+ * Asume que se dispone de memoria suficiente para ello
+ */
+void insertaInt(Lista * l, int x) {
+  l->lista_entero[l->tope++] = x;
+}
+
+/*
+ * Inserta un real en la primera posición vacía de la lista
+ * Asume que se dispone de memoria suficiente para ello
+ */
+void insertaDouble(Lista * l, double x) {
+  l->lista_real[l->tope++] = x;
+}
+
+/*
+ * Inserta un char en la primera posición vacía de la lista
+ * Asume que se dispone de memoria suficiente para ello
+ */
+void insertaChar(Lista * l, char x) {
+  l->lista_char[l->tope++] = x;
+}
+
+
 /******************************************************************************/
 /*                    Operadores sobre el cursor                              */
 /******************************************************************************/

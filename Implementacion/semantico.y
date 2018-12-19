@@ -178,6 +178,7 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                 }
                               if($$.tipo!=desconocido){
                                 // TODO: lo siguiente sirve cuando el operador es ! (es decir, cuando $$.tipo es booleano), pero no si es un operador de listas, en cuyo caso requiere implementación de listas
+                                // TODO: ¿$lista no debería ser una sentencia?
                                 $$.lexema = temporal();
                                 genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
                                 genprintf("  %s = %s %s ;\n", $$.lexema, $1, $2.lexema);
@@ -185,6 +186,7 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
            | expresion UNARIODER {if(esLista($1.tipo)){
                                     $$.tipo = $1.tipo;
                                     // TODO: operadores de lista pendientes de implementar
+                                    // TODO: ¿estas operaciones no debían ser una sentencia?
                                 }
                                 else{
                                   semprintf("El tipo %s no es una lista para aplicar %s\n", tipoStr($1.tipo),$2);
@@ -316,42 +318,50 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                       else
                                         semprintf("Los tipos %s y %s no coinciden o no son aplicables con el operador %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
 
-                                      if($$.tipo!=desconocido) {
-                                          // Implementación de la exponenciación mediante un procedimiento binario
-                                          // TODO: ¿mover a otro lugar del código?
-                                          // TODO: probar
-                                          $$.lexema = temporal();
-                                          genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                                          genprintf("  %s = 1 ;\n", $$.lexema);
-                                          char * base = temporal();
-                                          genprintf("  %s %s ;\n", tipoCStr($$.tipo), base);
-                                          genprintf("  %s = %s ;\n", base, $1.lexema);
-                                          char * exponente = temporal();
-                                          genprintf("  int %s ;\n", exponente);
-                                          genprintf("  %s = %s ;\n", exponente, $3.lexema);
-                                          char * etiqueta_exp = etiqueta();
-                                          char * etiqueta_fin = etiqueta();
-                                          char * etiqueta_par = etiqueta();
-                                          char * impar = temporal();
-                                          genprintf("  int %s ;\n", impar);
-                                          genprintf("  if (%s < 0) goto %s ;\n", exponente, etiqueta_exp);
-                                          genprintf("  %s = 1.0 / %s ;\n  %s = -%s ;\n", base, base, exponente, exponente);
-                                          genprintf("%s:\n", etiqueta_exp);
-                                          genprintf("  if (%s == 0) goto %s ;\n", exponente, etiqueta_fin);
-                                          genprintf("  %s = (1 & %s) ;\n", impar, exponente);
-                                          genprintf("  %s = %s / 2 ;\n", exponente, exponente);
-                                          genprintf("  if (!%s) goto %s ;\n", impar, etiqueta_par);
-                                          genprintf("  %s = %s * %s ;\n", $$.lexema, $$.lexema, base);
-                                          genprintf("%s:\n", etiqueta_par);
-                                          genprintf("  %s = %s * %s ;\n", base, base, base);
-                                          genprintf("  goto %s ;\n", etiqueta_exp);
-                                          genprintf("%s:;\n", etiqueta_fin);
+                                      if(esNumero($$.tipo)) {
+                                        // Implementación de la exponenciación mediante un procedimiento binario
+                                        // TODO: ¿mover a otro lugar del código?
+                                        $$.lexema = temporal();
+                                        genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
+                                        genprintf("  %s = 1 ;\n", $$.lexema);
+                                        char * base = temporal();
+                                        genprintf("  %s %s ;\n", tipoCStr($$.tipo), base);
+                                        genprintf("  %s = %s ;\n", base, $1.lexema);
+                                        char * exponente = temporal();
+                                        genprintf("  int %s ;\n", exponente);
+                                        genprintf("  %s = %s ;\n", exponente, $3.lexema);
+                                        char * etiqueta_exp = etiqueta();
+                                        char * etiqueta_fin = etiqueta();
+                                        char * etiqueta_par = etiqueta();
+                                        char * impar = temporal();
+                                        genprintf("  int %s ;\n", impar);
+                                        genprintf("  if (%s >= 0) goto %s ;\n", exponente, etiqueta_exp);
+                                        genprintf("  %s = 1.0 / %s ;\n  %s = -%s ;\n", base, base, exponente, exponente);
+                                        genprintf("%s:\n", etiqueta_exp);
+                                        genprintf("  if (%s == 0) goto %s ;\n", exponente, etiqueta_fin);
+                                        genprintf("  %s = (1 & %s) ;\n", impar, exponente);
+                                        genprintf("  %s = %s / 2 ;\n", exponente, exponente);
+                                        genprintf("  if (!%s) goto %s ;\n", impar, etiqueta_par);
+                                        genprintf("  %s = %s * %s ;\n", $$.lexema, $$.lexema, base);
+                                        genprintf("%s:\n", etiqueta_par);
+                                        genprintf("  %s = %s * %s ;\n", base, base, base);
+                                        genprintf("  goto %s ;\n", etiqueta_exp);
+                                        genprintf("%s:;\n", etiqueta_fin);
+                                      } else if ($$.tipo!=desconocido) {
+                                        $$.lexema = temporal();
+                                        genprintf("  INIT_lista%s(%s, 0);\n", tipoStr(getTipoElemento($$.tipo)), $$.lexema);
+                                        genprintf("  %s = concatenaListas(&%s, &%s);\n", $$.lexema, $1.lexema, $3.lexema);
                                       }
                                     }
 
            | expresion ARROBA expresion {if(esLista($1.tipo) && $3.tipo==entero){
                                           $$.tipo=$1.tipo;
-                                          // TODO: operador de lista pendiente de implementar
+                                          $$.lexema = temporal();
+                                          char * tipo_elemento = tipoCStr(getTipoElemento($$.tipo));
+                                          char * sentencia_get[3] = {"devuelvePosicionInt", "devuelvePosicionDouble", "devuelvePosicionChar"};
+                                          int s = ($1.tipo == listaentero || $1.tipo == listabool ? 0 : ($1.tipo == listareal ? 1 : 2));
+                                          genprintf("  %s %s;\n", tipo_elemento, $$.lexema);
+                                          genprintf("  %s = %s(&%s, %s);\n", $$.lexema, sentencia_get[s], $1.lexema, $3.lexema);
                                         }
                                        else {
                                          semprintf("%s no es una lista o %s no es entero para aplicar %s\n", tipoStr($1.tipo),tipoStr($3.tipo),$2);
@@ -378,10 +388,16 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                       literal_c = literales_booleanos + 2*(!strcmp("True", $1)); // "1" si True, "0" si False
                     // TODO: lo siguiente puede no dar resultado si el literal usado no existe o no significa lo mismo en C (ejemplos que se me ocurren: True, False)
                     genprintf("  %s = %s ;\n",$$.lexema, literal_c);}
-          | lista {$$.tipo=$1.tipo; // TODO: listas pendientes de la implementación en C de una estructura de listas
-                   /*$$.lexema = temporal();
-                   genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
-                 genprintf("  %s = %s ;\n",$$.lexema, $1.lexema);*/}
+          | lista {$$.tipo=$1.tipo;
+                   $$.lexema = temporal();
+                   genprintf("  INIT_lista%s(%s, %d);\n", tipoStr(getTipoElemento($$.tipo)), $$.lexema, $1.lid.tope_id);
+                   char * sentencia_insercion[3] = {"insertaInt", "insertaDouble", "insertaChar"};
+                   int s = ($$.tipo == listaentero || $$.tipo == listabool ? 0 : ($$.tipo == listareal ? 1 : 2));
+                   for(int i=0; i < $1.lid.tope_id; ++i) {
+                     char * id = $1.lid.lista_ids[i];
+                     genprintf("  %s(&%s, %s);\n", sentencia_insercion[s], $$.lexema, id);
+                   }
+                   }
           | error {$$.tipo = desconocido;}
 ;
 
@@ -405,7 +421,7 @@ expresion_o_cadena : expresion {
                        default:
                          char_tipo = 'd'; // TODO: lista o tipo desconocido; imprimir correctamente o provocar mensaje de error de algún tipo
                      }
-                     genprintf("  printf(\"%%%c\", %s%s);\n", char_tipo, $1.lexema, extra_bool);  // TODO: comprobar que el operador ternario del tipo booleano escrito funciona en C
+                     genprintf("  printf(\"%%%c\", %s%s);\n", char_tipo, $1.lexema, extra_bool);
                    }
                    | CADENA {
                      genprintf("  printf(\"%%s\", %s);\n", $1);
@@ -426,6 +442,7 @@ lista : CORIZQ elementos CORDER {for(int i=0;i<$2.el.tope_elem-1;++i)
 
                                                                     if ($$.tipo!=desconocido){
                                                                       $$.tipo = getTipoLista($2.el.tipos[0]);
+                                                                      $$.lid = $2.lid;
                                                                     }}
 ;
 
@@ -497,23 +514,23 @@ sentencia_entrada : READ lista_identificadores PYC {
   for(int i=0; i < $2.lid.tope_id; ++i) {
     char * id = $2.lid.lista_ids[i];
     TipoDato tipo = tipoTS(id);
-    char char_tipo;
+    char * str_tipo;
     switch(tipo) {
       case booleano: // Los booleanos se leerán como 0 o 1 // TODO: ¿hacer que se lea como True o False?
         // TODO: un valor booleano distinto puede provocar errores tras hacer operaciones lógicas con él, ¿gestionar?
       case entero:
-        char_tipo = 'i'; // Podrá leer enteros con signo en formato decimal (por defecto) o hexadecimal (si empieza por 0x)
+        str_tipo = "i"; // Podrá leer enteros con signo en formato decimal (por defecto) o hexadecimal (si empieza por 0x)
         break;
       case real:
-        char_tipo = 'f';
+        str_tipo = "lf";
         break;
       case caracter:
-        char_tipo = 'c';
+        str_tipo = "c";
         break;
       default:
-        char_tipo = 'i'; // TODO: lista o tipo desconocido; imprimir correctamente o provocar mensaje de error de algún tipo
+        str_tipo = "i"; // TODO: lista o tipo desconocido; imprimir correctamente o provocar mensaje de error de algún tipo
     }
-    genprintf("  scanf(\"%%%c\", &%s);\n", char_tipo, id);
+    genprintf("  scanf(\"%%%s\", &%s);\n", str_tipo, id);
   }
  }
 ;
