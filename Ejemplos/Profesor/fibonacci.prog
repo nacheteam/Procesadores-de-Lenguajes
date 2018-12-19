@@ -1,0 +1,20 @@
+void main(){
+  begin
+  int a, b, t, num;
+  end
+
+  write "Introduzca el número de elementos de la serie a imprimir";
+  read num;
+
+  a = 0;
+  b = 1;
+
+  while(num > 0){
+    t = a + b;
+    a = b;
+    b = t;
+    write a;
+    num = num - 1;
+  }
+
+}

@@ -158,7 +158,7 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                                                   else{
                                                     semprintf("Los tipos %s y %s no son compatibles o %s no es entero para aplicar el operador ternario %s y %s\n", tipoStr($1.tipo),tipoStr($3.tipo),tipoStr($5.tipo),$2,$4);
                                                     $$.tipo = desconocido;}}
-          | INCR expresion {if($2.tipo==entero || $2.tipo==real){
+          | INCR expresion {if(esNumero($2.tipo)){
                               $$.tipo = $2.tipo;
                               $$.lexema = temporal();
                               genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
@@ -168,7 +168,7 @@ expresion : PARIZQ expresion PARDER {$$.tipo = $2.tipo;
                              semprintf("El tipo %s no es ni entero ni real para aplicar el operador unario %s\n", tipoStr($2.tipo),$1);
                              $$.tipo = desconocido;
                             }}
-          | DECR expresion {if($2.tipo==entero || $2.tipo==real){
+           | DECR expresion {if(esNumero($2.tipo)){
                               $$.tipo = $2.tipo;
                               $$.lexema = temporal();
                               genprintf("  %s %s ;\n", tipoCStr($$.tipo), $$.lexema);
